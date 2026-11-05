@@ -7,6 +7,7 @@ import { dayNum, dayStr } from '../srs.js';
 import { lessonList, isDone, moduleInfo, nextStep, stepLabel, stepHref, PART_NAMES, partMinutes, lessonMinutesLeft, lessonLabel, hasKey, who, projectOpen, examReqs, fmtMin, TEST_MINUTES, testsFor, lessonNo, PARTS } from '../access.js';
 import { mountMap, miniMap } from '../map.js';
 import { site } from '../site.js';
+import { finishDate } from './setup.js';
 
 export { lessonList, isDone };
 export function courseProgress(c) { const all = lessonList(c); const done = all.filter(l => isDone(l.id)).length; const tests = c.modules.filter(m => moduleInfo(c, m).passed).length; return { done, total: all.length, tests, pct: (done + tests) / (all.length + c.modules.length) }; }
@@ -55,15 +56,42 @@ register('home', async main => {
   const nt = $('#noTour'); if (nt) nt.onclick = () => { store.d.tourDone = true; store.save(); nt.closest('.tourcall').remove(); };
 });
 
+// My courses: the whole plan on one page. The journey across all eight courses with "You are here", then the
+// current course's map, next step, time left and finish date, then every course card.
+const grp = x => x.group || (/^p/i.test(x.id) ? 'specialist' : 'core');
 register('courses', async main => {
-  const cat = app.catalog; const live = cat.courses.filter(x => x.status === 'live'); const core = cat.courses.filter(x => x.group === 'core'); const spec = cat.courses.filter(x => x.group === 'specialist');
-  const pct = async x => { if (x.status !== 'live') return 0; const c = await getCourse(x.id); return courseProgress(c).pct; };
-  const prog = {}; for (const x of live) prog[x.id] = await pct(x);
-  const card = x => x.status === 'live' ? `<a class="card course-card live" href="#/course/${x.id}"><p class="eyebrow">${x.group === 'core' ? 'Start here' : 'Specialist'}</p><h2>${esc(x.title)}</h2><p>${esc(x.summary)}</p><p class="meta">${x.modules} modules · ${x.lessons} lessons · about ${x.hours} hours</p>${bar(prog[x.id] || 0)}<span class="btn sm">${prog[x.id] ? 'Continue' : 'Open the map'} →</span></a>` : `<div class="card course-card soon"><p class="eyebrow">Coming soon</p><h2>${esc(x.title)}</h2><p>${esc(x.summary)}</p><p class="meta">${x.modules} modules · about ${x.hours} hours</p></div>`;
-  main.innerHTML = `<h1>My courses</h1><p class="lead">Start with the two core courses, then choose the direction you need. Finish all eight and you earn the Master Certificate.</p>
-  <section class="journey"><h2>1. Start here</h2><div class="core-row">${core.map(card).join('<span class="arrow" aria-hidden="true">→</span>')}</div>
-   <h2>2. Then choose a direction</h2><div class="soon-strip">${spec.map(x => x.status === 'live' ? card(x) : `<div class="chiplet" title="${esc(x.summary)}"><b>${esc(x.title)}</b><small>Coming soon</small></div>`).join('')}</div>
-   <h2>3. The Master Certificate</h2><p class="card master-line">★ Finish all eight courses to unlock a capstone business case and a three-hour exam.</p></section>`;
+  let courses = (app.catalog && app.catalog.courses) || [];
+  if (!courses.length) { const c1 = await getCourse('c1'); courses = [{ id: 'c1', title: c1.title, summary: c1.summary, modules: c1.modules.length, lessons: lessonList(c1).length, hours: c1.hours, status: 'live', group: 'core' }]; }
+  const core = courses.filter(x => grp(x) === 'core'), spec = courses.filter(x => grp(x) === 'specialist');
+  const info = {}; for (const x of courses.filter(x => x.status === 'live')) { const c = await getCourse(x.id); const pr = courseProgress(c); const R = examReqs(c); const certified = store.d.certs.some(ct => ct.course === c.id); info[x.id] = { c, pr, step: nextStep(c), certified, R, left: c.modules.reduce((a, m) => a + moduleInfo(c, m).minutesLeft, 0) }; }
+  const current = courses.find(x => info[x.id] && !info[x.id].certified) || courses.find(x => info[x.id]);
+  const doneCount = courses.filter(x => info[x.id] && info[x.id].certified).length;
+  const state = x => !info[x.id] ? 'soon' : info[x.id].certified ? 'done' : info[x.id].pr.done || info[x.id].pr.tests ? 'progress' : 'open';
+  const STATE = { soon: 'Coming soon', done: 'Certificate earned', progress: 'In progress', open: 'Ready to start' };
+  // the journey: Foundations → Formulas & Functions → one direction → Master Certificate
+  const stage = (x, n) => { const st = state(x), here = current && x.id === current.id, i = info[x.id]; return `<a class="jstage st-${st} ${here ? 'here' : ''}" href="${i ? '#/course/' + x.id : '#/courses'}" ${i ? '' : 'aria-disabled="true"'}>${here ? '<span class="here-tag">You are here ▼</span>' : ''}<span class="jn">${st === 'done' ? '✓' : n}</span><b>${esc(x.title)}</b><small>${i ? `${Math.round(i.pr.pct * 100)}% · ${i.pr.done} of ${i.pr.total} lessons` : STATE[st]}</small>${i ? bar(i.pr.pct, 'thin') : ''}</a>`; };
+  const journey = `<div class="journeymap">${core.map((x, k) => stage(x, k + 1)).join('<span class="jarrow" aria-hidden="true"></span>')}<span class="jarrow" aria-hidden="true"></span>
+    <div class="jstage st-soon jdir"><span class="jn">${core.length + 1}</span><b>Choose a direction</b><small>One of ${spec.length} specialist courses</small><div class="jchips">${spec.map(x => `<span class="${state(x) === 'soon' ? 'soon' : ''}" title="${esc(x.summary)}">${esc(x.title)}</span>`).join('')}</div></div><span class="jarrow" aria-hidden="true"></span>
+    <div class="jstage st-${doneCount === courses.length ? 'done' : 'soon'} jmaster"><span class="jn">★</span><b>Master Certificate</b><small>${doneCount} of ${courses.length} courses done</small></div></div>`;
+  // where you are now, in the current course
+  let now = '';
+  if (current && info[current.id]) { const { c, pr, step, R, left } = info[current.id]; const fd = finishDate(c); const p = store.d.plan; const D = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const mod = step.lesson ? step.lesson.module : step.module || null;
+    const where = step.kind === 'lesson' ? `Module ${mod.n} of ${c.modules.length}: <b>${esc(mod.title)}</b> · Lesson ${lessonNo(step.lesson)}: ${esc(step.lesson.title)}${step.continue ? ` · ${PART_NAMES[step.part]}` : ''}` : step.kind === 'test' ? `Module ${mod.n} of ${c.modules.length}: <b>${esc(mod.title)}</b> · every lesson done, the module test is next` : step.kind === 'locked' ? `Module ${mod.n} of ${c.modules.length}: <b>${esc(mod.title)}</b> · ${step.info.reason === 'login' ? 'needs a student login' : `opens when you pass the Module ${step.info.prev.n} test`}` : step.kind === 'project' ? 'Every module test passed · the <b>course project</b> is next' : step.kind === 'exam' ? 'Project passed · the <b>final exam</b> is next' : 'Course complete';
+    now = `<section class="card nowcard"><div class="row between"><div><p class="eyebrow">Where you are now</p><h2>${esc(c.title)}</h2></div><a class="btn" href="${stepHref(c, step)}">${esc(stepLabel(step))}${step.minutes ? ` · ${step.minutes} min` : ''}</a></div>
+      <p class="lead">${where}</p>
+      <div class="nowstats"><div><b>${pr.done}<small>/${pr.total}</small></b><span>lessons done</span></div><div><b>${pr.tests}<small>/${c.modules.length}</small></b><span>module tests passed</span></div><div><b>${R.projOk ? '✓' : '—'}</b><span>course project</span></div><div><b>${(store.d.examAttempts[c.id] || []).some(a => a.passed) ? '✓' : '—'}</b><span>final exam</span></div><div><b>${left >= 60 ? Math.round(left / 60) + '<small> h</small>' : left + '<small> min</small>'}</b><span>left in the modules</span></div></div>
+      <div id="nowmap" class="mapbox"></div><div class="legend maplegend"><span class="lg st-done"></span>Done <span class="lg st-progress"></span>In progress <span class="lg st-open"></span>Open <span class="lg st-locked"></span>Locked <span class="lg gate"></span>Module test (pass 70%) ${qhelp('map')}</div>
+      <div class="planline">${p.days.length ? `📅 You study <b>${p.days.map(d => D[d]).join(', ')}</b> at ${esc(p.time)}, ${p.minutesGoal} minutes a day.${fd ? ` At that pace you finish the lessons around <b>${fd.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</b>, then the project and the final exam.` : ''}` : '📅 Pick your study days to see when you’ll finish.'} <a href="#/planner">Change the plan</a> · <a href="#/course/${c.id}">Course page</a></div></section>`; }
+  const card = x => { const st = state(x), i = info[x.id]; return i ? `<a class="card course-card live st-${st}" href="#/course/${x.id}"><p class="eyebrow">${grp(x) === 'core' ? 'Core course' : 'Specialist'} · ${STATE[st]}</p><h2>${esc(x.title)}</h2><p>${esc(x.summary)}</p><p class="meta">${x.modules} modules · ${x.lessons} lessons · about ${x.hours} hours</p>${bar(i.pr.pct)}<span class="btn sm">${st === 'open' ? 'Open the map' : st === 'done' ? 'See the course' : 'Continue'} →</span></a>`
+    : `<div class="card course-card soon"><p class="eyebrow">${grp(x) === 'core' ? 'Core course' : 'Specialist'} · Coming soon</p><h2>${esc(x.title)}</h2><p>${esc(x.summary)}</p><p class="meta">${x.modules} modules · about ${x.hours} hours</p></div>`; };
+  main.innerHTML = `<h1>My courses</h1><p class="lead">Your whole plan in one place: the route through every course, where you are now, and what comes next.</p>
+  <section class="card"><div class="row between"><h2>Your journey</h2><span class="muted small">${doneCount} of ${courses.length} courses complete</span></div>${journey}</section>
+  ${now}
+  <section class="journey"><h2>1. Start here: the core courses</h2><div class="core-row">${core.map(card).join('<span class="arrow" aria-hidden="true">→</span>')}</div>
+   <h2>2. Then choose a direction</h2><p class="muted">Pick the specialist course that fits your work. Each one opens when it’s ready.</p><div class="spec-grid">${spec.map(card).join('')}</div>
+   <h2>3. The Master Certificate</h2><div class="card master-line"><p>★ Finish all ${courses.length} courses to unlock a capstone business case and a three-hour exam.</p>${bar(doneCount / Math.max(1, courses.length))}<p class="small muted">${doneCount} of ${courses.length} done</p></div></section>`;
+  if (current && info[current.id] && $('#nowmap')) mountMap($('#nowmap'), info[current.id].c);
 });
 
 register('course', async (main, id = 'c1') => {
