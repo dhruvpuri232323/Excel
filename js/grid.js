@@ -15,9 +15,23 @@ const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls)
 export class Grid {
   constructor(host, wb, opts = {}) {
     this.host = host; this.wb = wb instanceof Workbook ? wb : new Workbook(wb); this.o = Object.assign({ toolbar: true, formulaBar: true, tabs: true, status: true, height: 360, readOnly: false, editable: null, highlight: null, lockMessage: 'This cell holds the data. Work in the highlighted cells.' }, opts);
+    this.RH = this.o.rowH || (matchMedia('(pointer: coarse)').matches ? 30 : ROW_H); this.host.style.setProperty('--xg-rh', this.RH + 'px');
     this.si = 0; this.sel = { r: 0, c: 0, ar: 0, ac: 0 }; this.editing = null; this.showFormulas = false; this.history = []; this.future = []; this.clip = null; this.refOverlays = [];
     this.build(); this.unsub = this.wb.onChange(() => this.schedule());
-    if (opts.select) this.select(opts.select); this.render();
+    if (opts.select) this.select(opts.select); this.touchKeys(); this.render();
+  }
+  // a row of formula keys under the sheet on touch screens (phones and tablets have no = $ : keys handy)
+  touchKeys() {
+    if (this.o.readOnly || !matchMedia('(pointer: coarse)').matches || this.keysBar) return;
+    const bar = el('div', 'xg-keys'); bar.innerHTML = ['Type here', '=', '$', ':', '(', ')', ',', '+', '-', '*', '/', 'Enter'].map(k => `<button type="button" data-k="${k}">${k}</button>`).join('');
+    bar.addEventListener('mousedown', e => e.preventDefault());
+    bar.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const k = b.dataset.k;
+      if (k === 'Type here') { if (!this.editing) this.beginEdit(null, 'cell'); return; }
+      if (k === 'Enter') { if (this.editing) { this.commit(); this.move(1, 0); } return; }
+      if (!this.editing) { this.beginEdit(k, 'cell'); return; }
+      const inp = this.editing.via === 'bar' ? this.fInput : this.cellInput; if (!inp) return; const a = inp.selectionStart ?? inp.value.length, z = inp.selectionEnd ?? a;
+      inp.value = inp.value.slice(0, a) + k + inp.value.slice(z); inp.setSelectionRange(a + 1, a + 1); inp.dispatchEvent(new Event('input')); inp.focus(); });
+    this.host.insertBefore(bar, this.tabsEl || this.statusEl || null); this.keysBar = bar;
   }
   // ---------- layout ----------
   build() {
@@ -91,23 +105,23 @@ export class Grid {
   // ---------- rendering ----------
   render() {
     const s = this.sheet; if (!s) return;
-    const totalW = this.colX(s.cols), totalH = s.rows * ROW_H;
+    const totalW = this.colX(s.cols), totalH = s.rows * this.RH;
     this.spacer.style.width = totalW + HEAD_W + 'px'; this.spacer.style.height = totalH + HEAD_H + 'px';
     const sl = this.scroller.scrollLeft, st = this.scroller.scrollTop, vw = this.scroller.clientWidth, vh = this.scroller.clientHeight;
-    const r1 = Math.max(0, Math.floor(st / ROW_H) - 1), r2 = Math.min(s.rows - 1, Math.ceil((st + vh) / ROW_H) + 1);
+    const r1 = Math.max(0, Math.floor(st / this.RH) - 1), r2 = Math.min(s.rows - 1, Math.ceil((st + vh) / this.RH) + 1);
     const c1 = Math.max(0, this.colAt(sl) - 1), c2 = Math.min(s.cols - 1, this.colAt(sl + vw) + 1);
     // column & row headers
     const g = this.selRange();
     let ch = ''; for (let c = c1; c <= c2; c++) { const on = c >= g.c1 && c <= g.c2; ch += `<div class="xg-ch${on ? ' on' : ''}" data-c="${c}" style="left:${this.colX(c) - sl + HEAD_W}px;width:${this.colW(c)}px">${colName(c)}<span class="xg-cresize" data-cr="${c}"></span></div>`; }
     this.colHead.innerHTML = ch;
-    let rh = ''; for (let r = r1; r <= r2; r++) { const on = r >= g.r1 && r <= g.r2; rh += `<div class="xg-rh${on ? ' on' : ''}" data-r="${r}" style="top:${r * ROW_H - st + HEAD_H}px">${r + 1}</div>`; }
+    let rh = ''; for (let r = r1; r <= r2; r++) { const on = r >= g.r1 && r <= g.r2; rh += `<div class="xg-rh${on ? ' on' : ''}" data-r="${r}" style="top:${r * this.RH - st + HEAD_H}px">${r + 1}</div>`; }
     this.rowHead.innerHTML = rh;
     // cells
     const frag = []; const editable = this.o.editable ? this.editRanges() : null; const hl = this.o.highlight ? (this.o.highlight === this.o.editable ? editable : this.o.highlight.map(parseRange)) : null;
     for (let r = r1; r <= r2; r++) {
       for (let c = c1; c <= c2; c++) {
         const cell = this.wb.cellObj(s, r, c); const st2 = (cell && cell.s) || {};
-        const x = this.colX(c) + HEAD_W, y = r * ROW_H + HEAD_H; let w = this.colW(c);
+        const x = this.colX(c) + HEAD_W, y = r * this.RH + HEAD_H; let w = this.colW(c);
         let text = '', cls = 'xg-c'; let v = null;
         if (cell && (cell.f || cell.v !== null)) {
           if (this.showFormulas && cell.f) { text = cell.f; cls += ' f'; }
@@ -138,10 +152,10 @@ export class Grid {
     if (this.editing) this.showRefs();
   }
   placeSelection() {
-    const g = this.selRange(); const x1 = this.colX(g.c1) + HEAD_W, y1 = g.r1 * ROW_H + HEAD_H, x2 = this.colX(g.c2 + 1) + HEAD_W, y2 = (g.r2 + 1) * ROW_H + HEAD_H;
+    const g = this.selRange(); const x1 = this.colX(g.c1) + HEAD_W, y1 = g.r1 * this.RH + HEAD_H, x2 = this.colX(g.c2 + 1) + HEAD_W, y2 = (g.r2 + 1) * this.RH + HEAD_H;
     Object.assign(this.selBox.style, { left: x1 + 'px', top: y1 + 'px', width: x2 - x1 + 'px', height: y2 - y1 + 'px', display: (g.r1 === g.r2 && g.c1 === g.c2) ? 'none' : 'block' });
-    const ax = this.colX(this.sel.ac) + HEAD_W, ay = this.sel.ar * ROW_H + HEAD_H;
-    Object.assign(this.actBox.style, { left: ax + 'px', top: ay + 'px', width: this.colW(this.sel.ac) + 'px', height: ROW_H + 'px' });
+    const ax = this.colX(this.sel.ac) + HEAD_W, ay = this.sel.ar * this.RH + HEAD_H;
+    Object.assign(this.actBox.style, { left: ax + 'px', top: ay + 'px', width: this.colW(this.sel.ac) + 'px', height: this.RH + 'px' });
     Object.assign(this.handle.style, { left: x2 - 4 + 'px', top: y2 - 4 + 'px' });
   }
   renderTabs() {
@@ -172,15 +186,15 @@ export class Grid {
   select(a) { const g = parseRange(a); if (g) this.setSel(g.r1, g.c1, g.r2, g.c2); }
   selection() { return { sheet: this.si, range: rangeStr(this.selRange()), active: addr(this.sel.ar, this.sel.ac) }; }
   scrollIntoView(r, c) {
-    const sc = this.scroller; const x = this.colX(c), w = this.colW(c), y = r * ROW_H; const vw = sc.clientWidth - HEAD_W, vh = sc.clientHeight - HEAD_H;
+    const sc = this.scroller; const x = this.colX(c), w = this.colW(c), y = r * this.RH; const vw = sc.clientWidth - HEAD_W, vh = sc.clientHeight - HEAD_H;
     if (x < sc.scrollLeft) sc.scrollLeft = x; else if (x + w > sc.scrollLeft + vw) sc.scrollLeft = x + w - vw;
-    if (y < sc.scrollTop) sc.scrollTop = y; else if (y + ROW_H > sc.scrollTop + vh) sc.scrollTop = y + ROW_H - vh;
+    if (y < sc.scrollTop) sc.scrollTop = y; else if (y + this.RH > sc.scrollTop + vh) sc.scrollTop = y + this.RH - vh;
   }
   hit(e) {
     const rect = this.scroller.getBoundingClientRect(); const x = e.clientX - rect.left + this.scroller.scrollLeft - HEAD_W, y = e.clientY - rect.top + this.scroller.scrollTop - HEAD_H;
     const inColHead = e.clientY - rect.top < HEAD_H, inRowHead = e.clientX - rect.left < HEAD_W;
     if (x < 0 && y < 0) return null;
-    return { r: Math.max(0, Math.min(this.sheet.rows - 1, Math.floor(y / ROW_H))), c: this.colAt(Math.max(0, x)), colHead: inColHead, rowHead: inRowHead };
+    return { r: Math.max(0, Math.min(this.sheet.rows - 1, Math.floor(y / this.RH))), c: this.colAt(Math.max(0, x)), colHead: inColHead, rowHead: inRowHead };
   }
   mouseDown(e) {
     if (e.button === 2) { const p = this.hit(e); const g = this.selRange(); if (p && !(p.r >= g.r1 && p.r <= g.r2 && p.c >= g.c1 && p.c <= g.c2)) this.setSel(p.r, p.c); return; }
@@ -238,7 +252,7 @@ export class Grid {
     }
     if (this.fInput) this.fInput.value = text; this.showRefs();
   }
-  placeEditor() { const { r, c } = this.editing; if (this.editing.si !== this.si) { this.cellInput.style.display = 'none'; return; } this.cellInput.style.display = ''; Object.assign(this.cellInput.style, { left: this.colX(c) + HEAD_W + 'px', top: r * ROW_H + HEAD_H + 'px', minWidth: this.colW(c) + 'px', height: ROW_H + 'px' }); }
+  placeEditor() { const { r, c } = this.editing; if (this.editing.si !== this.si) { this.cellInput.style.display = 'none'; return; } this.cellInput.style.display = ''; Object.assign(this.cellInput.style, { left: this.colX(c) + HEAD_W + 'px', top: r * this.RH + HEAD_H + 'px', minWidth: this.colW(c) + 'px', height: this.RH + 'px' }); }
   editKey(e, input) {
     if (!this.editing) { if (e.key === 'Enter') { e.preventDefault(); this.focus(); } return; }
     if (this.sugBox && this.sugBox.style.display !== 'none' && (e.key === 'Tab' || (e.key === 'Enter' && this.sugActive))) { e.preventDefault(); this.acceptSuggest(input); return; }
@@ -268,7 +282,7 @@ export class Grid {
       if (toks[i + 1] && toks[i + 1].val === ':' && toks[i + 2] && toks[i + 2].type === 'ref') { const u = toks[i + 2]; g = { r1: Math.min(t.r, u.r), c1: Math.min(t.c, u.c), r2: Math.max(t.r, u.r), c2: Math.max(t.c, u.c) }; i += 2; }
       const sheetIdx = t.sheet ? this.wb.sheetIndexByName(t.sheet) : this.editing.si; if (sheetIdx !== this.si) { k++; continue; }
       const col = REF_COLORS[k++ % REF_COLORS.length]; const b = el('div', 'xg-refbox');
-      Object.assign(b.style, { left: this.colX(g.c1) + HEAD_W + 'px', top: g.r1 * ROW_H + HEAD_H + 'px', width: this.colX(g.c2 + 1) - this.colX(g.c1) + 'px', height: (g.r2 - g.r1 + 1) * ROW_H + 'px', borderColor: col, background: col + '14' });
+      Object.assign(b.style, { left: this.colX(g.c1) + HEAD_W + 'px', top: g.r1 * this.RH + HEAD_H + 'px', width: this.colX(g.c2 + 1) - this.colX(g.c1) + 'px', height: (g.r2 - g.r1 + 1) * this.RH + 'px', borderColor: col, background: col + '14' });
       this.layer.appendChild(b); this.refOverlays.push(b);
     }
   }
@@ -298,7 +312,7 @@ export class Grid {
     if (k === 'Tab') { e.preventDefault(); this.move(0, e.shiftKey ? -1 : 1); return; }
     if (k === 'Home') { e.preventDefault(); if (ctrl) this.setSel(0, 0); else this.setSel(this.sel.ar, 0); this.emitKey(e); return; }
     if (k === 'End' && ctrl) { e.preventDefault(); const u = this.wb.usedRange(this.sheet) || { r2: 0, c2: 0 }; if (e.shiftKey) this.setSel(this.sel.ar, this.sel.ac, u.r2, u.c2); else this.setSel(u.r2, u.c2); this.emitKey(e); return; }
-    if (k === 'PageDown' || k === 'PageUp') { e.preventDefault(); if (ctrl || e.altKey) { this.setSheet(Math.max(0, Math.min(this.wb.sheets.length - 1, this.si + (k === 'PageDown' ? 1 : -1)))); } else { const n = Math.floor(this.scroller.clientHeight / ROW_H) - 1; this.move(k === 'PageDown' ? n : -n, 0); } this.emitKey(e); return; }
+    if (k === 'PageDown' || k === 'PageUp') { e.preventDefault(); if (ctrl || e.altKey) { this.setSheet(Math.max(0, Math.min(this.wb.sheets.length - 1, this.si + (k === 'PageDown' ? 1 : -1)))); } else { const n = Math.floor(this.scroller.clientHeight / this.RH) - 1; this.move(k === 'PageDown' ? n : -n, 0); } this.emitKey(e); return; }
     if (k === 'F2') { e.preventDefault(); this.beginEdit(null, 'cell'); return; }
     if (k === 'F11' && e.shiftKey) { e.preventDefault(); this.addSheet(); return; }
     if (k === 'Delete' || k === 'Backspace') { e.preventDefault(); if (k === 'Backspace' && !this.multi()) { if (this.canEdit(this.sel.ar, this.sel.ac)) this.beginEdit('', 'cell'); } else this.clearSelection(); return; }
@@ -416,7 +430,7 @@ export class Grid {
     e.preventDefault(); e.stopPropagation(); const g = this.selRange(); let target = g;
     const move = ev => { const p = this.hit(ev); if (!p) return; const down = p.r - g.r2, right = p.c - g.c2, up = g.r1 - p.r, left = g.c1 - p.c; const m = Math.max(down, right, up, left);
       if (m <= 0) target = g; else if (m === down) target = { ...g, r2: p.r }; else if (m === right) target = { ...g, c2: p.c }; else if (m === up) target = { ...g, r1: p.r }; else target = { ...g, c1: p.c };
-      const x1 = this.colX(target.c1) + HEAD_W, y1 = target.r1 * ROW_H + HEAD_H; Object.assign(this.fillGhost.style, { display: 'block', left: x1 + 'px', top: y1 + 'px', width: this.colX(target.c2 + 1) + HEAD_W - x1 + 'px', height: (target.r2 - target.r1 + 1) * ROW_H + 'px' }); this.scrollIntoView(p.r, p.c); };
+      const x1 = this.colX(target.c1) + HEAD_W, y1 = target.r1 * this.RH + HEAD_H; Object.assign(this.fillGhost.style, { display: 'block', left: x1 + 'px', top: y1 + 'px', width: this.colX(target.c2 + 1) + HEAD_W - x1 + 'px', height: (target.r2 - target.r1 + 1) * this.RH + 'px' }); this.scrollIntoView(p.r, p.c); };
     const up = ev => { removeEventListener('mousemove', move); removeEventListener('mouseup', up); this.fillGhost.style.display = 'none'; if (rangeStr(target) !== rangeStr(g)) this.fillTo(g, target, { copy: ev.ctrlKey }); };
     addEventListener('mousemove', move); addEventListener('mouseup', up);
   }
@@ -446,7 +460,7 @@ export class Grid {
   fillDir(dir) { const g = this.selRange(); if (dir === 'down') { if (g.r1 === g.r2) { if (g.r1 === 0) return; this.fillTo({ ...g, r1: g.r1 - 1, r2: g.r1 - 1 }, { ...g, r1: g.r1 - 1 }, { copy: true }); } else this.fillTo({ ...g, r2: g.r1 }, g, { copy: true }); } else { if (g.c1 === g.c2) { if (g.c1 === 0) return; this.fillTo({ ...g, c1: g.c1 - 1, c2: g.c1 - 1 }, { ...g, c1: g.c1 - 1 }, { copy: true }); } else this.fillTo({ ...g, c2: g.c1 }, g, { copy: true }); } }
   // ---------- clipboard ----------
   copy(cut) { const g = this.selRange(); const cells = []; for (let r = g.r1; r <= g.r2; r++) { const row = []; for (let c = g.c1; c <= g.c2; c++) { const o = this.wb.cellObj(this.sheet, r, c); row.push(o ? { v: o.v, f: o.f, s: o.s ? { ...o.s } : null } : null); } cells.push(row); } this.clip = { g, si: this.si, cells, cut, text: this.selectionTSV() }; this.flash(cut ? 'Cut. Select where to paste and press Ctrl+V.' : 'Copied. Select where to paste and press Ctrl+V.'); this.markCopy(g); }
-  markCopy(g) { if (this.ants) this.ants.remove(); this.ants = el('div', 'xg-ants'); Object.assign(this.ants.style, { left: this.colX(g.c1) + HEAD_W + 'px', top: g.r1 * ROW_H + HEAD_H + 'px', width: this.colX(g.c2 + 1) - this.colX(g.c1) + 'px', height: (g.r2 - g.r1 + 1) * ROW_H + 'px' }); this.layer.appendChild(this.ants); }
+  markCopy(g) { if (this.ants) this.ants.remove(); this.ants = el('div', 'xg-ants'); Object.assign(this.ants.style, { left: this.colX(g.c1) + HEAD_W + 'px', top: g.r1 * this.RH + HEAD_H + 'px', width: this.colX(g.c2 + 1) - this.colX(g.c1) + 'px', height: (g.r2 - g.r1 + 1) * this.RH + 'px' }); this.layer.appendChild(this.ants); }
   selectionTSV() { const g = this.selRange(); const lines = []; for (let r = g.r1; r <= Math.min(g.r2, g.r1 + 2000); r++) { const row = []; for (let c = g.c1; c <= g.c2; c++) row.push(this.wb.display(this.si, r, c)); lines.push(row.join('\t')); } return lines.join('\n'); }
   pasteEvent(e) {
     if (this.editing) return; e.preventDefault(); const text = e.clipboardData.getData('text/plain');

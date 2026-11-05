@@ -9,7 +9,9 @@
    "lessons": 28,
    "hours": 22,
    "status": "live",
-   "free": true
+   "free": true,
+   "group": "core",
+   "short": "Foundations"
   },
   {
    "id": "c2",
@@ -19,7 +21,9 @@
    "modules": 9,
    "lessons": 34,
    "hours": 25,
-   "status": "soon"
+   "status": "soon",
+   "group": "core",
+   "short": "Formulas"
   },
   {
    "id": "p1",
@@ -29,7 +33,9 @@
    "modules": 8,
    "lessons": 33,
    "hours": 24,
-   "status": "soon"
+   "status": "soon",
+   "group": "specialist",
+   "short": "Data analysis"
   },
   {
    "id": "p2",
@@ -39,7 +45,9 @@
    "modules": 8,
    "lessons": 31,
    "hours": 23,
-   "status": "soon"
+   "status": "soon",
+   "group": "specialist",
+   "short": "Dashboards"
   },
   {
    "id": "p3",
@@ -49,7 +57,9 @@
    "modules": 9,
    "lessons": 37,
    "hours": 27,
-   "status": "soon"
+   "status": "soon",
+   "group": "specialist",
+   "short": "Finance"
   },
   {
    "id": "p4",
@@ -59,7 +69,9 @@
    "modules": 8,
    "lessons": 30,
    "hours": 23,
-   "status": "soon"
+   "status": "soon",
+   "group": "specialist",
+   "short": "Operations"
   },
   {
    "id": "p5",
@@ -69,7 +81,9 @@
    "modules": 8,
    "lessons": 32,
    "hours": 24,
-   "status": "soon"
+   "status": "soon",
+   "group": "specialist",
+   "short": "Power Query"
   },
   {
    "id": "p6",
@@ -79,7 +93,9 @@
    "modules": 9,
    "lessons": 33,
    "hours": 25,
-   "status": "soon"
+   "status": "soon",
+   "group": "specialist",
+   "short": "Automation"
   }
  ]
 }

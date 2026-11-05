@@ -1,8 +1,11 @@
-// Small UI helpers: escaping, toasts, dialogs, the mascot, charts drawn as SVG, narration, confetti.
+// Small UI helpers: escaping, toasts, dialogs, popovers, the mascot, charts drawn as SVG, confetti, dates.
 import { store } from './store.js';
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 // light markup for lesson text: **bold**, `code`, [[Key]] keyboard keys, _italic_
-export const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\[\[([^\]]+)\]\]/g, (m, k) => k.split('+').map(x => `<kbd>${x}</kbd>`).join('+')).replace(/(^|\s)_(.+?)_(?=\s|[.,;:!?]|$)/g, '$1<i>$2</i>');
+// keyboard keys follow the learner's computer: Windows keys by default, Mac keys when chosen in Settings
+const KEYMAP = {}; export const setKeyMap = list => { for (const k of list || []) if (k.win && k.mac) KEYMAP[k.win.toLowerCase()] = k.mac; };
+export const keyText = k => { if (!store.d || store.d.settings.os !== 'mac') return k; const hit = KEYMAP[k.toLowerCase()]; if (hit) return hit; return k.replace(/\bCtrl\b/g, '⌘').replace(/\bAlt\b/g, 'Option'); };
+export const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\[\[([^\]]+)\]\]/g, (m, k) => keyText(k).split('+').map(x => `<kbd>${x}</kbd>`).join('+')).replace(/(^|\s)_(.+?)_(?=\s|[.,;:!?]|$)/g, '$1<i>$2</i>').replace(/(^|[\s(])\*([^*\s][^*]*?)\*(?=[\s.,;:!?)]|$)/g, '$1<i>$2</i>');
 export const $ = (s, r = document) => r.querySelector(s); export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 export function toast(msg, kind = '') { const t = document.createElement('div'); t.className = 'toast ' + kind; t.setAttribute('role', 'status'); t.innerHTML = msg; document.body.appendChild(t); requestAnimationFrame(() => t.classList.add('on')); setTimeout(() => { t.classList.remove('on'); setTimeout(() => t.remove(), 300); }, 3800); }
 export function modal(html, opts = {}) {
@@ -12,8 +15,8 @@ export function modal(html, opts = {}) {
   addEventListener('keydown', function k(e) { if (e.key === 'Escape' && opts.close !== false) { close(); removeEventListener('keydown', k); } });
   const f = wrap.querySelector('input,button:not(.modal-x),select,textarea'); f && f.focus(); return { el: wrap.firstElementChild, close };
 }
-export function confirmBox(text, yes = 'Yes', no = 'Cancel') { return new Promise(res => { const m = modal(`<p class="lead">${text}</p><div class="row end"><button class="btn ghost" data-a="0">${no}</button><button class="btn" data-a="1">${yes}</button></div>`, { onClose: () => res(false) }); m.el.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { m.close(); res(b.dataset.a === '1'); }); }); }
-export const mascot = (pose = 'hello', cls = '') => `<img class="mascot ${cls}" src="img/mascot/sheetah-${pose}.svg" alt="Sheetah ${pose}" width="120" height="132">`;
+export function confirmBox(text, yes = 'Yes', no = 'Cancel') { return new Promise(res => { const m = modal(`<p class="lead">${text}</p><div class="row end"><button class="btn ghost" data-a="0">${no}</button><button class="btn" data-a="1">${yes}</button></div>`, { onClose: () => res(false) }); m.el.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { res(b.dataset.a === '1'); m.close(); }); }); } // resolve before closing: closing resolves “no”
+export const mascot = (pose = 'hello', cls = '') => store.d && store.d.settings.mascot === false && !/brand-m|keep/.test(cls) ? '' : `<img class="mascot ${cls}" src="img/mascot/sheetah-${pose}.svg" alt="Sheetah ${pose}" width="120" height="132">`;
 export function say(el, pose, text) { el.innerHTML = `<div class="say">${mascot(pose, 'sm')}<div class="bubble">${text}</div></div>`; }
 
 // Sheetah's lines in the learner's chosen tone (from the CAT app's humour tones)
@@ -25,12 +28,8 @@ const LINES = {
 };
 export const line = (key, arg) => { const t = LINES[store.d.settings.tone] || LINES.warm; const v = t[key] || LINES.warm[key]; return typeof v === 'function' ? v(arg) : v; };
 
-// narration with the computer's own voice (optional)
-export function speak(text) { if (!store.d.settings.narration || !('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text.replace(/<[^>]+>/g, '').replace(/[*`_]/g, '')); u.rate = 1; const v = speechSynthesis.getVoices().find(v => /en-IN/i.test(v.lang)) || speechSynthesis.getVoices().find(v => /^en/i.test(v.lang)); if (v) u.voice = v; speechSynthesis.speak(u); }
-export const stopSpeaking = () => { if ('speechSynthesis' in window) speechSynthesis.cancel(); };
-
 export function confetti() {
-  if (store.d.settings.reduceMotion || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (store.d.settings.reduceMotion || store.d.settings.celebrate === false || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const c = document.createElement('canvas'); c.className = 'confetti'; c.width = innerWidth; c.height = innerHeight; document.body.appendChild(c); const x = c.getContext('2d');
   const cols = ['#F2A541', '#3557D6', '#23263A', '#FFF4E1', '#1F8A5B']; const ps = Array.from({ length: 140 }, () => ({ x: innerWidth / 2 + (Math.random() - .5) * 200, y: innerHeight / 3, vx: (Math.random() - .5) * 12, vy: -Math.random() * 12 - 4, s: 5 + Math.random() * 6, c: cols[Math.floor(Math.random() * cols.length)], r: Math.random() * 6 }));
   let t = 0; (function f() { x.clearRect(0, 0, c.width, c.height); for (const p of ps) { p.x += p.vx; p.y += p.vy; p.vy += .35; p.r += .1; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * .6); x.restore(); } if (++t < 110) requestAnimationFrame(f); else c.remove(); })();
@@ -61,3 +60,29 @@ export const bar = (pct, cls = '') => `<div class="pbar ${cls}" role="progressba
 export const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
 export const fmtDate = iso => new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 export function download(name, data, type = 'application/octet-stream') { const blob = data instanceof Blob ? data : new Blob([data], { type }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000); }
+
+// a small floating box next to an element (help tips, glossary words, map stops)
+let openPop = null;
+export function closePopover() { if (openPop) { openPop.remove(); openPop = null; } }
+export function popover(anchor, html, { wide = false, cls = '' } = {}) {
+  closePopover(); const p = document.createElement('div'); p.className = `popover ${wide ? 'wide' : ''} ${cls}`; p.setAttribute('role', 'dialog'); p.innerHTML = html; document.body.appendChild(p);
+  const r = anchor.getBoundingClientRect(); const pw = p.offsetWidth, ph = p.offsetHeight;
+  let left = Math.min(Math.max(8, r.left + r.width / 2 - pw / 2), innerWidth - pw - 8); let top = r.bottom + 8; if (top + ph > innerHeight - 8 && r.top - ph - 8 > 8) top = r.top - ph - 8;
+  p.style.left = left + scrollX + 'px'; p.style.top = top + scrollY + 'px'; openPop = p;
+  setTimeout(() => { const off = e => { if (!p.contains(e.target) && e.target !== anchor) { closePopover(); removeEventListener('mousedown', off, true); } }; addEventListener('mousedown', off, true); }, 0);
+  return p;
+}
+addEventListener('keydown', e => { if (e.key === 'Escape') closePopover(); });
+addEventListener('hashchange', closePopover);
+export const qhelp = (key, label = 'What is this?') => `<button type="button" class="qhelp" data-help="${key}" aria-label="${esc(label)}">?</button>`;
+export const crumbs = items => `<nav class="crumbs" aria-label="You are here">${items.map(([t, h], i) => i < items.length - 1 && h ? `<a href="${h}">${esc(t)}</a>` : `<span aria-current="${i === items.length - 1 ? 'page' : 'false'}">${esc(t)}</span>`).join('<span class="sep" aria-hidden="true">›</span>')}</nav>`;
+export const waLink = (text, phone = '') => `https://wa.me/${String(phone).replace(/[^0-9]/g, '')}?text=${encodeURIComponent(text)}`;
+export const mailLink = (to, subject, body) => `mailto:${encodeURIComponent(to || '')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+// dates as day / month / year boxes, so every browser shows them the Indian way (dd-mm-yyyy)
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+export function dateField(name, iso = '', { from = new Date().getFullYear() - 1, to = new Date().getFullYear() + 3, label = '' } = {}) {
+  const [y, m, d] = iso ? iso.split('-').map(Number) : [0, 0, 0];
+  return `<span class="datef" data-date="${name}" role="group" aria-label="${esc(label || name)}"><select data-part="d" aria-label="Day"><option value="">Day</option>${Array.from({ length: 31 }, (_, i) => `<option ${d === i + 1 ? 'selected' : ''}>${i + 1}</option>`).join('')}</select><select data-part="m" aria-label="Month"><option value="">Month</option>${MONTHS.map((x, i) => `<option value="${i + 1}" ${m === i + 1 ? 'selected' : ''}>${x}</option>`).join('')}</select><select data-part="y" aria-label="Year"><option value="">Year</option>${Array.from({ length: to - from + 1 }, (_, i) => from + i).map(v => `<option ${y === v ? 'selected' : ''}>${v}</option>`).join('')}</select></span>`;
+}
+export function readDate(root, name) { const box = root.querySelector(`[data-date="${name}"]`); if (!box) return ''; const v = k => box.querySelector(`[data-part="${k}"]`).value; if (!v('d') || !v('m') || !v('y')) return ''; return `${v('y')}-${String(v('m')).padStart(2, '0')}-${String(v('d')).padStart(2, '0')}`; }
+export const fmtDay = iso => new Date(iso + (iso.length === 10 ? 'T00:00:00' : '')).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });

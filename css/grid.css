@@ -32,10 +32,10 @@
 .xg-ch, .xg-rh { position: absolute; display: flex; align-items: center; justify-content: center; color: #6B6A63; font-size: 12px; box-sizing: border-box; }
 [data-theme="dark"] .xg-ch, [data-theme="dark"] .xg-rh { color: #A9ABBD; }
 .xg-ch { top: 0; height: 24px; border-right: 1px solid var(--xg-line); }
-.xg-rh { left: 0; width: 46px; height: 24px; border-bottom: 1px solid var(--xg-line); }
+.xg-rh { left: 0; width: 46px; height: var(--xg-rh, 24px); border-bottom: 1px solid var(--xg-line); }
 .xg-ch.on, .xg-rh.on { background: var(--xg-head-on); color: var(--xg-acc); font-weight: 700; }
 .xg-cresize { position: absolute; right: -3px; top: 0; width: 6px; height: 100%; cursor: col-resize; z-index: 2; }
-.xg-c { position: absolute; height: 24px; box-sizing: border-box; padding: 0 5px; display: flex; align-items: center; white-space: nowrap; overflow: hidden; border-right: 1px solid var(--xg-line); border-bottom: 1px solid var(--xg-line); background: var(--xg-bg); }
+.xg-c { position: absolute; height: var(--xg-rh, 24px); box-sizing: border-box; padding: 0 5px; display: flex; align-items: center; white-space: nowrap; overflow: hidden; border-right: 1px solid var(--xg-line); border-bottom: 1px solid var(--xg-line); background: var(--xg-bg); }
 .xg-c.n, .xg-c.b { justify-content: flex-end; }
 .xg-c.b { justify-content: center; }
 .xg-c.err { color: #C2255C; justify-content: center; }
@@ -86,3 +86,5 @@
 .xg-find .row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
 .xg-find .row button { border: 1px solid var(--xg-line); background: var(--xg-head); border-radius: 8px; padding: 6px 10px; font: inherit; cursor: pointer; color: inherit; }
 .xg-find .msg { display: block; margin-top: 8px; color: #6B6A63; }
+
+.xg-keys { display: flex; gap: 4px; flex-wrap: wrap; padding: 6px; border-top: 1px solid var(--xg-line); background: var(--xg-head, #F3F2EE); } .xg-keys button { min-width: 40px; height: 38px; border: 1px solid var(--xg-line); border-radius: 8px; background: var(--xg-bg, #fff); font: 600 15px/1 var(--mono, monospace); color: inherit; } .xg-keys button[data-k='Type here'], .xg-keys button[data-k='Enter'] { font-family: inherit; padding: 0 10px; }

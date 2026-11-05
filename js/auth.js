@@ -41,10 +41,10 @@ export async function login(email, password, roster) {
   }
 }
 // Build an entry for a learner (used by the admin page)
-export async function makeEntry({ email, password, name, role = 'student', keys, adminKey, courses, expires }) {
+export async function makeEntry({ email, password, name, role = 'student', keys, adminKey, courses, expires, open }) {
   const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
   const k = await passKey(email, password, salt);
-  const payload = { email: normEmail(email), name, role, keys: Object.fromEntries(Object.entries(keys).filter(([c]) => !courses || courses.includes(c))), expires: expires || null };
+  const payload = { email: normEmail(email), name, role, keys: Object.fromEntries(Object.entries(keys).filter(([c]) => !courses || courses.includes(c))), expires: expires || null, open: !!open };
   if (role === 'admin') payload.adminKey = adminKey;
   const data = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, k, enc.encode(JSON.stringify(payload)));
   return { id: await entryId(email), role, salt: b64(salt), iv: b64(iv), iter: ITER, data: b64(data) };

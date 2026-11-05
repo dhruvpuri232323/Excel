@@ -28,7 +28,65 @@
      "title": "What Excel is for",
      "summary": "Workbooks, sheets and cells, and the real jobs that run on Excel.",
      "minutes": 30,
-     "free": true
+     "free": true,
+     "objectives": [
+      "Name the parts of a workbook: sheets, columns, rows, cells and ranges.",
+      "Read and write a cell address like **D4** and a range like **A1:E6**.",
+      "Say which everyday jobs Excel does well, and when another tool fits better."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/c1-1-1-notes.docx",
+       "name": "1.1 What Excel is for - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/c1-1-1-practice.xlsx",
+       "name": "1.1 What Excel is for - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/c1-1-1-solution.xlsx",
+       "name": "1.1 What Excel is for - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Excel is a grid of cells that can calculate"
+      ],
+      [
+       0,
+       1,
+       "Columns are letters, rows are numbers"
+      ],
+      [
+       0,
+       2,
+       "A range is a block of cells"
+      ],
+      [
+       1,
+       0,
+       "The jobs that run on Excel"
+      ],
+      [
+       1,
+       1,
+       "When another tool is better"
+      ]
+     ],
+     "tasks": [
+      "Click cell C5 to make it active.",
+      "What is in cell B3 on the Orders sheet?",
+      "Select the range A1:E6: all the orders with their headers.",
+      "Cell D8 shows 14,260. What is really inside it?",
+      "Rename the sheet Notes to Ideas. Double-click its tab, type the new name and press Enter.",
+      "On the Orders sheet, type your own city in cell G2."
+     ],
+     "real": false
     },
     {
      "id": "1-2",
@@ -36,7 +94,66 @@
      "title": "A tour of the window",
      "summary": "The ribbon, Quick Access Toolbar, formula bar, Name Box, status bar and Backstage view.",
      "minutes": 30,
-     "free": true
+     "free": true,
+     "objectives": [
+      "Find the ribbon’s tabs and groups, and the Quick Access Toolbar.",
+      "Use the Name Box and the formula bar.",
+      "Read Sum, Average and Count in the status bar.",
+      "Open Backstage view from the File tab."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/c1-1-2-notes.docx",
+       "name": "1.2 A tour of the window - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/c1-1-2-practice.xlsx",
+       "name": "1.2 A tour of the window - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/c1-1-2-solution.xlsx",
+       "name": "1.2 A tour of the window - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The ribbon: tabs, then groups, then buttons"
+      ],
+      [
+       0,
+       1,
+       "The Quick Access Toolbar and the title bar"
+      ],
+      [
+       0,
+       2,
+       "The Name Box and the formula bar"
+      ],
+      [
+       1,
+       0,
+       "Sheet tabs and the status bar"
+      ],
+      [
+       1,
+       1,
+       "File opens Backstage view"
+      ]
+     ],
+     "tasks": [
+      "Click the Name Box.",
+      "Click the formula bar.",
+      "Click the tab you’d use to sort and filter data.",
+      "Click the Quick Access Toolbar, where Save and Undo live.",
+      "Click where you would go to save, print or export the file.",
+      "You select D2:D6 in the order list. What does the status bar show?"
+     ],
+     "real": false
     },
     {
      "id": "1-3",
@@ -44,7 +161,69 @@
      "title": "Files that last",
      "summary": "Saving and AutoSave, file types (.xlsx, .xlsm, .csv), and how Excel versions differ.",
      "minutes": 30,
-     "free": true
+     "free": true,
+     "objectives": [
+      "Save, and Save As with a new name, place or file type.",
+      "Choose between .xlsx, .xlsm, .csv and .pdf.",
+      "Know what AutoSave and version history do, and what changes between Excel versions."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/c1-1-3-notes.docx",
+       "name": "1.3 Files that last - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/c1-1-3-practice.xlsx",
+       "name": "1.3 Files that last - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/c1-1-3-solution.xlsx",
+       "name": "1.3 Files that last - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "a/c1-1-3-real.xlsx",
+       "name": "1.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Save early, save often"
+      ],
+      [
+       0,
+       1,
+       "AutoSave and version history"
+      ],
+      [
+       1,
+       0,
+       "The four file types you’ll meet"
+      ],
+      [
+       1,
+       1,
+       "Why CSV loses things"
+      ],
+      [
+       1,
+       2,
+       "Excel versions"
+      ]
+     ],
+     "tasks": [
+      "A bank lets you download your statement as CSV. You add a formula and some colour, then pr",
+      "Which file type do you need for a workbook with macros?",
+      "You must share a final fee summary that nobody should change by accident and that looks th",
+      "Put the steps for saving a copy as an Excel Workbook in order.",
+      "Your file is on OneDrive with AutoSave on. You made a mess an hour ago. What helps?"
+     ],
+     "real": true
     }
    ]
   },
@@ -61,7 +240,61 @@
      "title": "Text, numbers, dates and TRUE/FALSE",
      "summary": "How Excel decides what you typed, and why some numbers end up as text.",
      "minutes": 30,
-     "free": true
+     "free": true,
+     "objectives": [
+      "Recognise text, numbers, dates and TRUE/FALSE by how they line up.",
+      "Type dates the way Excel understands them.",
+      "Keep IDs with leading zeros as text.",
+      "Turn numbers stored as text back into numbers."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/c1-2-1-notes.docx",
+       "name": "2.1 Text, numbers, dates and TRUE/FALSE - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/c1-2-1-practice.xlsx",
+       "name": "2.1 Text, numbers, dates and TRUE/FALSE - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/c1-2-1-solution.xlsx",
+       "name": "2.1 Text, numbers, dates and TRUE/FALSE - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Four kinds of value"
+      ],
+      [
+       0,
+       1,
+       "Dates are numbers in disguise"
+      ],
+      [
+       1,
+       0,
+       "Leading zeros and long IDs"
+      ],
+      [
+       1,
+       1,
+       "Numbers stored as text"
+      ]
+     ],
+     "tasks": [
+      "In B2, type the name Priya Menon.",
+      "In B3, type her monthly salary: 52,000. It should be a real number.",
+      "In B4, type her joining date, 1 August 2026, so Excel stores a real date.",
+      "In B5, type her employee ID 0042 so the zeros stay.",
+      "In B6, record that she has a laptop with the logical value TRUE.",
+      "The claims in D2:D5 arrived as text, so the total in D6 is 0. Turn them into real numbers."
+     ],
+     "real": false
     },
     {
      "id": "2-2",
@@ -69,7 +302,60 @@
      "title": "Editing fast",
      "summary": "F2, undo and redo, cut, copy, paste and Paste Special (values, formats, transpose).",
      "minutes": 30,
-     "free": true
+     "free": true,
+     "objectives": [
+      "Edit inside a cell with F2 instead of retyping it.",
+      "Undo and redo with the keyboard.",
+      "Cut, copy and paste cells.",
+      "Use Paste Special for values, formats and transpose."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/c1-2-2-notes.docx",
+       "name": "2.2 Editing fast - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/c1-2-2-practice.xlsx",
+       "name": "2.2 Editing fast - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/c1-2-2-solution.xlsx",
+       "name": "2.2 Editing fast - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Type over, or edit with F2"
+      ],
+      [
+       0,
+       1,
+       "Cut, copy and paste"
+      ],
+      [
+       1,
+       0,
+       "Paste only what you need"
+      ],
+      [
+       1,
+       1,
+       "When to paste values"
+      ]
+     ],
+     "tasks": [
+      "Fix the typo in B3 so it reads Mumbai Central.",
+      "Clear the junk entries in C6:E6.",
+      "Copy the cities in A2:A5 into G2:G5.",
+      "Put the amounts from F2:F5 into H2:H5 as plain numbers, not formulas.",
+      "The months in B9:G9 are a row. Paste them as a column into A11:A16."
+     ],
+     "real": false
     },
     {
      "id": "2-3",
@@ -77,7 +363,64 @@
      "title": "AutoFill and Flash Fill",
      "summary": "Series of numbers, dates and months; filling patterns; splitting names with Flash Fill.",
      "minutes": 30,
-     "free": true
+     "free": true,
+     "objectives": [
+      "Use the fill handle to copy values and continue series.",
+      "Set the step of a series with two starting cells.",
+      "Use Flash Fill (Ctrl+E) to split or join text by example."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/c1-2-3-notes.docx",
+       "name": "2.3 AutoFill and Flash Fill - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/c1-2-3-practice.xlsx",
+       "name": "2.3 AutoFill and Flash Fill - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/c1-2-3-solution.xlsx",
+       "name": "2.3 AutoFill and Flash Fill - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "a/c1-2-3-real.xlsx",
+       "name": "2.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Drag the little square"
+      ],
+      [
+       0,
+       1,
+       "Two cells set the step"
+      ],
+      [
+       1,
+       0,
+       "Show Excel one example"
+      ],
+      [
+       1,
+       1,
+       "Check the result"
+      ]
+     ],
+     "tasks": [
+      "Fill B1:M1 with the months Jan to Dec.",
+      "Fill A3:A12 with the numbers 1 to 10.",
+      "Fill B3:B12 with Week 1 to Week 10.",
+      "Fill C3:C9 with one date per day, from 01-11-2026 to 07-11-2026.",
+      "Fill D3:D8 with 5, 10, 15, 20, 25, 30."
+     ],
+     "real": true
     },
     {
      "id": "2-4",
@@ -85,7 +428,64 @@
      "title": "Find, Replace and Go To Special",
      "summary": "Wildcards, and selecting blanks, constants or formulas in one go.",
      "minutes": 30,
-     "free": true
+     "free": true,
+     "objectives": [
+      "Find and replace text across a sheet, safely.",
+      "Use Match entire cell contents and wildcards.",
+      "Select every blank (or every formula) with Go To Special, and fill blanks at once."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/c1-2-4-notes.docx",
+       "name": "2.4 Find, Replace and Go To Special - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/c1-2-4-practice.xlsx",
+       "name": "2.4 Find, Replace and Go To Special - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/c1-2-4-solution.xlsx",
+       "name": "2.4 Find, Replace and Go To Special - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "a/c1-2-4-real.xlsx",
+       "name": "2.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Change every match at once"
+      ],
+      [
+       0,
+       1,
+       "Options that keep you safe"
+      ],
+      [
+       1,
+       0,
+       "Select by kind, not by clicking"
+      ],
+      [
+       1,
+       1,
+       "Fill every blank in one go"
+      ]
+     ],
+     "tasks": [
+      "Replace every Bombay in the City column with Mumbai.",
+      "Replace every Calcutta with Kolkata.",
+      "Change the city Bangalore to Bengaluru, but leave the address “12 Bangalore Road” in D5 as",
+      "Which search finds both Shah and Shaikh in the Customer column?",
+      "Three customers have no phone number. Fastest way to put “Not given” in all the blanks at "
+     ],
+     "real": true
     }
    ]
   },
@@ -102,7 +502,53 @@
      "title": "Keyboard navigation",
      "summary": "Ctrl+arrow keys, Ctrl+Home and Ctrl+End, and moving between sheets.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Jump to the edges of your data with Ctrl+arrow keys.",
+      "Go to A1 and to the last used cell in one keystroke.",
+      "Move between sheets without the mouse."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-3-1-notes.docx",
+       "name": "3.1 Keyboard navigation - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-3-1-practice.xlsx",
+       "name": "3.1 Keyboard navigation - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-3-1-solution.xlsx",
+       "name": "3.1 Keyboard navigation - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Ctrl+arrow jumps to the edge of the data"
+      ],
+      [
+       0,
+       1,
+       "Gaps stop the jump"
+      ],
+      [
+       1,
+       0,
+       "Ctrl+Home and Ctrl+End"
+      ],
+      [
+       1,
+       1,
+       "Moving between sheets"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     },
     {
      "id": "3-2",
@@ -110,7 +556,54 @@
      "title": "Selecting like a pro",
      "summary": "Shift and Ctrl+Shift with the arrow keys, whole rows and columns, and jumping with the Name Box.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Extend a selection with Shift and the arrow keys.",
+      "Select to the edge of the data with Ctrl+Shift+arrow.",
+      "Select a whole table, row or column in one go.",
+      "Select any range by typing it in the Name Box."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-3-2-notes.docx",
+       "name": "3.2 Selecting like a pro - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-3-2-practice.xlsx",
+       "name": "3.2 Selecting like a pro - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-3-2-solution.xlsx",
+       "name": "3.2 Selecting like a pro - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Shift extends the selection"
+      ],
+      [
+       0,
+       1,
+       "The current region"
+      ],
+      [
+       1,
+       0,
+       "Whole rows and columns"
+      ],
+      [
+       1,
+       1,
+       "Type a range into the Name Box"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     },
     {
      "id": "3-3",
@@ -118,7 +611,59 @@
      "title": "Working with big sheets",
      "summary": "Freeze Panes, Split, zoom, New Window, and inserting, renaming, moving, colouring and grouping sheets.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Keep headers in view with Freeze Panes.",
+      "Compare far-apart areas with Split and New Window.",
+      "Zoom in and out.",
+      "Insert, rename, move, colour and group sheets."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-3-3-notes.docx",
+       "name": "3.3 Working with big sheets - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-3-3-practice.xlsx",
+       "name": "3.3 Working with big sheets - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-3-3-solution.xlsx",
+       "name": "3.3 Working with big sheets - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-3-3-real.xlsx",
+       "name": "3.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Freeze Panes"
+      ],
+      [
+       0,
+       1,
+       "Split, zoom and New Window"
+      ],
+      [
+       1,
+       0,
+       "Insert, rename, move"
+      ],
+      [
+       1,
+       1,
+       "Colour and group"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     }
    ]
   },
@@ -135,7 +680,58 @@
      "title": "Fonts, alignment, borders and fills",
      "summary": "Readable rather than decorated, and Center Across Selection instead of merging cells.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Make headers stand out with bold, fills and borders, used sparingly.",
+      "Align text and numbers so columns are easy to read.",
+      "Centre a title over several columns without merging cells."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-4-1-notes.docx",
+       "name": "4.1 Fonts, alignment, borders and fills - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-4-1-practice.xlsx",
+       "name": "4.1 Fonts, alignment, borders and fills - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-4-1-solution.xlsx",
+       "name": "4.1 Fonts, alignment, borders and fills - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-4-1-real.xlsx",
+       "name": "4.1 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Less is clearer"
+      ],
+      [
+       0,
+       1,
+       "Alignment does a job"
+      ],
+      [
+       1,
+       0,
+       "Why Merge & Center causes trouble"
+      ],
+      [
+       1,
+       1,
+       "How to centre across a selection"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     },
     {
      "id": "4-2",
@@ -143,7 +739,54 @@
      "title": "Number formats",
      "summary": "Currency (₹), accounting, percentages, dates, and custom formats including lakh and crore grouping.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Show amounts as rupees, with Western or Indian grouping.",
+      "Show fractions as percentages.",
+      "Show dates in a clear format.",
+      "Know that formats change the look, not the value."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-4-2-notes.docx",
+       "name": "4.2 Number formats - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-4-2-practice.xlsx",
+       "name": "4.2 Number formats - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-4-2-solution.xlsx",
+       "name": "4.2 Number formats - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A format changes the look, never the value"
+      ],
+      [
+       0,
+       1,
+       "Where the formats live"
+      ],
+      [
+       1,
+       0,
+       "Lakhs and crores"
+      ],
+      [
+       1,
+       1,
+       "Dates people can’t misread"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     },
     {
      "id": "4-3",
@@ -151,7 +794,53 @@
      "title": "Styles and Format Painter",
      "summary": "Cell styles, themes and a consistent look.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Copy formatting from one place to another with Format Painter.",
+      "Apply built-in cell styles for headers, totals and inputs.",
+      "Keep a workbook consistent with themes."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-4-3-notes.docx",
+       "name": "4.3 Styles and Format Painter - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-4-3-practice.xlsx",
+       "name": "4.3 Styles and Format Painter - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-4-3-solution.xlsx",
+       "name": "4.3 Styles and Format Painter - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Format Painter"
+      ],
+      [
+       0,
+       1,
+       "Paste Formats does the same job"
+      ],
+      [
+       1,
+       0,
+       "Cell styles"
+      ],
+      [
+       1,
+       1,
+       "Themes"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     },
     {
      "id": "4-4",
@@ -159,7 +848,53 @@
      "title": "Widths, wrapping and the ##### wall",
      "summary": "AutoFit, row heights, wrap text and shrink to fit.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Fix ##### by widening columns or AutoFitting them.",
+      "Wrap long text inside a cell.",
+      "Set row heights and know when Shrink to fit helps."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-4-4-notes.docx",
+       "name": "4.4 Widths, wrapping and the ##### wall - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-4-4-practice.xlsx",
+       "name": "4.4 Widths, wrapping and the ##### wall - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-4-4-solution.xlsx",
+       "name": "4.4 Widths, wrapping and the ##### wall - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "##### means “too narrow”"
+      ],
+      [
+       0,
+       1,
+       "Widen or AutoFit"
+      ],
+      [
+       1,
+       0,
+       "Wrap Text"
+      ],
+      [
+       1,
+       1,
+       "Row heights and Shrink to fit"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     }
    ]
   },
@@ -176,7 +911,58 @@
      "title": "Formulas start with =",
      "summary": "Arithmetic, the order Excel calculates in, and pointing at cells instead of typing numbers.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Write formulas with + − * / and ^.",
+      "Predict the order Excel calculates in, and use brackets to change it.",
+      "Point at cells, so formulas update when the data changes."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-5-1-notes.docx",
+       "name": "5.1 Formulas start with = - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-5-1-practice.xlsx",
+       "name": "5.1 Formulas start with = - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-5-1-solution.xlsx",
+       "name": "5.1 Formulas start with = - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-5-1-real.xlsx",
+       "name": "5.1 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "= tells Excel to calculate"
+      ],
+      [
+       0,
+       1,
+       "Point, don’t type numbers"
+      ],
+      [
+       1,
+       0,
+       "Excel calculates in a fixed order"
+      ],
+      [
+       1,
+       1,
+       "Brackets for totals with tax"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     },
     {
      "id": "5-2",
@@ -184,7 +970,58 @@
      "title": "SUM, AVERAGE, MIN, MAX, COUNT",
      "summary": "The first functions, ranges, and AutoSum.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Use SUM, AVERAGE, MIN and MAX on a range.",
+      "Know the difference between COUNT and COUNTA.",
+      "Insert totals quickly with AutoSum (Alt+=)."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-5-2-notes.docx",
+       "name": "5.2 SUM, AVERAGE, MIN, MAX, COUNT - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-5-2-practice.xlsx",
+       "name": "5.2 SUM, AVERAGE, MIN, MAX, COUNT - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-5-2-solution.xlsx",
+       "name": "5.2 SUM, AVERAGE, MIN, MAX, COUNT - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-5-2-real.xlsx",
+       "name": "5.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "What a function looks like"
+      ],
+      [
+       0,
+       1,
+       "The big five"
+      ],
+      [
+       1,
+       0,
+       "COUNT or COUNTA?"
+      ],
+      [
+       1,
+       1,
+       "AutoSum: Alt+="
+      ]
+     ],
+     "tasks": [],
+     "real": true
     },
     {
      "id": "5-3",
@@ -192,7 +1029,53 @@
      "title": "Reading and checking formulas",
      "summary": "Show Formulas, the status bar, F2 and tracing a formula.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "See every formula at once with Show Formulas (Ctrl+`).",
+      "Check a total quickly with the status bar.",
+      "Spot typed-in numbers and ranges that miss rows."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-5-3-notes.docx",
+       "name": "5.3 Reading and checking formulas - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-5-3-practice.xlsx",
+       "name": "5.3 Reading and checking formulas - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-5-3-solution.xlsx",
+       "name": "5.3 Reading and checking formulas - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Answers can hide mistakes"
+      ],
+      [
+       0,
+       1,
+       "Show Formulas: Ctrl+"
+      ],
+      [
+       1,
+       0,
+       "F2 shows what a formula points at"
+      ],
+      [
+       1,
+       1,
+       "The status bar: a free calculator"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     },
     {
      "id": "5-4",
@@ -200,7 +1083,53 @@
      "title": "When formulas go wrong",
      "summary": "#####, #DIV/0!, #NAME?, #VALUE!, #REF! and the green triangle.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Recognise the common error values and what causes each.",
+      "Fix them at the source, not by hiding them.",
+      "Spot numbers stored as text."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-5-4-notes.docx",
+       "name": "5.4 When formulas go wrong - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-5-4-practice.xlsx",
+       "name": "5.4 When formulas go wrong - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-5-4-solution.xlsx",
+       "name": "5.4 When formulas go wrong - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Each error has a meaning"
+      ],
+      [
+       0,
+       1,
+       "#DIV/0! and #NAME?"
+      ],
+      [
+       1,
+       0,
+       "#VALUE! and “0.3 kg”"
+      ],
+      [
+       1,
+       1,
+       "The green triangle"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     }
    ]
   },
@@ -217,7 +1146,53 @@
      "title": "Relative references",
      "summary": "What happens when you copy a formula, and why that’s usually what you want.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Predict how references change when a formula is copied.",
+      "Fill a formula down a column and across a row.",
+      "Read a copied formula to check it."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-6-1-notes.docx",
+       "name": "6.1 Relative references - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-6-1-practice.xlsx",
+       "name": "6.1 Relative references - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-6-1-solution.xlsx",
+       "name": "6.1 Relative references - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Copying moves the references"
+      ],
+      [
+       0,
+       1,
+       "Down changes rows, across changes columns"
+      ],
+      [
+       1,
+       0,
+       "Ways to copy a formula"
+      ],
+      [
+       1,
+       1,
+       "Check one copy"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     },
     {
      "id": "6-2",
@@ -225,7 +1200,58 @@
      "title": "Absolute and mixed references",
      "summary": "$ signs, F4, and when a reference must stay put.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Lock a reference with $ so it doesn’t move when copied.",
+      "Cycle through reference types with F4.",
+      "Use mixed references to build a two-way table."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-6-2-notes.docx",
+       "name": "6.2 Absolute and mixed references - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-6-2-practice.xlsx",
+       "name": "6.2 Absolute and mixed references - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-6-2-solution.xlsx",
+       "name": "6.2 Absolute and mixed references - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-6-2-real.xlsx",
+       "name": "6.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The broken fill"
+      ],
+      [
+       0,
+       1,
+       "$ locks, F4 types it for you"
+      ],
+      [
+       1,
+       0,
+       "Lock just one part"
+      ],
+      [
+       1,
+       1,
+       "How to decide where the $ goes"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     },
     {
      "id": "6-3",
@@ -233,7 +1259,58 @@
      "title": "Names and other sheets",
      "summary": "Named cells and ranges, and formulas that look at another sheet.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Name a cell or range from the Name Box.",
+      "Use names in formulas instead of $ references.",
+      "Point at cells on another sheet."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-6-3-notes.docx",
+       "name": "6.3 Names and other sheets - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-6-3-practice.xlsx",
+       "name": "6.3 Names and other sheets - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-6-3-solution.xlsx",
+       "name": "6.3 Names and other sheets - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-6-3-real.xlsx",
+       "name": "6.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Give a cell a name"
+      ],
+      [
+       0,
+       1,
+       "Using and managing names"
+      ],
+      [
+       1,
+       0,
+       "Sheet!Cell"
+      ],
+      [
+       1,
+       1,
+       "Keep settings on their own sheet"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     }
    ]
   },
@@ -250,7 +1327,53 @@
      "title": "Data that behaves",
      "summary": "One header row, no blank rows, one fact per cell: the shape every Excel tool expects.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Recognise the shape of a clean list.",
+      "Remove blank rows and stray totals from a list.",
+      "Store each fact in its own cell, as the right type."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-7-1-notes.docx",
+       "name": "7.1 Data that behaves - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-7-1-practice.xlsx",
+       "name": "7.1 Data that behaves - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-7-1-solution.xlsx",
+       "name": "7.1 Data that behaves - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A list, not a report"
+      ],
+      [
+       0,
+       1,
+       "Five rules for clean data"
+      ],
+      [
+       1,
+       0,
+       "Find and remove blank rows"
+      ],
+      [
+       1,
+       1,
+       "Text that should be numbers"
+      ]
+     ],
+     "tasks": [],
+     "real": false
     },
     {
      "id": "7-2",
@@ -258,7 +1381,58 @@
      "title": "Excel Tables",
      "summary": "Ctrl+T, table names, structured references and the Total Row.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Turn a clean list into an Excel Table with Ctrl+T.",
+      "Name a table and read structured references like Sales[Amount].",
+      "Add a Total Row and know that Tables grow by themselves."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-7-2-notes.docx",
+       "name": "7.2 Excel Tables - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-7-2-practice.xlsx",
+       "name": "7.2 Excel Tables - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-7-2-solution.xlsx",
+       "name": "7.2 Excel Tables - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-7-2-real.xlsx",
+       "name": "7.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Ctrl+T"
+      ],
+      [
+       0,
+       1,
+       "Name your table"
+      ],
+      [
+       1,
+       0,
+       "Formulas that read like English"
+      ],
+      [
+       1,
+       1,
+       "The Total Row"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     },
     {
      "id": "7-3",
@@ -266,7 +1440,58 @@
      "title": "Sort and filter",
      "summary": "Sorting by one or more columns, and filters to see just the rows you need.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Sort a list by one column without mixing up rows.",
+      "Sort by two levels with Data › Sort.",
+      "Filter a list and clear the filter."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-7-3-notes.docx",
+       "name": "7.3 Sort and filter - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-7-3-practice.xlsx",
+       "name": "7.3 Sort and filter - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-7-3-solution.xlsx",
+       "name": "7.3 Sort and filter - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-7-3-real.xlsx",
+       "name": "7.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Click one cell, then sort"
+      ],
+      [
+       0,
+       1,
+       "Two levels with Data › Sort"
+      ],
+      [
+       1,
+       0,
+       "Filter buttons"
+      ],
+      [
+       1,
+       1,
+       "Number filters and clearing"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     },
     {
      "id": "7-4",
@@ -274,7 +1499,58 @@
      "title": "Data validation",
      "summary": "Drop-down lists and input rules that keep bad data out.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Add a drop-down list to cells.",
+      "Limit entries to whole numbers or dates in a range.",
+      "Write helpful input and error messages."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-7-4-notes.docx",
+       "name": "7.4 Data validation - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-7-4-practice.xlsx",
+       "name": "7.4 Data validation - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-7-4-solution.xlsx",
+       "name": "7.4 Data validation - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-7-4-real.xlsx",
+       "name": "7.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why validate?"
+      ],
+      [
+       0,
+       1,
+       "Make a drop-down list"
+      ],
+      [
+       1,
+       0,
+       "Numbers and dates"
+      ],
+      [
+       1,
+       1,
+       "Input and error messages"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     }
    ]
   },
@@ -291,7 +1567,58 @@
      "title": "Page layout and printing",
      "summary": "Orientation, scaling, print titles, headers and footers, and print preview.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Check a print with Print Preview (Ctrl+P) before printing.",
+      "Fit wide sheets onto one page width, in landscape.",
+      "Repeat the header row on every page and add page numbers."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-8-1-notes.docx",
+       "name": "8.1 Page layout and printing - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-8-1-practice.xlsx",
+       "name": "8.1 Page layout and printing - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-8-1-solution.xlsx",
+       "name": "8.1 Page layout and printing - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-8-1-real.xlsx",
+       "name": "8.1 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Preview first: Ctrl+P"
+      ],
+      [
+       0,
+       1,
+       "Orientation and scaling"
+      ],
+      [
+       1,
+       0,
+       "Print Titles"
+      ],
+      [
+       1,
+       1,
+       "Headers and footers"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     },
     {
      "id": "8-2",
@@ -299,7 +1626,58 @@
      "title": "Comments, notes and working together",
      "summary": "Notes for context, comments for conversations, and sharing a workbook safely.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Add a note to explain a number.",
+      "Start and reply to a comment thread, and @mention someone.",
+      "Share a workbook from OneDrive and see who changed what."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-8-2-notes.docx",
+       "name": "8.2 Comments, notes and working together - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-8-2-practice.xlsx",
+       "name": "8.2 Comments, notes and working together - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-8-2-solution.xlsx",
+       "name": "8.2 Comments, notes and working together - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-8-2-real.xlsx",
+       "name": "8.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Two kinds of sticky note"
+      ],
+      [
+       0,
+       1,
+       "@mention and resolve"
+      ],
+      [
+       1,
+       0,
+       "Share from OneDrive or SharePoint"
+      ],
+      [
+       1,
+       1,
+       "Who changed what"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     },
     {
      "id": "8-3",
@@ -307,7 +1685,58 @@
      "title": "Protecting your work",
      "summary": "Lock formulas, leave inputs open, and know what protection does and doesn’t do.",
      "minutes": 30,
-     "free": false
+     "free": false,
+     "objectives": [
+      "Unlock input cells, then protect the sheet so formulas can’t be overwritten.",
+      "Protect workbook structure so sheets can’t be deleted.",
+      "Choose the right kind of protection, and know its limits."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c1-8-3-notes.docx",
+       "name": "8.3 Protecting your work - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c1-8-3-practice.xlsx",
+       "name": "8.3 Protecting your work - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c1-8-3-solution.xlsx",
+       "name": "8.3 Protecting your work - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c1-8-3-real.xlsx",
+       "name": "8.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Every cell starts locked"
+      ],
+      [
+       0,
+       1,
+       "Protect Sheet"
+      ],
+      [
+       1,
+       0,
+       "Workbook and file"
+      ],
+      [
+       1,
+       1,
+       "What it doesn’t do"
+      ]
+     ],
+     "tasks": [],
+     "real": true
     }
    ]
   }

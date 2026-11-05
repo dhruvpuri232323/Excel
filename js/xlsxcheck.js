@@ -13,7 +13,15 @@ export async function readXlsx(file) {
   const name = file.name || 'workbook.xlsx';
   if (/\.csv$/i.test(name)) return { error: 'This is a CSV file. CSV keeps only values, so formats, formulas and sheets are lost. Save as Excel Workbook (.xlsx) and upload again.', ext: 'csv' };
   if (/\.xls$/i.test(name)) return { error: 'This is an old .xls file. In Excel choose File › Save As › Excel Workbook (.xlsx), then upload that.', ext: 'xls' };
-  let zip; try { zip = await JSZip.loadAsync(file); } catch (e) { return { error: 'This file couldn’t be opened as an Excel workbook. Save it as .xlsx and try again.' }; }
+  if (/\.numbers$/i.test(name)) return { error: 'This is an Apple Numbers file. In Numbers choose File › Export To › Excel, then upload the .xlsx file.', ext: 'numbers' };
+  if (/\.ods$/i.test(name)) return { error: 'This is an OpenDocument (LibreOffice) file. Choose File › Save As, pick “Excel 2007-365 (.xlsx)”, and upload that.', ext: 'ods' };
+  if (file.size === 0) return { error: 'This file is empty. Save your workbook in Excel first, then upload it again.' };
+  if (file.size > 25e6) return { error: 'This file is very large (over 25 MB). Upload the workbook from the task, without extra data or pictures.' };
+  const head = new Uint8Array(await file.slice(0, 8).arrayBuffer());
+  if (head[0] === 0xD0 && head[1] === 0xCF && head[2] === 0x11 && head[3] === 0xE0) return { error: 'Sheetah can’t open this workbook: it’s either an old .xls file or protected with a password to open. In Excel, remove the password (File › Info › Protect Workbook › Encrypt with Password, clear it), then File › Save As › Excel Workbook (.xlsx).', ext: 'cfb' };
+  if (!(head[0] === 0x50 && head[1] === 0x4B)) return { error: 'This doesn’t look like an Excel workbook. In Excel choose File › Save As › Excel Workbook (.xlsx), then upload that file.' };
+  let zip; try { zip = await JSZip.loadAsync(file); } catch (e) { return { error: 'This file couldn’t be opened as an Excel workbook. It may be damaged. Open it in Excel, choose File › Save As › Excel Workbook (.xlsx), and try again.' }; }
+  if (!zip.file('xl/workbook.xml')) return { error: zip.file('content.xml') ? 'This is an OpenDocument (LibreOffice) file. Save it as Excel 2007-365 (.xlsx) and upload that.' : zip.file('word/document.xml') ? 'This is a Word document, not an Excel workbook.' : 'This zip file isn’t an Excel workbook. Upload the .xlsx file you saved from Excel.' };
   const text = async p => { const f = zip.file(p.replace(/^\//, '')); return f ? f.async('text') : null; };
   const rels = async p => { const dir = p.replace(/[^/]+$/, ''); const t = await text(dir + '_rels/' + p.split('/').pop() + '.rels'); const out = {}; if (t) for (const r of kids(parseXML(t), 'Relationship')) { let tgt = attr(r, 'Target'); if (!tgt.startsWith('/')) tgt = norm(dir + tgt); else tgt = tgt.slice(1); out[attr(r, 'Id')] = { target: tgt, type: attr(r, 'Type') }; } return out; };
   const wbXml = parseXML(await text('xl/workbook.xml')); const wbRels = await rels('xl/workbook.xml');

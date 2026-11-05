@@ -5,7 +5,7 @@ const near = (a, b) => typeof a === 'number' && typeof b === 'number' ? Math.abs
 const show = v => v === null || v === undefined ? 'blank' : isErr(v) ? v.code : typeof v === 'number' ? String(+v.toFixed(6)) : typeof v === 'boolean' ? (v ? 'TRUE' : 'FALSE') : '“' + v + '”';
 function sheetIdx(wb, name) { if (name === undefined || name === null) return 0; const i = wb.sheetIndexByName(name); return i < 0 ? 0 : i; }
 function fnsIn(f) { return (String(f).toUpperCase().match(/[A-Z][A-Z0-9.]*(?=\()/g) || []); }
-function randomize(wb, si, inputs, seed) {
+export function randomize(wb, si, inputs, seed) {
   let x = seed * 9301 + 49297; const rnd = () => { x = (x * 9301 + 49297) % 233280; return x / 233280; };
   for (const rg of inputs || []) { const g = parseRange(rg); eachCell(g, (r, c) => { const v = wb.value(si, r, c); if (typeof v === 'number' && !wb.formula(si, r, c)) { const mag = Math.max(10, Math.abs(v)); const nv = Math.round((rnd() * 1.6 + 0.2) * mag * 100) / 100; wb.cellObj(wb.sheets[si], r, c, true).v = Number.isInteger(v) ? Math.round(nv) : nv; } }); }
   wb.invalidate();
@@ -138,4 +138,34 @@ export function applySolution(task, ctx) {
     case 'noBlankRows': { const g = parseRange(task.range); for (let r = g.r2; r >= g.r1; r--) { let blank = true; for (let c = g.c1; c <= g.c2; c++) if (!wb.isEmpty(si, r, c)) blank = false; if (blank) wb.deleteRows(si, r, 1); } break; }
   }
   grid && grid.render();
+}
+
+// "What Sheetah checked": the checks behind a task, in plain words (shown under a result)
+export function describeCheck(task, inputs) {
+  const e = task.expect || {}; const out = [];
+  const f = x => String(x || '').replace(/^=/, '');
+  switch (task.kind) {
+    case 'cell':
+      if (e.formula !== false && (e.formula || e.ref)) out.push(`${task.cell} holds a formula (it starts with =), not a typed-in number`);
+      if (e.ref) out.push(`it gives the same answer as ${f(e.ref)}`); else if (e.value !== undefined) out.push(`it shows ${e.value}`);
+      (e.mustUse || []).forEach(fn => out.push(`it uses ${fn}`)); (e.mustNotUse || []).forEach(fn => out.push(`it doesn’t use ${fn}`));
+      if (e.ref && inputs && inputs.length) out.push('it still gives the right answer when Sheetah changes the numbers in the data (3 different sets)');
+      break;
+    case 'range':
+      out.push(`every cell in ${task.range} holds a formula`); out.push(`each one gives the right answer for its own row or column (the first is ${f(task.ref)})`);
+      (task.mustUse || []).forEach(fn => out.push(`every formula uses ${fn}`)); if (inputs && inputs.length) out.push('they still work when Sheetah changes the numbers (2 different sets)');
+      break;
+    case 'values': out.push(...Object.entries(task.cells).map(([a, v]) => `${a} holds ${typeof v === 'object' && v && v.date ? 'a real date' : typeof v === 'number' ? `the number ${v}` : `“${v}”`}`)); if (task.formula === false) out.push('they are typed values, not formulas'); break;
+    case 'format': out.push(`every cell in ${task.range}${task.bold ? ' is bold' : ''}${task.fill ? ' has a fill colour' : ''}${task.align ? ` is aligned ${task.align}` : ''}${task.wrap ? ' wraps its text' : ''}${task.fmt || task.fmtRegex ? ' has the right number format' : ''}`); break;
+    case 'width': out.push(`column ${task.col} is at least ${task.min} pixels wide`); break;
+    case 'select': out.push(`exactly ${task.range} is selected${task.keysOnly ? ', using only the keyboard' : ''}`); break;
+    case 'sorted': out.push(`the rows are in order by column ${task.col}, ${task.desc ? 'largest first' : 'smallest first'}`); if (task.keep) out.push('each row stayed together when it moved'); break;
+    case 'name': out.push(`a name called ${task.name} exists`, `it points to ${task.ref}${task.sheet ? ' on ' + task.sheet : ''}`); break;
+    case 'sheet': out.push(`a sheet called “${task.name}” exists`); if (task.index !== undefined) out.push(`it is sheet number ${task.index + 1} from the left`); break;
+    case 'noBlankRows': out.push(`there are no empty rows between the first and last record in ${task.range}`); break;
+    case 'count': out.push(`${task.range} has ${task.equals} filled cells`); break;
+    case 'keys': out.push(`you pressed ${task.label || task.combo}`); break;
+    case 'mc': out.push('the option you chose'); break; case 'hotspot': out.push('the part of the screenshot you clicked'); break; case 'order': out.push('the order of the steps'); break;
+  }
+  return out;
 }
