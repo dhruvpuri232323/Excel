@@ -1,0 +1,141 @@
+// Checks for in-app lab tasks. Every hint and message is written in the lesson; nothing here uses AI.
+import { Workbook, parseRange, parseAddr, addr, rangeStr, shiftFormula, isErr, eachCell, compareValues, colIndex } from './engine.js';
+
+const near = (a, b) => typeof a === 'number' && typeof b === 'number' ? Math.abs(a - b) <= 1e-6 * Math.max(1, Math.abs(b)) : (typeof a === 'string' && typeof b === 'string' ? a.trim().toLowerCase() === b.trim().toLowerCase() : a === b || (isErr(a) && isErr(b) && a.code === b.code));
+const show = v => v === null || v === undefined ? 'blank' : isErr(v) ? v.code : typeof v === 'number' ? String(+v.toFixed(6)) : typeof v === 'boolean' ? (v ? 'TRUE' : 'FALSE') : '“' + v + '”';
+function sheetIdx(wb, name) { if (name === undefined || name === null) return 0; const i = wb.sheetIndexByName(name); return i < 0 ? 0 : i; }
+function fnsIn(f) { return (String(f).toUpperCase().match(/[A-Z][A-Z0-9.]*(?=\()/g) || []); }
+function randomize(wb, si, inputs, seed) {
+  let x = seed * 9301 + 49297; const rnd = () => { x = (x * 9301 + 49297) % 233280; return x / 233280; };
+  for (const rg of inputs || []) { const g = parseRange(rg); eachCell(g, (r, c) => { const v = wb.value(si, r, c); if (typeof v === 'number' && !wb.formula(si, r, c)) { const mag = Math.max(10, Math.abs(v)); const nv = Math.round((rnd() * 1.6 + 0.2) * mag * 100) / 100; wb.cellObj(wb.sheets[si], r, c, true).v = Number.isInteger(v) ? Math.round(nv) : nv; } }); }
+  wb.invalidate();
+}
+function mistakeFor(task, f, v, extra = {}) {
+  for (const m of task.mistakes || []) {
+    const F = String(f || '').toUpperCase().replace(/\s/g, '');
+    if (m.if === 'contains' && f && F.includes(m.text.toUpperCase().replace(/\s/g, ''))) return m.msg;
+    if (m.if === 'notContains' && f && !F.includes(m.text.toUpperCase().replace(/\s/g, ''))) return m.msg;
+    if (m.if === 'regex' && f && new RegExp(m.re, 'i').test(f)) return m.msg;
+    if (m.if === 'value' && near(v, m.value)) return m.msg;
+    if (m.if === 'noFormula' && !f && v !== null) return m.msg;
+    if (m.if === 'error' && isErr(v)) return m.msg;
+    if (m.if === 'firstOnly' && extra.firstOnly) return m.msg;
+    if (m.if === 'text' && typeof v === 'string') return m.msg;
+  }
+  return null;
+}
+export function checkTask(task, ctx) {
+  const wb = ctx.wb; const si = sheetIdx(wb, task.sheet);
+  const fail = msg => ({ ok: false, msg }); const pass = msg => ({ ok: true, msg: msg || task.success || 'Correct.' });
+  switch (task.kind) {
+    case 'cell': {
+      const p = parseAddr(task.cell); const f = wb.formula(si, p.r, p.c); const v = wb.value(si, p.r, p.c); const e = task.expect || {};
+      if (v === null && !f) return fail(`${task.cell} is still empty.`);
+      const mk = mistakeFor(task, f, v); if (mk && !(e.ref && near(v, wb.evaluate(e.ref, si)) && !(task.mistakes || []).some(m => m.strict))) { /* checked below */ }
+      if (e.formula !== false && (e.formula || e.ref) && !f) return fail(mistakeFor(task, f, v) || `${task.cell} shows the right kind of answer, but it was typed in. Type a formula that starts with = so it updates when the data changes.`);
+      for (const fn of e.mustUse || []) if (!fnsIn(f).includes(fn.toUpperCase()) && !String(f).toUpperCase().includes(fn.toUpperCase())) return fail(mistakeFor(task, f, v) || `Use ${fn} in this formula.`);
+      for (const fn of e.mustNotUse || []) if (String(f || '').toUpperCase().includes(fn.toUpperCase())) return fail(mistakeFor(task, f, v) || `Try this without ${fn}.`);
+      if (e.regex && !new RegExp(e.regex, 'i').test(String(f || '').replace(/\s/g, ''))) return fail(mistakeFor(task, f, v) || e.regexMsg || 'Not quite. Check the formula against the task.');
+      const want = e.ref ? wb.evaluate(e.ref, si) : e.value;
+      if (want !== undefined && !near(v, want)) return fail(mistakeFor(task, f, v) || `${task.cell} shows ${show(v)}, but the answer should be ${show(want)}.`);
+      if (e.number && typeof v !== 'number') return fail(mistakeFor(task, f, v) || `${task.cell} holds text, not a number.`);
+      if (e.ref && f && ctx.inputs && ctx.inputs.length) { // try the formula on fresh data
+        for (let k = 1; k <= 3; k++) { const w2 = new Workbook(wb.toSpec()); randomize(w2, si, ctx.inputs, k); const a = w2.value(si, p.r, p.c), b = w2.evaluate(e.ref, si); if (!near(a, b)) return fail(mistakeFor(task, f, a) || `This works for today’s numbers, but gives the wrong answer when the data changes. Point at the cells instead of typing numbers into the formula.`); }
+      }
+      const soft = mistakeFor(task, f, v); if (soft && (task.mistakes || []).find(m => m.msg === soft && m.strict)) return fail(soft);
+      return pass();
+    }
+    case 'range': {
+      const g = parseRange(task.range); const first = { r: g.r1, c: g.c1 }; let firstOk = false, bad = null, badMsg = null, empty = 0;
+      const cells = []; eachCell(g, (r, c) => cells.push({ r, c }));
+      for (const { r, c } of cells) {
+        const f = wb.formula(si, r, c), v = wb.value(si, r, c);
+        if (v === null && !f) { empty++; if (!bad) { bad = addr(r, c); badMsg = `${addr(r, c)} is still empty. Fill the formula across the whole range ${task.range}.`; } continue; }
+        if (task.formula !== false && !f) { if (!bad) { bad = addr(r, c); badMsg = mistakeFor(task, f, v) || `${addr(r, c)} was typed in. Use a formula (and the fill handle) so every cell updates with the data.`; } continue; }
+        const ref = shiftFormula(task.ref, r - first.r, c - first.c); const want = wb.evaluate(ref, si);
+        const ok = near(v, want); if (r === first.r && c === first.c) firstOk = ok;
+        if (!ok && !bad) { bad = addr(r, c); badMsg = null; }
+      }
+      if (bad) { const f = wb.formula(si, parseAddr(bad).r, parseAddr(bad).c); return fail(badMsg || mistakeFor(task, f, wb.value(si, parseAddr(bad).r, parseAddr(bad).c), { firstOnly: firstOk && empty === 0 }) || (firstOk ? `The first cell is right, but ${bad} is wrong. When you copied the formula, a reference moved that should have stayed fixed. Lock it with $ (press F4).` : `${bad} doesn’t give the right answer yet.`)); }
+      for (const fn of task.mustUse || []) if (!cells.every(({ r, c }) => String(wb.formula(si, r, c) || '').toUpperCase().includes(fn.toUpperCase()))) return fail(`Use ${fn} in every cell of ${task.range}.`);
+      if (task.regex) { const f0 = wb.formula(si, g.r1, g.c1) || ''; if (!new RegExp(task.regex, 'i').test(f0.replace(/\s/g, ''))) return fail(task.regexMsg || 'Check the formula in the first cell.'); }
+      if (ctx.inputs && ctx.inputs.length) for (let k = 1; k <= 2; k++) { const w2 = new Workbook(wb.toSpec()); randomize(w2, si, ctx.inputs, k); for (const { r, c } of cells) { const ref = shiftFormula(task.ref, r - first.r, c - first.c); if (!near(w2.value(si, r, c), w2.evaluate(ref, si))) return fail(`${addr(r, c)} breaks when the numbers change. Point at cells rather than typing values into formulas.`); } }
+      return pass();
+    }
+    case 'values': {
+      for (const [a, want] of Object.entries(task.cells)) {
+        const p = parseAddr(a); const v = wb.value(si, p.r, p.c); const st = wb.style(si, p.r, p.c);
+        if (v === null) return fail(`${a} is still empty.`);
+        if (typeof want === 'number' && typeof v === 'string') return fail(mistakeFor(task, null, v) || `${a} looks like a number, but Excel stored it as text (it sits on the left). Retype it without spaces or an apostrophe.`);
+        if (typeof want === 'string' && typeof v === 'number' && task.textNeeded) return fail(mistakeFor(task, null, v) || `${a} was turned into a number. Start the entry with an apostrophe (') to keep it as text.`);
+        if (want && typeof want === 'object' && want.date) { if (typeof v !== 'number') return fail(`${a} isn’t a real date yet. Type it as day-month-year, like 15-08-2026.`); continue; }
+        if (!near(v, want) && !(typeof want === 'string' && typeof v === 'string' && task.loose && v.toLowerCase().includes(want.toLowerCase()))) return fail(mistakeFor(task, wb.formula(si, p.r, p.c), v) || `${a} shows ${show(v)}; it should be ${show(want)}.`);
+        if (task.formula === false && wb.formula(si, p.r, p.c)) return fail(`Type a plain value in ${a}, not a formula.`);
+      }
+      return pass();
+    }
+    case 'format': {
+      const g = parseRange(task.range); let msg = null;
+      eachCell(g, (r, c) => { if (msg) return; const st = wb.style(si, r, c); const a = addr(r, c); const fmt = st.fmt || 'General';
+        if (task.fmt && !task.fmt.includes(fmt)) msg = task.fmtMsg || `${a} uses the ${fmt} format. Pick the format the task asks for.`;
+        else if (task.fmtRegex && !new RegExp(task.fmtRegex).test(fmt)) msg = task.fmtMsg || `${a} doesn’t have the right number format yet.`;
+        else if (task.bold !== undefined && !!st.bold !== task.bold) msg = `${a} should ${task.bold ? '' : 'not '}be bold.`;
+        else if (task.fill && !st.fill) msg = `${a} needs a fill colour.`;
+        else if (task.align && st.align !== task.align) msg = `${a} should be aligned ${task.align}.`;
+        else if (task.wrap && !st.wrap) msg = `Turn on Wrap text for ${a}.`; });
+      if (msg) return fail(msg);
+      if (task.minWidth) { const s = wb.sheets[si]; const w = s.widths[colIndex(task.minWidth.col)] || 80; if (w < task.minWidth.px) return fail(`Column ${task.minWidth.col} is still too narrow to show its numbers. Widen it, or double-click its right border to AutoFit.`); }
+      return pass();
+    }
+    case 'width': { const s = wb.sheets[si]; const w = s.widths[colIndex(task.col)] || 80; if (w < task.min) return fail(task.msg || `Column ${task.col} is still too narrow. Drag its right border, or double-click it to AutoFit.`); return pass(); }
+    case 'select': {
+      const sel = ctx.grid.selection(); const want = parseRange(task.range); const got = parseRange(sel.range);
+      if (task.sheet && ctx.grid.si !== sheetIdx(wb, task.sheet)) return fail(`Go to the ${task.sheet} sheet first.`);
+      if (rangeStr(want) !== rangeStr(got)) return fail(task.msg || `You have ${sel.range} selected. The task asks for ${task.range}.`);
+      if (task.keysOnly && ctx.usedMouse) return fail('Try again using only the keyboard: click the start cell, then use the keys.');
+      return pass();
+    }
+    case 'sorted': {
+      const g = parseRange(task.range); const col = colIndex(task.col); const vals = []; for (let r = g.r1; r <= g.r2; r++) vals.push(wb.value(si, r, col));
+      for (let i = 1; i < vals.length; i++) { const c = compareValues(vals[i - 1], vals[i]); if (task.desc ? c < 0 : c > 0) return fail(`The rows are not yet sorted by column ${task.col}, ${task.desc ? 'largest first' : 'smallest first'}. Click a cell in column ${task.col}, then use the sort button.`); }
+      if (task.keep) { // rows stay together: each row's key cell still matches its partner
+        const kc = colIndex(task.keep.col), pc = colIndex(task.keep.with); const orig = new Map(task.keep.pairs); for (let r = g.r1; r <= g.r2; r++) { const k = wb.value(si, r, kc); if (orig.has(String(k)) && !near(wb.value(si, r, pc), orig.get(String(k)))) return fail('Some rows got mixed up: a value moved without the rest of its row. Undo, select one cell in the data, and sort the whole table.'); }
+      }
+      return pass();
+    }
+    case 'name': {
+      const d = wb.names[task.name.toLowerCase()]; if (!d) return fail(`There is no name called ${task.name} yet. Select ${task.ref}, click the Name Box, type ${task.name} and press Enter.`);
+      const got = d.ref.replace(/\$/g, '').replace(/^.*!/, ''); if (got.toUpperCase() !== task.ref.toUpperCase()) return fail(`${task.name} points to ${got}. It should point to ${task.ref}.`);
+      return pass();
+    }
+    case 'sheet': {
+      const i = wb.sheetIndexByName(task.name); if (i < 0) return fail(task.msg || `There’s no sheet called “${task.name}” yet. Double-click a sheet tab to rename it.`);
+      if (task.index !== undefined && i !== task.index) return fail(`“${task.name}” is there, but it should be sheet number ${task.index + 1} from the left.`);
+      return pass();
+    }
+    case 'noBlankRows': { const g = parseRange(task.range); const blankRow = r => { for (let c = g.c1; c <= g.c2; c++) if (!wb.isEmpty(si, r, c)) return false; return true; }; let first = -1, last = -1; for (let r = g.r1; r <= g.r2; r++) if (!blankRow(r)) { if (first < 0) first = r; last = r; } for (let r = first; r <= last && first >= 0; r++) if (blankRow(r)) return fail(`Row ${r + 1} is still blank. Right-click its row number and choose Delete row.`); if (task.rows && last - first + 1 !== task.rows) return fail(`The list should have ${task.rows} rows; it has ${last - first + 1}.`); return pass(); }
+    case 'count': { const g = parseRange(task.range); let n = 0; eachCell(g, (r, c) => { if (!wb.isEmpty(si, r, c)) n++; }); if (n !== task.equals) return fail(task.msg || `${task.range} has ${n} filled cells; expected ${task.equals}.`); return pass(); }
+    case 'mc': { if (ctx.answer === undefined || ctx.answer === null) return fail('Pick an answer.'); return ctx.answer === task.answer ? pass(task.explain) : fail((task.why && task.why[ctx.answer]) || task.explainWrong || 'Not quite. Have another look.'); }
+    case 'hotspot': { if (!ctx.answer) return fail('Click on the screenshot.'); return ctx.answer === task.answer ? pass(task.explain) : fail(`That’s the ${ctx.answer}. ${task.hintWrong || 'Look again.'}`); }
+    case 'order': { const a = ctx.answer || []; const ok = a.length === task.items.length && a.every((x, i) => x === task.items[i]); return ok ? pass(task.explain) : fail('Not in the right order yet. Think about what Excel needs first.'); }
+    case 'keys': { const log = ctx.keyLog || []; const want = task.combo.toLowerCase(); const hit = log.some(k => [k.ctrl && 'ctrl', k.shift && 'shift', k.alt && 'alt', k.key.toLowerCase()].filter(Boolean).join('+') === want); return hit ? pass() : fail(`Press ${task.label || task.combo} while the grid is selected.`); }
+  }
+  return fail('Unknown task type');
+}
+// Apply a task's model answer to the grid (used by "Show solution" and by the automated tests).
+export function applySolution(task, ctx) {
+  const wb = ctx.wb, grid = ctx.grid; const si = sheetIdx(wb, task.sheet);
+  switch (task.kind) {
+    case 'cell': { const p = parseAddr(task.cell); wb.setInput(si, p.r, p.c, task.solution); break; }
+    case 'range': { const g = parseRange(task.range); eachCell(g, (r, c) => wb.setInput(si, r, c, shiftFormula(task.solutionFormula || task.ref, r - g.r1, c - g.c1))); break; }
+    case 'count': case 'values': for (const [a, v] of Object.entries(task.solutionValues || task.cells)) { const p = parseAddr(a); wb.setInput(si, p.r, p.c, typeof v === 'object' && v && v.date ? v.date : String(v)); } break;
+    case 'format': { const g = parseRange(task.range); const st = {}; if (task.fmt) st.fmt = task.fmt[0] === 'General' ? null : task.fmt[0]; if (task.solutionFmt) st.fmt = task.solutionFmt; if (task.bold !== undefined) st.bold = task.bold || null; if (task.fill) st.fill = '#FFF2CC'; if (task.align) st.align = task.align; if (task.wrap) st.wrap = true; eachCell(g, (r, c) => wb.setStyle(si, r, c, st)); if (task.minWidth) wb.sheets[si].widths[colIndex(task.minWidth.col)] = task.minWidth.px + 10; break; }
+    case 'width': wb.sheets[si].widths[colIndex(task.col)] = task.min + 10; wb.invalidate(); break;
+    case 'select': if (task.sheet) grid.setSheet(sheetIdx(wb, task.sheet)); grid.select(task.range); break;
+    case 'sorted': { const g = parseRange(task.region || task.range); wb.sortRegion(si, g, [{ col: colIndex(task.col), desc: !!task.desc }], !!task.region); break; }
+    case 'name': wb.defineName(task.name, (task.sheet ? `'${task.sheet}'!` : '') + task.ref.replace(/([A-Z]+)(\d+)/g, '$$$1$$$2')); break;
+    case 'sheet': { const i = task.from !== undefined ? task.from : (task.index ?? 0); if (wb.sheets[i]) wb.sheets[i].name = task.name; else wb.addSheet(task.name); wb.invalidate(); break; }
+    case 'noBlankRows': { const g = parseRange(task.range); for (let r = g.r2; r >= g.r1; r--) { let blank = true; for (let c = g.c1; c <= g.c2; c++) if (!wb.isEmpty(si, r, c)) blank = false; if (blank) wb.deleteRows(si, r, 1); } break; }
+  }
+  grid && grid.render();
+}

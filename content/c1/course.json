@@ -1,0 +1,339 @@
+{
+ "id": "c1",
+ "code": "C1",
+ "title": "Excel Foundations",
+ "level": "Beginner",
+ "hours": 22,
+ "summary": "C1 takes a complete beginner to confident everyday use: entering and formatting data, writing formulas that copy correctly, and organising, printing and sharing a workbook.",
+ "outcomes": [
+  "Find your way around any workbook quickly, with mouse and keyboard.",
+  "Enter, edit, fill and correct data, including dates and numbers.",
+  "Format sheets that other people can read, including Indian number formats.",
+  "Write formulas with SUM, AVERAGE, MIN, MAX and COUNT, and fix the common errors.",
+  "Copy formulas correctly using relative, absolute and mixed references.",
+  "Organise data as tables, then sort, filter and validate it.",
+  "Print, export, share and protect a workbook."
+ ],
+ "modules": [
+  {
+   "n": 1,
+   "title": "Welcome to Excel",
+   "summary": "The parts of Excel’s window, how cells and ranges are named, and how to save files that keep your work.",
+   "free": true,
+   "testInfo": "The interface and file types",
+   "lessons": [
+    {
+     "id": "1-1",
+     "num": "1.1",
+     "title": "What Excel is for",
+     "summary": "Workbooks, sheets and cells, and the real jobs that run on Excel.",
+     "minutes": 30,
+     "free": true
+    },
+    {
+     "id": "1-2",
+     "num": "1.2",
+     "title": "A tour of the window",
+     "summary": "The ribbon, Quick Access Toolbar, formula bar, Name Box, status bar and Backstage view.",
+     "minutes": 30,
+     "free": true
+    },
+    {
+     "id": "1-3",
+     "num": "1.3",
+     "title": "Files that last",
+     "summary": "Saving and AutoSave, file types (.xlsx, .xlsm, .csv), and how Excel versions differ.",
+     "minutes": 30,
+     "free": true
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Entering and editing data",
+   "summary": "How Excel reads what you type, fast editing and Paste Special, AutoFill and Flash Fill, and Find, Replace and Go To Special.",
+   "free": true,
+   "testInfo": "Data types and editing",
+   "lessons": [
+    {
+     "id": "2-1",
+     "num": "2.1",
+     "title": "Text, numbers, dates and TRUE/FALSE",
+     "summary": "How Excel decides what you typed, and why some numbers end up as text.",
+     "minutes": 30,
+     "free": true
+    },
+    {
+     "id": "2-2",
+     "num": "2.2",
+     "title": "Editing fast",
+     "summary": "F2, undo and redo, cut, copy, paste and Paste Special (values, formats, transpose).",
+     "minutes": 30,
+     "free": true
+    },
+    {
+     "id": "2-3",
+     "num": "2.3",
+     "title": "AutoFill and Flash Fill",
+     "summary": "Series of numbers, dates and months; filling patterns; splitting names with Flash Fill.",
+     "minutes": 30,
+     "free": true
+    },
+    {
+     "id": "2-4",
+     "num": "2.4",
+     "title": "Find, Replace and Go To Special",
+     "summary": "Wildcards, and selecting blanks, constants or formulas in one go.",
+     "minutes": 30,
+     "free": true
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Moving fast: navigation and selection",
+   "summary": "Keyboard jumps, precise selection, and keeping big sheets readable with Freeze Panes, Split and well-managed sheet tabs.",
+   "free": false,
+   "testInfo": "Navigation and selection",
+   "lessons": [
+    {
+     "id": "3-1",
+     "num": "3.1",
+     "title": "Keyboard navigation",
+     "summary": "Ctrl+arrow keys, Ctrl+Home and Ctrl+End, and moving between sheets.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "3-2",
+     "num": "3.2",
+     "title": "Selecting like a pro",
+     "summary": "Shift and Ctrl+Shift with the arrow keys, whole rows and columns, and jumping with the Name Box.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "3-3",
+     "num": "3.3",
+     "title": "Working with big sheets",
+     "summary": "Freeze Panes, Split, zoom, New Window, and inserting, renaming, moving, colouring and grouping sheets.",
+     "minutes": 30,
+     "free": false
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Formatting for clarity",
+   "summary": "Fonts, fills and alignment that help the reader, number formats including lakhs and crores, styles and Format Painter, and fixing widths.",
+   "free": false,
+   "testInfo": "Formatting choices",
+   "lessons": [
+    {
+     "id": "4-1",
+     "num": "4.1",
+     "title": "Fonts, alignment, borders and fills",
+     "summary": "Readable rather than decorated, and Center Across Selection instead of merging cells.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "4-2",
+     "num": "4.2",
+     "title": "Number formats",
+     "summary": "Currency (₹), accounting, percentages, dates, and custom formats including lakh and crore grouping.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "4-3",
+     "num": "4.3",
+     "title": "Styles and Format Painter",
+     "summary": "Cell styles, themes and a consistent look.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "4-4",
+     "num": "4.4",
+     "title": "Widths, wrapping and the ##### wall",
+     "summary": "AutoFit, row heights, wrap text and shrink to fit.",
+     "minutes": 30,
+     "free": false
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "First formulas",
+   "summary": "Formulas with =, order of operations, SUM and friends, checking your work and fixing errors.",
+   "free": false,
+   "testInfo": "Formulas and functions",
+   "lessons": [
+    {
+     "id": "5-1",
+     "num": "5.1",
+     "title": "Formulas start with =",
+     "summary": "Arithmetic, the order Excel calculates in, and pointing at cells instead of typing numbers.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "5-2",
+     "num": "5.2",
+     "title": "SUM, AVERAGE, MIN, MAX, COUNT",
+     "summary": "The first functions, ranges, and AutoSum.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "5-3",
+     "num": "5.3",
+     "title": "Reading and checking formulas",
+     "summary": "Show Formulas, the status bar, F2 and tracing a formula.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "5-4",
+     "num": "5.4",
+     "title": "When formulas go wrong",
+     "summary": "#####, #DIV/0!, #NAME?, #VALUE!, #REF! and the green triangle.",
+     "minutes": 30,
+     "free": false
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "References that behave",
+   "summary": "Relative, absolute and mixed references, F4, names and other sheets.",
+   "free": false,
+   "testInfo": "References",
+   "lessons": [
+    {
+     "id": "6-1",
+     "num": "6.1",
+     "title": "Relative references",
+     "summary": "What happens when you copy a formula, and why that’s usually what you want.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "6-2",
+     "num": "6.2",
+     "title": "Absolute and mixed references",
+     "summary": "$ signs, F4, and when a reference must stay put.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "6-3",
+     "num": "6.3",
+     "title": "Names and other sheets",
+     "summary": "Named cells and ranges, and formulas that look at another sheet.",
+     "minutes": 30,
+     "free": false
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Lists, Tables, sort and filter",
+   "summary": "Clean data, Excel Tables, sorting, filtering and data validation.",
+   "free": false,
+   "testInfo": "Working with lists",
+   "lessons": [
+    {
+     "id": "7-1",
+     "num": "7.1",
+     "title": "Data that behaves",
+     "summary": "One header row, no blank rows, one fact per cell: the shape every Excel tool expects.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "7-2",
+     "num": "7.2",
+     "title": "Excel Tables",
+     "summary": "Ctrl+T, table names, structured references and the Total Row.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "7-3",
+     "num": "7.3",
+     "title": "Sort and filter",
+     "summary": "Sorting by one or more columns, and filters to see just the rows you need.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "7-4",
+     "num": "7.4",
+     "title": "Data validation",
+     "summary": "Drop-down lists and input rules that keep bad data out.",
+     "minutes": 30,
+     "free": false
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Print, share and protect",
+   "summary": "Printing readable pages, notes and comments, sharing safely, and protecting formulas.",
+   "free": false,
+   "testInfo": "Finishing touches",
+   "lessons": [
+    {
+     "id": "8-1",
+     "num": "8.1",
+     "title": "Page layout and printing",
+     "summary": "Orientation, scaling, print titles, headers and footers, and print preview.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "8-2",
+     "num": "8.2",
+     "title": "Comments, notes and working together",
+     "summary": "Notes for context, comments for conversations, and sharing a workbook safely.",
+     "minutes": 30,
+     "free": false
+    },
+    {
+     "id": "8-3",
+     "num": "8.3",
+     "title": "Protecting your work",
+     "summary": "Lock formulas, leave inputs open, and know what protection does and doesn’t do.",
+     "minutes": 30,
+     "free": false
+    }
+   ]
+  }
+ ],
+ "project": {
+  "title": "A shared expense tracker for a hostel flat",
+  "brief": "Four flatmates share rent, groceries and bills. Build a validated entry table, a monthly summary of who paid what and who owes whom, a print-ready layout and protected formulas."
+ },
+ "exam": {
+  "questions": 40,
+  "tasks": 6,
+  "minutes": 90,
+  "pass": 75,
+  "attempts": 3,
+  "gapHours": 48
+ },
+ "downloads": [
+  {
+   "label": "Course handbook",
+   "file": "a/c1-handbook.docx",
+   "name": "Sheetah C1 handbook.docx"
+  },
+  {
+   "label": "Cheat sheet",
+   "file": "a/c1-cheatsheet.docx",
+   "name": "Sheetah C1 cheat sheet.docx"
+  }
+ ]
+}

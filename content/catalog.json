@@ -1,0 +1,85 @@
+{
+ "courses": [
+  {
+   "id": "c1",
+   "code": "C1",
+   "title": "Excel Foundations",
+   "summary": "From a blank sheet to confident everyday use: data entry, formatting, first formulas, references, tables, printing and protection.",
+   "modules": 8,
+   "lessons": 28,
+   "hours": 22,
+   "status": "live",
+   "free": true
+  },
+  {
+   "id": "c2",
+   "code": "C2",
+   "title": "Formulas & Functions",
+   "summary": "Logic, text, dates, rounding, conditional sums, lookups and dynamic arrays, plus finding and fixing formula errors.",
+   "modules": 9,
+   "lessons": 34,
+   "hours": 25,
+   "status": "soon"
+  },
+  {
+   "id": "p1",
+   "code": "P1",
+   "title": "Excel for Data Analysis",
+   "summary": "Clean, combine, summarise with PivotTables, analyse, forecast and test what the numbers really say.",
+   "modules": 8,
+   "lessons": 33,
+   "hours": 24,
+   "status": "soon"
+  },
+  {
+   "id": "p2",
+   "code": "P2",
+   "title": "Data Visualisation & Dashboards",
+   "summary": "Choose the right chart, design it so the point is obvious, and build interactive one-page dashboards.",
+   "modules": 8,
+   "lessons": 31,
+   "hours": 23,
+   "status": "soon"
+  },
+  {
+   "id": "p3",
+   "code": "P3",
+   "title": "Finance & Financial Modelling",
+   "summary": "Loans and EMIs, investment appraisal, accounting, budgets, a three-statement model and a DCF valuation.",
+   "modules": 9,
+   "lessons": 37,
+   "hours": 27,
+   "status": "soon"
+  },
+  {
+   "id": "p4",
+   "code": "P4",
+   "title": "Business Operations & Productivity",
+   "summary": "Trackers, schedules, stock, sales, HR and payroll workbooks other people can use without breaking.",
+   "modules": 8,
+   "lessons": 30,
+   "hours": 23,
+   "status": "soon"
+  },
+  {
+   "id": "p5",
+   "code": "P5",
+   "title": "Power Query, Data Model & Power Pivot",
+   "summary": "Automate data preparation and build relational models with DAX, so a monthly report refreshes in one click.",
+   "modules": 8,
+   "lessons": 32,
+   "hours": 24,
+   "status": "soon"
+  },
+  {
+   "id": "p6",
+   "code": "P6",
+   "title": "Automation: Macros, VBA & Office Scripts",
+   "summary": "Record macros, write VBA, build forms and automate real reports, safely.",
+   "modules": 9,
+   "lessons": 33,
+   "hours": 25,
+   "status": "soon"
+  }
+ ]
+}
