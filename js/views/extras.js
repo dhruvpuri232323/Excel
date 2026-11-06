@@ -17,7 +17,7 @@ export const isSaved = key => (store.d.saved || []).some(x => x.key === key);
 export function toggleSaved(item) { const s = store.d.saved || (store.d.saved = []); const i = s.findIndex(x => x.key === item.key); if (i >= 0) s.splice(i, 1); else s.unshift({ ...item, at: new Date().toISOString() }); store.save(); return i < 0; }
 const savedHref = x => x.type === 'lesson' ? `#/lesson/${x.course}/${x.lesson}` : x.type === 'slide' ? `#/lesson/${x.course}/${x.lesson}/lecture/${x.pos}` : x.type === 'task' ? `#/lesson/${x.course}/${x.lesson}/lab` : x.type === 'function' ? `#/library/${encodeURIComponent(x.name)}` : x.type === 'challenge' ? `#/challenge/${x.id}` : '#/home';
 register('saved', async main => {
-  const c = await getCourse('c1'); const all = lessonList(c); const lab = id => { const l = all.find(x => x.id === id); return l ? lessonLabel(l) + ' · ' + l.title : ''; };
+  const c = await getCourse(); const all = lessonList(c); const lab = id => { const l = all.find(x => x.id === id); return l ? lessonLabel(l) + ' · ' + l.title : ''; };
   const groups = [['lesson', 'Lessons'], ['slide', 'Slides'], ['task', 'Lab tasks'], ['function', 'Functions'], ['challenge', 'Challenges']];
   const s = store.d.saved || [];
   main.innerHTML = `<h1>${tr('Saved')}</h1><p class="lead">Everything you starred, in one place. Look for <b>☆</b> on lessons, slides, lab tasks, functions and challenges.</p>
@@ -28,7 +28,7 @@ register('saved', async main => {
 
 // ---------- my notes (X1) ----------
 register('notes', async main => {
-  const c = await getCourse('c1'); const all = lessonList(c); const ids = all.filter(l => (store.d.notes[l.id] || '').trim()).map(l => l.id);
+  const c = await getCourse(); const all = lessonList(c); const ids = all.filter(l => (store.d.notes[l.id] || '').trim()).map(l => l.id);
   const extra = Object.keys(store.d.notes).filter(k => k === 'general' && store.d.notes[k].trim());
   main.innerHTML = `<div class="row between"><h1>${tr('My notes')}</h1>${ids.length ? `<button class="btn" id="docx" type="button">⬇ Download as Word</button>` : ''}</div><p class="lead">Every note you write in a lesson (✐ Notes) gathers here. Edit them right here; they save as you type.</p>
    <section class="card"><h2>General notes</h2><textarea class="notes" data-n="general" rows="4" placeholder="Anything that isn’t about one lesson: questions for your teacher, things to try at work…">${esc(store.d.notes.general || '')}</textarea></section>
@@ -86,7 +86,7 @@ function taskBoard(host, { sheet, tasks, editable, inputs, allowSort, allowStruc
 // ---------- practise any lesson (X3) ----------
 let board = null; const kill = () => { if (board) { board.destroy(); board = null; } };
 register('practice', async (main, courseId, id) => {
-  kill(); const c = await getCourse(courseId || 'c1'); const all = lessonList(c);
+  kill(); const c = await getCourse(courseId); const all = lessonList(c);
   if (!id) { // the picker: weak spots first, then every lesson by module
     const errBy = {}; store.d.errors.filter(e => !e.resolved && e.lesson).forEach(e => { errBy[e.lesson] = (errBy[e.lesson] || 0) + 1; });
     const weak = Object.entries(errBy).sort((a, b) => b[1] - a[1]).map(([lid, n]) => [all.find(l => l.id === lid), n]).filter(([l]) => l && canOpenLesson(c, l)).slice(0, 4);

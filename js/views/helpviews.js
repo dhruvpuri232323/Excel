@@ -48,7 +48,7 @@ register('how', async main => {
 
 // N5: every topic the course teaches, A–Z, each linking to its exact slide
 register('topics', async (main, mod = 'all') => {
-  const c = await getCourse('c1'); const all = lessonList(c);
+  const c = await getCourse(); const all = lessonList(c);
   const rows = []; for (const l of all) for (const [si, k, h] of (l.topics || [])) rows.push({ h: h.replace(/\*\*|`/g, ''), l, href: `#/lesson/c1/${l.id}/lecture/${si + 1}-${k + 1}` });
   const shown = rows.filter(r => mod === 'all' || String(r.l.module.n) === mod).sort((a, b) => a.h.localeCompare(b.h, 'en', { sensitivity: 'base' }));
   const L0 = r => /[a-z]/i.test(r.h[0]) ? r.h[0].toUpperCase() : '#'; shown.sort((a, b) => (L0(a) === '#') - (L0(b) === '#') || 0); const letters = [...new Set(shown.map(L0))].sort((a, b) => a === '#' ? -1 : b === '#' ? 1 : a.localeCompare(b));

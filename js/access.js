@@ -11,6 +11,8 @@ const CUM = SHARE.reduce((a, x) => a.concat(a[a.length - 1] + x), [0]);
 // minutes per part, rounded so the five parts add up to the lesson's minutes
 export const partMinutes = (lesson, i) => { const m = +lesson.minutes || 30; return Math.max(1, Math.round(m * CUM[i + 1]) - Math.round(m * CUM[i])); };
 export const TEST_MINUTES = 25;
+// "Module 1" or "Modules 1–2": the free part of a course, for messages
+export function freeModulesText(c) { const f = c.modules.filter(m => m.free).map(m => m.n); return !f.length ? 'No modules' : f.length === 1 ? `Module ${f[0]}` : `Modules ${f[0]}–${f[f.length - 1]}`; }
 
 export function lessonList(c) { const out = []; for (const m of c.modules) for (const l of m.lessons) out.push({ ...l, module: m }); return out; }
 export const lessonState = id => store.d.lessons[id] || null;
@@ -48,7 +50,9 @@ export const canOpenLesson = (c, l) => moduleInfo(c, l.module || c.modules.find(
 // module tests: free modules for everyone; with a login, any module (taking a locked module's test = testing out)
 export const canTakeTest = (c, m) => m.free || hasKey(c);
 export const lastModule = c => c.modules[c.modules.length - 1];
-export const projectOpen = c => hasKey(c) && (who() === 'admin' || override() || passedTest(c, lastModule(c).n));
+// a course that is still being released lists its later modules as upcoming; the project and exam come with the last part
+export const comingSoon = c => !!((c.upcoming && c.upcoming.length) || (c.project && c.project.coming));
+export const projectOpen = c => !comingSoon(c) && hasKey(c) && (who() === 'admin' || override() || passedTest(c, lastModule(c).n));
 export function examReqs(c) {
   const mods = c.modules.map(m => moduleInfo(c, m));
   const lessonsOk = mods.every(x => x.passed || x.done === x.total);
@@ -72,6 +76,7 @@ export function nextStep(c) {
     if (l) return { kind: 'lesson', lesson: l, part: 0, minutes: lessonMinutesLeft(l) };
     return { kind: 'test', module: m, minutes: TEST_MINUTES };
   }
+  if (comingSoon(c)) return { kind: 'coming' };
   if (!projectOpen(c)) return { kind: 'done' };
   if (!examReqs(c).projOk) return { kind: 'project', minutes: 180 };
   if (!(store.d.examAttempts[c.id] || []).some(a => a.passed)) return { kind: 'exam', minutes: c.exam.minutes };
@@ -84,6 +89,7 @@ export function stepLabel(s) {
   if (s.kind === 'test') return `Take the Module ${s.module.n} test`;
   if (s.kind === 'project') return 'Start the course project';
   if (s.kind === 'exam') return 'Take the final exam';
+  if (s.kind === 'coming') return 'More modules are on the way';
   if (s.kind === 'locked') return s.info.reason === 'login' ? `Module ${s.module.n} needs a student login` : `Pass the Module ${s.info.prev.n} test to open Module ${s.module.n}`;
   return 'Course complete';
 }
@@ -92,6 +98,7 @@ export function stepHref(c, s) {
   if (s.kind === 'test') return `#/mtest/${c.id}/${s.module.n}`;
   if (s.kind === 'project') return `#/project/${c.id}`;
   if (s.kind === 'exam') return `#/exam/${c.id}`;
+  if (s.kind === 'coming') return `#/course/${c.id}`;
   if (s.kind === 'locked') return s.info.reason === 'login' ? '#/login' : `#/mtest/${c.id}/${s.info.prev.n}`;
   return `#/certificates`;
 }

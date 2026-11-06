@@ -21,9 +21,10 @@
    "modules": 9,
    "lessons": 34,
    "hours": 25,
-   "status": "soon",
+   "status": "live",
    "group": "core",
-   "short": "Formulas"
+   "short": "Formulas",
+   "free": true
   },
   {
    "id": "p1",

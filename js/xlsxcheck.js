@@ -40,14 +40,16 @@ export async function readXlsx(file) {
     const s = { name: attr(sh, 'name'), state: attr(sh, 'state') || 'visible', cells: {}, merges: kids(x, 'mergeCell').map(m => attr(m, 'ref')), cols: {}, validations: [], tables: [], comments: [], protect: null };
     for (const col of kids(x, 'col')) { const w = +attr(col, 'width'); for (let c = +attr(col, 'min'); c <= +attr(col, 'max') && c < 200; c++) s.cols[c - 1] = w; }
     const pane = one(x, 'pane'); if (pane && /frozen/.test(attr(pane, 'state') || '')) s.freeze = { rows: +(attr(pane, 'ySplit') || 0), cols: +(attr(pane, 'xSplit') || 0) };
-    const shared = {};
+    const shared = {}; const arrays = []; // spilled answers: Excel saves the formula once, with the cells it fills
     for (const c of kids(x, 'c')) {
       const r = attr(c, 'r'); const t = attr(c, 't'); const sIdx = +(attr(c, 's') || 0); const vEl = one(c, 'v'), fEl = one(c, 'f'); let v = vEl ? vEl.textContent : null; let f = fEl ? fEl.textContent : null;
       if (t === 's') v = ss[+v]; else if (t === 'b') v = v === '1'; else if (t === 'inlineStr') v = kids(c, 't').map(n => n.textContent).join(''); else if (t === 'e') v = { err: v }; else if (t === 'str') v = v; else if (v !== null) v = +v;
+      if (fEl && attr(fEl, 't') === 'array' && /:/.test(attr(fEl, 'ref') || '')) arrays.push({ at: r, ref: attr(fEl, 'ref') });
       if (fEl && attr(fEl, 't') === 'shared') { const si = attr(fEl, 'si'); if (f) shared[si] = { f, at: parseAddr(r) }; else if (shared[si]) { const p = parseAddr(r); f = shiftFormula('=' + shared[si].f, p.r - shared[si].at.r, p.c - shared[si].at.c).slice(1); } }
       const xf = styles.xfs[sIdx] || { fmt: 'General', font: 0, fill: 0, locked: true };
       s.cells[r] = { v, f: f ? '=' + f : null, fmt: xf.fmt, bold: (styles.fonts[xf.font] || {}).bold, italic: (styles.fonts[xf.font] || {}).italic, fill: (styles.fills[xf.fill] || {}).solid, align: xf.align, wrap: xf.wrap, locked: xf.locked };
     }
+    for (const a of arrays) { const g = parseRange(a.ref); if (g) eachCell(g, (rr, cc) => { const k = addr(rr, cc); if (k !== a.at && s.cells[k] && !s.cells[k].f) s.cells[k].v = null; }); } // Sheetah re-spills them itself
     for (const dv of kids(x, 'dataValidation')) { const f1 = one(dv, 'formula1'); s.validations.push({ type: attr(dv, 'type'), sqref: attr(dv, 'sqref'), formula: f1 ? f1.textContent : '' }); }
     // newer Excel writes list validations in an extension block (x14:dataValidation)
     const sp = one(x, 'sheetProtection'); if (sp) s.protect = { sheet: attr(sp, 'sheet') === '1' || attr(sp, 'sheet') === 'true' };

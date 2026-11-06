@@ -6,12 +6,14 @@ import { esc, md, $, $$, mascot, toast, heatmap, bars, lineChart, download, fmtD
 import { dayNum, dayStr, recallIn } from '../srs.js';
 import { lessonList, isDone, canOpenLesson, lessonLabel } from '../access.js';
 import { t } from '../i18n.js';
+import { buildPlan, planStatus, setBaseline, addDays, fmtD, iso, dayMinutes } from '../plan.js';
+const t_ = t;
 
 const CAUSES = ['Didn’t know it yet', 'Careless slip', 'Wrong reference', 'Misread the task', 'Forgot the steps', 'Other'];
 const lessonName = (c, id) => { const l = lessonList(c).find(x => x.id === id); return l ? `${lessonLabel(l)} · ${l.title}` : ''; };
 const example = (title, html) => `<div class="example"><span class="tag">Example</span><p class="small muted">${title}</p>${html}</div>`;
 register('errors', async (main, filter = 'open') => {
-  const c = await getCourse('c1');
+  const c = await getCourse();
   const list = store.d.errors.filter(e => filter === 'all' || (filter === 'open' ? !e.resolved : e.resolved));
   const byCause = {}; store.d.errors.forEach(e => { const k = e.cause || 'Not tagged'; byCause[k] = (byCause[k] || 0) + 1; });
   const byLesson = {}; store.d.errors.forEach(e => { if (e.lesson) byLesson[e.lesson] = (byLesson[e.lesson] || 0) + 1; });
@@ -31,29 +33,66 @@ register('errors', async (main, filter = 'open') => {
   $$('[data-fix]').forEach(b => b.onclick = () => { const e = store.d.errors.find(x => x.id === b.dataset.fix); e.resolved = true; e.resolvedAt = new Date().toISOString(); store.save(); toast('Marked as fixed'); b.closest('li').classList.add('res'); b.remove(); });
 });
 
-register('planner', async main => {
-  const c = await getCourse('c1'); const p = store.d.plan; const left = lessonList(c).filter(l => !isDone(l.id));
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  // the study days + daily minutes laid out over the remaining lessons (2 lessons on a 60+ minute day)
-  const sched = []; if (p.days.length) { let d = new Date(); d.setHours(0, 0, 0, 0); const perDay = p.minutesGoal >= 60 ? 2 : 1; let k = 0; let guard = 0; while (k < left.length && guard++ < 800) { if (p.days.includes(d.getDay())) { sched.push({ date: new Date(d), lessons: left.slice(k, k + perDay) }); k += perDay; } d.setDate(d.getDate() + 1); } }
-  const finish = sched.length ? sched[sched.length - 1].date : null; const target = p.target ? new Date(p.target + 'T00:00:00') : null;
-  const onTrack = finish && target ? finish <= target : null;
-  const missed = Object.entries(p.missed).sort().reverse();
-  const reasons = {}; missed.forEach(([, r]) => reasons[r] = (reasons[r] || 0) + 1);
-  const wk = [0, 0, 0, 0, 0, 0, 0]; Object.entries(store.d.activity).forEach(([d, a]) => { const wd = new Date(d + 'T00:00:00').getDay(); wk[wd] += a.minutes || 0; });
-  const fd = d => d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-  main.innerHTML = `<h1>${t('Study plan')}</h1><p class="lead">Deciding exactly when you’ll study makes you far more likely to do it. Pick your days and time; Sheetah lays out every remaining lesson.</p>
-  <section class="card"><form id="pf" class="form"><fieldset><legend>Study days</legend><div class="days">${days.map((d, i) => `<label class="pill"><input type="checkbox" name="d" value="${i}" ${p.days.includes(i) ? 'checked' : ''}> ${d}</label>`).join('')}</div></fieldset>
-   <div class="grid3"><label>Time <input type="time" name="time" value="${p.time}"></label><label>Minutes a day <select name="goal">${[15, 30, 45, 60, 90].map(m => `<option ${m === p.minutesGoal ? 'selected' : ''} value="${m}">${m} minutes</option>`).join('')}</select></label><label>Finish ${esc(c.title)} by (optional) ${dateField('target', p.target || '', { label: 'Target date' })}</label></div>
-   <div class="row"><button class="btn">Save plan</button><button type="button" class="btn ghost" id="ics">Add to my calendar (.ics)</button><button type="button" class="btn ghost" id="notif">Turn on reminders</button></div></form>
-   ${finish ? `<p class="plan-sum ${onTrack === false ? 'warn' : ''}">At this pace you finish the ${left.length} remaining lesson${left.length === 1 ? '' : 's'} on <b>${fd(finish)}</b>${target ? (onTrack ? ', before your target. 👍' : `, after your target of ${fmtDate(p.target)}. Add a day or raise the minutes.`) : '.'} Then the course project and the final exam.</p>` : left.length ? '<p class="warn">Pick at least one study day.</p>' : '<p>Every lesson is done. Time for the project and the final exam.</p>'}</section>
-  <section class="card"><h2>Day by day</h2>${sched.length ? `<table class="tbl plan"><thead><tr><th>Date</th><th>Lesson</th><th></th></tr></thead><tbody>${sched.slice(0, 40).map(s => `<tr><td>${fmtDay(s.date.toISOString().slice(0, 10))}</td><td>${s.lessons.map(l => `${esc(lessonLabel(l))} · ${esc(l.title)}`).join('<br>')}</td><td>${s.lessons.map(l => canOpenLesson(c, l) ? `<a href="#/lesson/c1/${l.id}">Open</a>` : '<span title="Opens when you pass the module test before it">🔒</span>').join('<br>')}</td></tr>`).join('')}</tbody></table>` : '<p class="muted">Nothing left to schedule.</p>'}</section>
-  <div class="grid2"><section class="card"><h2>Missed days and why</h2>${missed.length ? `<ul class="missed-list">${missed.slice(0, 12).map(([d, r]) => `<li><span>${fmtDate(d)}</span><b>${esc(r)}</b></li>`).join('')}</ul><h3>Reasons you noted</h3>${bars(Object.entries(reasons).map(([k, v]) => ({ k: k.split(' ')[0], v })), { h: 130, label: 'Reasons for missed days' })}` : `<p class="muted">When you miss a planned day, Home asks what got in the way (“work ran late”, “too tired”…). Patterns show up here, so you can move a study day to when it actually works.</p>`}</section>
-  <section class="card"><h2>When you actually study</h2>${Object.keys(store.d.activity).length ? bars(days.map((d, i) => ({ k: d, v: Math.round(wk[i]), hl: p.days.includes(i) })), { h: 150, fmt: v => v + 'm', label: 'Minutes by weekday' }) + '<p class="muted small">Highlighted bars are your planned days.</p>' : '<p class="muted">After a week or two, this shows the minutes you study on each weekday next to the days you planned.</p>'}</section></div>`;
-  $('#pf').onsubmit = e => { e.preventDefault(); const f = new FormData(e.target); p.days = f.getAll('d').map(Number); p.time = f.get('time'); p.minutesGoal = +f.get('goal'); p.target = readDate(e.target, 'target'); store.save(); toast('Plan saved'); go('#/planner'); };
-  $('#ics').onclick = () => { const [h, m] = p.time.split(':'); const byday = p.days.map(i => ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'][i]).join(','); const st = new Date(); st.setHours(+h, +m, 0, 0); const f = d => d.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; const en = new Date(st.getTime() + p.minutesGoal * 6e4);
-    download('sheetah-study-plan.ics', `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sheetah//Study plan//EN\r\nBEGIN:VEVENT\r\nUID:sheetah-${Date.now()}@sheetah\r\nDTSTAMP:${f(new Date())}\r\nDTSTART:${f(st)}\r\nDTEND:${f(en)}\r\nRRULE:FREQ=WEEKLY;BYDAY=${byday}\r\nSUMMARY:Sheetah: Excel study session\r\nDESCRIPTION:One lesson plus the daily review.\r\nBEGIN:VALARM\r\nTRIGGER:-PT10M\r\nACTION:DISPLAY\r\nDESCRIPTION:Excel study in 10 minutes\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n`, 'text/calendar'); };
+// the study plan: pick dates, and the plan builds itself (see plan.js)
+register('planner', async (main, view) => {
+  const c = await getCourse(); const p = store.d.plan; p.off = p.off || [];
+  if (!p.start) p.start = today();
+  const D = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; const order = [1, 2, 3, 4, 5, 6, 0];
+  const P = buildPlan(c); const S = planStatus(c); const t = today();
+  const months = []; if (P.dates.length || P.items.length) { let m = (P.start || t).slice(0, 7); const last = (P.last || P.end || t).slice(0, 7); for (let g = 0; m <= last && g < 13; g++) { months.push(m); const [y, mm] = m.split('-').map(Number); m = mm === 12 ? `${y + 1}-01` : `${y}-${String(mm + 1).padStart(2, '0')}`; } }
+  let mi = Math.max(0, months.indexOf(t.slice(0, 7))); if (view && months.includes(view)) mi = months.indexOf(view);
+  const kinds = { lesson: 0, test: 0, project: 0, exam: 0 }; P.items.forEach(x => kinds[x.kind]++);
+  const load = P.perDay; const heavy = load > 120, light = load && load < 15;
+  const later = heavy && P.dates.length ? (() => { const need = Math.ceil(P.total / 60); let d = P.start, k = 0, g = 0; while (k < need && g++ < 1500) { if (p.days.includes(new Date(d + 'T00:00:00').getDay()) && !p.off.includes(d)) k++; d = addDays(d, 1); } return addDays(d, -1); })() : null;
+  const statusHTML = !P.items.length ? '<span class="pstat ok">🎉 Everything is done</span>' : P.error ? `<span class="pstat bad">⚠ ${esc(P.error)}</span>` : S && S.behind ? `<span class="pstat warn">⏳ ${S.behind} item${S.behind === 1 ? '' : 's'} behind: the plan has moved them to the days ahead</span>` : S && S.ahead ? `<span class="pstat ok">🚀 ${S.ahead} item${S.ahead === 1 ? '' : 's'} ahead of plan</span>` : '<span class="pstat ok">✓ On track</span>';
+  const chip = x => `<a class="pchip k-${x.kind}" href="${x.href}" title="${esc(x.title)} · about ${x.min} min">${x.kind === 'lesson' ? `<b>${esc(x.short)}</b> ${esc(x.title)}` : `<b>${esc(x.short)}</b>`}</a>`;
+  const month = m => { const [y, mm] = m.split('-').map(Number); const first = new Date(y, mm - 1, 1); const pad = (first.getDay() + 6) % 7; const n = new Date(y, mm, 0).getDate();
+    let cells = '<div class="cal-h">' + order.map(k => `<span>${D[k]}</span>`).join('') + '</div><div class="cal-g">' + '<span class="cal-d empty"></span>'.repeat(pad);
+    for (let d = 1; d <= n; d++) { const s = `${m}-${String(d).padStart(2, '0')}`; const items = P.days[s] || []; const inRange = s >= P.start && s <= (P.end || s); const study = p.days.includes(new Date(s + 'T00:00:00').getDay()); const off = p.off.includes(s);
+      const cls = ['cal-d', s === t ? 'today' : '', s < t ? 'past' : '', off ? 'off' : '', !study ? 'rest' : '', inRange && study && !off && s >= t ? 'can' : '', items.length ? 'has' : '', s === P.end ? 'end' : ''].filter(Boolean).join(' ');
+      cells += `<div class="${cls}" data-day="${s}" ${inRange && study && s >= t ? `title="${off ? 'Day off: click to study this day' : 'Click to take this day off'}"` : ''}><span class="cal-n">${d}${s === P.end ? ' 🏁' : ''}</span>${off ? '<span class="cal-off">Day off</span>' : ''}${items.slice(0, 3).map(chip).join('')}${items.length > 3 ? `<span class="pmore">+${items.length - 3} more</span>` : ''}${items.length ? `<span class="cal-min">${dayMinutes(items)} min</span>` : ''}</div>`; }
+    return cells + '</div>'; };
+  const wk = []; for (let k = 0; k < 7; k++) { const s = addDays(t, k); if (P.days[s]) wk.push([s, P.days[s]]); }
+  main.innerHTML = `<h1>${t_('Study plan')}</h1><p class="lead">Pick your dates. Sheetah spreads every lesson, test, the project and the exam across them, and moves things along by itself if you miss a day.</p>
+  <section class="card plan-setup"><div class="ps-grid">
+    <div class="ps-step"><span class="ps-n">1</span><div><b>Start</b>${dateField('start', p.start, { label: 'Start date' })}<button class="linkbtn small" type="button" id="stToday">Today</button></div></div>
+    <div class="ps-step"><span class="ps-n">2</span><div><b>Finish by</b>${dateField('end', p.end || '', { label: 'Finish date' })}<div class="chips quick">${[[1, '1 month'], [2, '2 months'], [3, '3 months'], [6, '6 months']].map(([n, l]) => `<button type="button" class="chip" data-months="${n}">${l}</button>`).join('')}</div></div></div>
+    <div class="ps-step"><span class="ps-n">3</span><div><b>Study days</b><div class="days">${order.map(k => `<label class="pill"><input type="checkbox" data-wd="${k}" ${p.days.includes(k) ? 'checked' : ''}> ${D[k]}</label>`).join('')}</div><label class="inline small">Time <input type="time" id="ptime" value="${esc(p.time)}"></label></div></div>
+    <div class="ps-step"><span class="ps-n">4</span><div><b>Days off</b><p class="small muted">Holidays, exams, a wedding? Click those dates on the calendar below.</p>${p.off.length ? `<p class="small">${p.off.length} day${p.off.length === 1 ? '' : 's'} off · <button class="linkbtn" type="button" id="clrOff">clear them</button></p>` : ''}</div></div>
+  </div></section>
+  <section class="card plan-sum"><div class="d-big">
+    <div class="bn"><b>${P.items.length}</b><span>things left</span><small>${kinds.lesson} lessons · ${kinds.test} tests${kinds.project ? ' · project' : ''}${kinds.exam ? ' · exam' : ''}</small></div>
+    <div class="bn"><b>${P.dates.length}</b><span>study days</span><small>${P.dates.length ? `${fmtD(P.dates[0])} → ${fmtD(P.dates.at(-1), { day: 'numeric', month: 'short', year: 'numeric' })}` : 'pick your dates'}</small></div>
+    <div class="bn"><b>${load ? `≈ ${load}` : '—'}</b><span>minutes a day</span><small>${Math.round(P.total / 6) / 10} hours in all</small></div></div>
+    <div class="row between ps-status">${statusHTML}${p.end ? '' : '<span class="small muted">No finish date yet, so this uses ' + p.minutesGoal + ' minutes a day.</span>'}</div>
+    ${heavy ? `<p class="warnbox small">That's over two hours a day. ${later ? `For about an hour a day, finish around <b>${fmtD(later, { day: 'numeric', month: 'short', year: 'numeric' })}</b>. <button class="btn sm" type="button" id="useLater">Use that date</button>` : ''}</p>` : light ? '<p class="small muted">Under 15 minutes a day: you could finish sooner.</p>' : ''}</section>
+  ${P.items.length && !P.error ? `<section class="card"><div class="row between"><h2>This week</h2><a class="btn ghost sm" href="#/home">Today's list on Home</a></div>${wk.length ? `<div class="week">${wk.map(([s, items]) => `<div class="wday ${s === t ? 'today' : ''}"><span class="wd">${s === t ? 'Today' : fmtD(s, { weekday: 'short', day: 'numeric', month: 'short' })}</span><div class="wl">${items.map(chip).join('')}</div><span class="cal-min">${dayMinutes(items)} min</span></div>`).join('')}</div>` : '<p class="muted">Nothing planned in the next 7 days.</p>'}</section>
+  <section class="card cal"><div class="row between"><button class="btn ghost sm" type="button" id="mPrev" ${mi <= 0 ? 'disabled' : ''}>←</button><h2>${months.length ? new Date(months[mi] + '-01T00:00:00').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : ''}</h2><button class="btn ghost sm" type="button" id="mNext" ${mi >= months.length - 1 ? 'disabled' : ''}>→</button></div>
+    ${months.length ? month(months[mi]) : ''}<div class="legend cal-leg"><span class="pchip k-lesson"><b>1.2</b> Lesson</span><span class="pchip k-test"><b>Test</b></span><span class="pchip k-project"><b>Project</b></span><span class="pchip k-exam"><b>Exam</b></span><span class="cal-sw off"></span>Day off<span class="cal-sw rest"></span>Not a study day</div></section>` : ''}
+  <div class="row"><button type="button" class="btn ghost" id="ics">📅 Add to my calendar</button><button type="button" class="btn ghost" id="notif">🔔 Turn on reminders</button></div>
+  <details class="card habits"><summary><b>Your study habits</b> <span class="muted small">missed days and when you really study</span></summary><div class="grid2">${habits()}</div></details>`;
+  const save = (rebase = true) => { if (rebase) setBaseline(c); else store.save(); go('#/planner' + (view ? '/' + view : '')); };
+  const readEnd = () => readDate(main, 'end'), readStart = () => readDate(main, 'start');
+  $$('[data-date="start"] select').forEach(x => x.onchange = () => { const v = readStart(); if (v) { p.start = v; save(); } });
+  $$('[data-date="end"] select').forEach(x => x.onchange = () => { const v = readEnd(); if (v) { p.end = v; save(); } });
+  $('#stToday').onclick = () => { p.start = today(); save(); };
+  $$('[data-months]').forEach(b => b.onclick = () => { const d = new Date((p.start > t ? p.start : t) + 'T00:00:00'); d.setMonth(d.getMonth() + +b.dataset.months); p.end = iso(d); save(); });
+  $$('[data-wd]').forEach(x => x.onchange = () => { p.days = $$('[data-wd]').filter(y => y.checked).map(y => +y.dataset.wd).sort(); save(); });
+  $('#ptime').onchange = e => { p.time = e.target.value; store.save(); toast('Saved'); };
+  const co = $('#clrOff'); if (co) co.onclick = () => { p.off = []; save(); };
+  const ul = $('#useLater'); if (ul) ul.onclick = () => { p.end = later; save(); };
+  $$('.cal-d.can, .cal-d.off').forEach(d => d.addEventListener('click', e => { if (e.target.closest('a')) return; const s = d.dataset.day; p.off = p.off.includes(s) ? p.off.filter(x => x !== s) : p.off.concat(s); save(false); }));
+  const mp = $('#mPrev'), mn = $('#mNext'); if (mp) mp.onclick = () => go('#/planner/' + months[mi - 1]); if (mn) mn.onclick = () => go('#/planner/' + months[mi + 1]);
+  $('#ics').onclick = () => { const f = s => s.replace(/-/g, ''); const [hh, mm] = (p.time || '20:00').split(':');
+    const ev = Object.entries(P.days).map(([d, items], k) => `BEGIN:VEVENT\r\nUID:sheetah-${d}-${k}@sheetah\r\nDTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z\r\nDTSTART:${f(d)}T${hh}${mm}00\r\nDURATION:PT${dayMinutes(items)}M\r\nSUMMARY:Sheetah: ${items.map(x => x.kind === 'lesson' ? 'Lesson ' + x.short : x.short).join(', ')}\r\nDESCRIPTION:${items.map(x => x.title).join(' · ')}\r\nBEGIN:VALARM\r\nTRIGGER:-PT10M\r\nACTION:DISPLAY\r\nDESCRIPTION:Excel study in 10 minutes\r\nEND:VALARM\r\nEND:VEVENT\r\n`).join('');
+    download('sheetah-study-plan.ics', `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sheetah//Study plan//EN\r\n${ev}END:VCALENDAR\r\n`, 'text/calendar'); toast('Open the file to add every study session to your calendar.'); };
   $('#notif').onclick = async () => { if (!('Notification' in window)) return toast('This browser has no notifications; Sheetah will remind you inside the app.'); const r = await Notification.requestPermission(); store.d.settings.remind = true; store.save(); toast(r === 'granted' ? 'Reminders on. You’ll get one at your study time while Sheetah is open.' : 'Notifications are blocked; Sheetah will remind you inside the app instead.'); };
+  function habits() {
+    const missed = Object.entries(p.missed).sort().reverse(); const reasons = {}; missed.forEach(([, r]) => reasons[r] = (reasons[r] || 0) + 1);
+    const w = [0, 0, 0, 0, 0, 0, 0]; Object.entries(store.d.activity).forEach(([d, a]) => { w[new Date(d + 'T00:00:00').getDay()] += a.minutes || 0; });
+    return `<div><h3>Missed days and why</h3>${missed.length ? `<ul class="missed-list">${missed.slice(0, 10).map(([d, r]) => `<li><span>${fmtDate(d)}</span><b>${esc(r)}</b></li>`).join('')}</ul>${bars(Object.entries(reasons).map(([k, v]) => ({ k: k.split(' ')[0], v })), { h: 120, label: 'Reasons for missed days' })}` : '<p class="muted small">When you miss a planned day, Home asks what got in the way. Patterns show up here.</p>'}</div>
+      <div><h3>When you actually study</h3>${Object.keys(store.d.activity).length ? bars(order.map(k => ({ k: D[k], v: Math.round(w[k]), hl: p.days.includes(k) })), { h: 130, fmt: v => v + 'm', label: 'Minutes by weekday' }) + '<p class="muted small">Highlighted bars are your study days.</p>' : '<p class="muted small">After a week or two, this compares your planned days with when you really study.</p>'}</div>`;
+  }
 });
 
 // weeks are keyed Monday-first; the heading reads “This week: 2–8 Nov”
@@ -88,7 +127,7 @@ export function mastery(lessonId) {
 }
 const LEVELS = ['New', 'Learning', 'Familiar', 'Proficient', 'Mastered'];
 register('insights', async main => {
-  const c = await getCourse('c1'); const d = store.d; const t0 = dayNum();
+  const c = await getCourse(); const d = store.d; const t0 = dayNum();
   const hasData = Object.keys(d.activity).length > 0;
   const last30 = Array.from({ length: 30 }, (_, k) => { const ds = dayStr(t0 - 29 + k); const a = d.activity[ds] || {}; return { k: ds.slice(8), v: Math.round(a.minutes || 0), r: a.reviews || 0 }; });
   const totalMin = Object.values(d.activity).reduce((a, x) => a + (x.minutes || 0), 0);

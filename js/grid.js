@@ -53,8 +53,8 @@ export class Grid {
     this.corner = el('div', 'xg-corner'); this.colHead = el('div', 'xg-colhead'); this.rowHead = el('div', 'xg-rowhead');
     this.scroller = el('div', 'xg-scroll'); this.spacer = el('div', 'xg-spacer'); this.layer = el('div', 'xg-layer');
     this.selBox = el('div', 'xg-sel'); this.actBox = el('div', 'xg-act'); this.handle = el('div', 'xg-handle'); this.handle.title = 'Fill handle: drag to copy or continue a series';
-    this.fillGhost = el('div', 'xg-fillghost');
-    this.layer.append(this.selBox, this.actBox, this.fillGhost); if (!this.o.readOnly) this.layer.append(this.handle);
+    this.fillGhost = el('div', 'xg-fillghost'); this.spillBox = el('div', 'xg-spill'); // the dashed blue border Excel draws around a spilled answer
+    this.layer.append(this.selBox, this.actBox, this.fillGhost, this.spillBox); if (!this.o.readOnly) this.layer.append(this.handle);
     this.scroller.append(this.spacer, this.layer); this.view.append(this.scroller, this.colHead, this.rowHead, this.corner); h.appendChild(this.view);
     this.corner.title = 'Select all'; this.corner.addEventListener('mousedown', e => { e.preventDefault(); const s = this.sheet; this.setSel(0, 0, s.rows - 1, s.cols - 1); this.scroller.scrollTop = 0; this.scroller.scrollLeft = 0; });
     if (this.o.tabs) { this.tabsEl = el('div', 'xg-tabs'); h.appendChild(this.tabsEl); }
@@ -117,31 +117,34 @@ export class Grid {
     let rh = ''; for (let r = r1; r <= r2; r++) { const on = r >= g.r1 && r <= g.r2; rh += `<div class="xg-rh${on ? ' on' : ''}" data-r="${r}" style="top:${r * this.RH - st + HEAD_H}px">${r + 1}</div>`; }
     this.rowHead.innerHTML = rh;
     // cells
+    const spills = this.wb.hasSpills(this.si);
     const frag = []; const editable = this.o.editable ? this.editRanges() : null; const hl = this.o.highlight ? (this.o.highlight === this.o.editable ? editable : this.o.highlight.map(parseRange)) : null;
     for (let r = r1; r <= r2; r++) {
       for (let c = c1; c <= c2; c++) {
         const cell = this.wb.cellObj(s, r, c); const st2 = (cell && cell.s) || {};
         const x = this.colX(c) + HEAD_W, y = r * this.RH + HEAD_H; let w = this.colW(c);
         let text = '', cls = 'xg-c'; let v = null;
-        if (cell && (cell.f || cell.v !== null)) {
+        const sp = !(cell && (cell.f || cell.v !== null)) && spills ? this.wb.spillAt(this.si, r, c) : null; if (sp) cls += ' sp';
+        if ((cell && (cell.f || cell.v !== null)) || (sp && !this.showFormulas)) {
           if (this.showFormulas && cell.f) { text = cell.f; cls += ' f'; }
           else { v = this.wb.value(this.si, r, c); text = formatValue(v, st2.fmt, typeof v === 'number' ? w : null); }
           if (typeof v === 'number' && !(this.showFormulas && cell.f)) cls += ' n'; else if (typeof v === 'boolean' || isErr(v)) cls += ' b';
           if (isErr(v)) cls += ' err';
-          if (typeof v === 'string' && !cell.f && /^\s*-?[\d,]+(\.\d+)?\s*$/.test(v) && !(st2.fmt === '@')) cls += ' tn';
+          if (typeof v === 'string' && cell && !cell.f && /^\s*-?[\d,]+(\.\d+)?\s*$/.test(v) && !(st2.fmt === '@')) cls += ' tn';
           // text overflow into empty neighbours
           if (typeof v === 'string' && !st2.wrap && st2.align !== 'right' && st2.align !== 'center') { let cc = c + 1; const need = v.length * 7 + 8; while (w < need && cc < s.cols && this.wb.isEmpty(this.si, r, cc)) { w += this.colW(cc); cc++; } }
         }
         let style = `left:${x}px;top:${y}px;width:${w}px;` + (w > this.colW(c) ? 'z-index:2;background:transparent;box-shadow:none;' : '');
         if (st2.bold) style += 'font-weight:700;'; if (st2.italic) style += 'font-style:italic;';
-        if (st2.fill) style += `background:${st2.fill};` + (st2.fill === '#23263A' ? 'color:#fff;' : '');
+        if (st2.fill) { const h = st2.fill.replace('#', ''); const lum = h.length === 6 ? (0.299 * parseInt(h.slice(0, 2), 16) + 0.587 * parseInt(h.slice(2, 4), 16) + 0.114 * parseInt(h.slice(4, 6), 16)) : 255; style += `background:${st2.fill};color:${lum < 140 ? '#fff' : '#1F2130'};`; } // text stays readable on any fill, in light and dark themes
         if (st2.color) style += `color:${st2.color};`;
         if (st2.align) style += `text-align:${st2.align};justify-content:${st2.align === 'center' ? 'center' : st2.align === 'right' ? 'flex-end' : 'flex-start'};`;
         if (st2.wrap) cls += ' wrap';
         if (st2.border) cls += ' bd';
         if (editable && !editable.some(g2 => g2 && r >= g2.r1 && r <= g2.r2 && c >= g2.c1 && c <= g2.c2)) cls += ' locked';
         if (hl && hl.some(g2 => g2 && r >= g2.r1 && r <= g2.r2 && c >= g2.c1 && c <= g2.c2)) cls += ' hl';
-        frag.push(`<div class="${cls}" style="${style}"${cls.includes(' tn') ? ' title="Number stored as text"' : ''}>${esc(text)}</div>`);
+        const tip = cls.includes(' tn') ? 'Number stored as text' : isErr(v) && v.code === '#SPILL!' ? 'Spill range isn’t blank: clear the cells in the dashed box so the answer can spill' : '';
+        frag.push(`<div class="${cls}" style="${style}"${tip ? ` title="${tip}"` : ''}>${esc(text)}</div>`);
       }
     }
     this.layer.querySelectorAll('.xg-c').forEach(n => n.remove());
@@ -157,6 +160,9 @@ export class Grid {
     const ax = this.colX(this.sel.ac) + HEAD_W, ay = this.sel.ar * this.RH + HEAD_H;
     Object.assign(this.actBox.style, { left: ax + 'px', top: ay + 'px', width: this.colW(this.sel.ac) + 'px', height: this.RH + 'px' });
     Object.assign(this.handle.style, { left: x2 - 4 + 'px', top: y2 - 4 + 'px' });
+    const b = this.wb.spillBlock(this.si, this.sel.ar, this.sel.ac);
+    if (b) { const g2 = b.g; Object.assign(this.spillBox.style, { display: 'block', left: this.colX(g2.c1) + HEAD_W + 'px', top: g2.r1 * this.RH + HEAD_H + 'px', width: this.colX(g2.c2 + 1) - this.colX(g2.c1) + 'px', height: (g2.r2 - g2.r1 + 1) * this.RH + 'px' }); this.spillBox.classList.toggle('blocked', !!b.blocked); this.spillBox.title = b.blocked ? 'Spill range isn’t blank' : 'Spill range'; }
+    else this.spillBox.style.display = 'none';
   }
   renderTabs() {
     if (!this.tabsEl) return;
@@ -173,7 +179,10 @@ export class Grid {
   }
   updateBars() {
     if (this.nameBox && document.activeElement !== this.nameBox) { const g = this.selRange(); const nm = Object.values(this.wb.names).find(d => d.ref.replace(/\$/g, '').replace(/^.*!/, '') === rangeStr(g)); this.nameBox.value = nm ? nm.name : (g.r1 === g.r2 && g.c1 === g.c2 ? addr(this.sel.ar, this.sel.ac) : `${g.r2 - g.r1 + 1}R × ${g.c2 - g.c1 + 1}C`); }
-    if (this.fInput && !this.editing) this.fInput.value = this.wb.input(this.si, this.sel.ar, this.sel.ac);
+    if (this.fInput && !this.editing) { // a spilled cell shows its formula greyed out, as in Excel: it belongs to the first cell
+      const own = this.wb.input(this.si, this.sel.ar, this.sel.ac); const sp = !own && this.wb.spillAt(this.si, this.sel.ar, this.sel.ac);
+      this.fInput.value = sp ? this.wb.input(this.si, sp.ar, sp.ac) : own; this.fInput.classList.toggle('ghost', !!sp); this.fInput.title = sp ? `This value spills from ${addr(sp.ar, sp.ac)}. Edit the formula there.` : '';
+    }
     if (this.fmtSel) { const f = this.wb.style(this.si, this.sel.ar, this.sel.ac).fmt || 'General'; this.fmtSel.value = NUMBER_FORMATS.some(x => x[1] === f) ? f : 'General'; }
   }
   // ---------- selection ----------

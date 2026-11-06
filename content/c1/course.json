@@ -55,26 +55,31 @@
       [
        0,
        0,
-       "Excel is a grid of cells that can calculate"
+       "A workbook, its sheets and their cells"
       ],
       [
        0,
        1,
-       "Columns are letters, rows are numbers"
+       "Think of it like a notebook"
       ],
       [
        0,
        2,
-       "A range is a block of cells"
+       "Every cell has an address"
       ],
       [
        1,
        0,
-       "The jobs that run on Excel"
+       "A range is a block of cells"
       ],
       [
        1,
        1,
+       "The jobs that run on Excel"
+      ],
+      [
+       1,
+       2,
        "When another tool is better"
       ]
      ],
@@ -122,26 +127,31 @@
       [
        0,
        0,
+       "The Excel window at a glance"
+      ],
+      [
+       0,
+       1,
        "The ribbon: tabs, then groups, then buttons"
       ],
       [
        0,
-       1,
-       "The Quick Access Toolbar and the title bar"
+       2,
+       "Quick Access Toolbar: Save and Undo, always there"
       ],
       [
+       1,
        0,
-       2,
        "The Name Box and the formula bar"
       ],
       [
        1,
-       0,
-       "Sheet tabs and the status bar"
+       1,
+       "The status bar does quick maths"
       ],
       [
        1,
-       1,
+       2,
        "File opens Backstage view"
       ]
      ],
@@ -193,7 +203,7 @@
       [
        0,
        0,
-       "Save early, save often"
+       "Save, or Save As?"
       ],
       [
        0,
@@ -203,17 +213,17 @@
       [
        1,
        0,
-       "The four file types you’ll meet"
+       "Four file types you'll meet"
       ],
       [
        1,
        1,
-       "Why CSV loses things"
+       "Why saving as CSV loses things"
       ],
       [
        1,
        2,
-       "Excel versions"
+       "Which Excel are you using?"
       ]
      ],
      "tasks": [
@@ -335,7 +345,7 @@
       [
        0,
        1,
-       "Cut, copy and paste"
+       "Copy, cut and paste"
       ],
       [
        1,
@@ -345,7 +355,12 @@
       [
        1,
        1,
-       "When to paste values"
+       "Transpose turns data round"
+      ],
+      [
+       1,
+       2,
+       "Paste values to freeze results"
       ]
      ],
      "tasks": [
@@ -410,7 +425,7 @@
       [
        1,
        1,
-       "Check the result"
+       "Check what Flash Fill guessed"
       ]
      ],
      "tasks": [
@@ -465,12 +480,12 @@
       [
        0,
        1,
-       "Options that keep you safe"
+       "Match entire cell, and wildcards"
       ],
       [
        1,
        0,
-       "Select by kind, not by clicking"
+       "Select cells by what they hold"
       ],
       [
        1,

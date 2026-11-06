@@ -102,7 +102,7 @@ register('mtest', async (main, courseId, n) => {
 });
 
 register('tests', async main => {
-  const c = await getCourse('c1'); COURSE = c; const open = lessonList(c).filter(l => canOpenLesson(c, l)); const doneL = open.filter(l => isDone(l.id));
+  const c = await getCourse(); COURSE = c; const open = lessonList(c).filter(l => canOpenLesson(c, l)); const doneL = open.filter(l => isDone(l.id));
   const hist = store.d.tests.filter(t => t.kind === 'mock'); const target = store.d.mockTarget || 75;
   const weak = {}; store.d.errors.filter(e => e.kind === 'mock').forEach(e => { weak[e.lesson] = (weak[e.lesson] || 0) + 1; });
   main.innerHTML = `<h1>Tests</h1><p class="lead">Practice tests mix questions from lessons you’ve done, which is how real exams feel. Module tests open the next module. All results stay on this laptop.</p>

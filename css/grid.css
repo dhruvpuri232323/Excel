@@ -48,6 +48,9 @@
 [data-theme="dark"] .xg-c.hl { background: #3B3420; }
 .xg-sel { position: absolute; background: rgba(53, 87, 214, .10); border: 1px solid var(--xg-acc); pointer-events: none; z-index: 1; }
 .xg-act { position: absolute; border: 2px solid var(--xg-acc); box-sizing: border-box; pointer-events: none; z-index: 2; transition: left .08s, top .08s; }
+.xg-spill { position: absolute; display: none; border: 1px dashed #3557D6; pointer-events: none; z-index: 2; }
+.xg-spill.blocked { border-color: #C2255C; }
+.xg-finput.ghost { color: var(--xg-muted, #8A8FA3); }
 .xg-act.pulse { box-shadow: 0 0 0 4px rgba(242, 165, 65, .55); }
 .xg-handle { position: absolute; width: 8px; height: 8px; background: var(--xg-acc); border: 1px solid #fff; cursor: crosshair; z-index: 3; }
 .xg-fillghost { position: absolute; border: 1px dashed #6B6A63; display: none; pointer-events: none; z-index: 2; }

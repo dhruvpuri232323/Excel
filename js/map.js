@@ -1,7 +1,7 @@
 // The learning map: every module as a stop, the module tests as diamonds between them, the project and the final exam.
 // Wide screens get a winding path; phones get a single column.
 import { esc, popover, closePopover, toast } from './ui.js';
-import { moduleInfo, passedTest, projectOpen, examReqs, currentModule, nextStep, hasKey, fmtMin, isDone } from './access.js';
+import { moduleInfo, passedTest, projectOpen, examReqs, currentModule, nextStep, hasKey, fmtMin, isDone, comingSoon } from './access.js';
 import { store } from './store.js';
 
 const wrap = (s, n = 17) => { const w = s.split(' '); const out = ['']; for (const x of w) { if ((out.at(-1) + ' ' + x).trim().length > n && out.at(-1)) out.push(x); else out[out.length - 1] = (out.at(-1) + ' ' + x).trim(); } return out.slice(0, 3); };
@@ -10,9 +10,10 @@ function stops(c) {
   const cur = currentModule(c); const step = nextStep(c);
   const list = c.modules.map(m => { const i = moduleInfo(c, m); let sub = STATUS[i.status]; if (i.status === 'progress' || i.status === 'open') sub = `${i.done} of ${i.total} lessons`; if (i.status === 'done' || i.status === 'testedout') { const b = Math.max(...store.d.tests.filter(t => t.kind === 'module' && t.module === `${c.id}-m${m.n}`).map(t => t.pct)); sub += `, test ${b}%`; } if (i.status === 'locked') sub = i.reason === 'login' ? 'Needs a login' : `After the Module ${i.prev.n} test`;
     return { key: 'm' + m.n, label: String(m.n), name: m.title, sub, status: i.status, href: `#/module/${c.id}/${m.n}`, here: cur === m, info: i, m }; });
-  const pOpen = projectOpen(c); const R = examReqs(c); const examDone = (store.d.examAttempts[c.id] || []).some(a => a.passed);
-  list.push({ key: 'project', label: 'P', name: 'Course project', sub: R.projOk ? `Passed, ${R.proj.best}%` : pOpen ? 'Open' : `After Module ${c.modules.at(-1).n}`, status: R.projOk ? 'done' : pOpen ? 'open' : 'locked', href: `#/project/${c.id}`, here: step.kind === 'project' });
-  list.push({ key: 'exam', label: 'E', name: 'Final exam', sub: examDone ? 'Passed' : R.all ? 'Open' : 'After the project', status: examDone ? 'done' : R.all ? 'open' : 'locked', href: `#/exam/${c.id}`, here: step.kind === 'exam' });
+  for (const u of c.upcoming || []) list.push({ key: 'u' + u.n, label: String(u.n), name: u.title, sub: 'Coming soon', status: 'locked', href: `#/course/${c.id}`, soon: true });
+  const pOpen = projectOpen(c); const R = examReqs(c); const examDone = (store.d.examAttempts[c.id] || []).some(a => a.passed); const soon = comingSoon(c);
+  list.push({ key: 'project', label: 'P', name: 'Course project', sub: soon ? 'Coming soon' : R.projOk ? `Passed, ${R.proj.best}%` : pOpen ? 'Open' : `After Module ${c.modules.at(-1).n}`, status: R.projOk ? 'done' : pOpen ? 'open' : 'locked', href: `#/project/${c.id}`, here: step.kind === 'project' });
+  list.push({ key: 'exam', label: 'E', name: 'Final exam', sub: soon ? 'Coming soon' : examDone ? 'Passed' : R.all ? 'Open' : 'After the project', status: examDone ? 'done' : R.all ? 'open' : 'locked', href: `#/exam/${c.id}`, here: step.kind === 'exam' });
   return list;
 }
 export function mapSVG(c, width) {
@@ -51,7 +52,7 @@ function wireHover(el, c) {
 // a compact strip of module dots for the home page
 export function miniMap(c) {
   const cur = currentModule(c);
-  return `<div class="minimap" aria-label="Modules">${c.modules.map(m => { const i = moduleInfo(c, m); return `<a href="#/module/${c.id}/${m.n}" class="mm st-${i.status} ${cur === m ? 'here' : ''}" title="Module ${m.n}: ${esc(m.title)} · ${STATUS[i.status]}">${i.status === 'done' || i.status === 'testedout' ? '✓' : m.n}</a>`; }).join('<i></i>')}</div>`;
+  return `<div class="minimap" aria-label="Modules">${c.modules.map(m => { const i = moduleInfo(c, m); return `<a href="#/module/${c.id}/${m.n}" class="mm st-${i.status} ${cur === m ? 'here' : ''}" title="Module ${m.n}: ${esc(m.title)} · ${STATUS[i.status]}">${i.status === 'done' || i.status === 'testedout' ? '✓' : m.n}</a>`; }).concat((c.upcoming || []).map(u => `<span class="mm st-locked soon" title="Module ${u.n}: ${esc(u.title)} · coming soon">${u.n}</span>`)).join('<i></i>')}</div>`;
 }
 // U1: the first time the map shows a module that just opened, it pulses and says so
 function celebrate(el, c) {

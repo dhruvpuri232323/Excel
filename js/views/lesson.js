@@ -1,6 +1,6 @@
 // The lesson player: lecture → guided demo → lab → quiz → recap. Every part and slide has its own address,
 // so Back, bookmarks and shared links work. One-time tips point at things the first time they appear.
-import { register, getCourse, go, lockedPanel, keys, setFocus } from '../app.js';
+import { register, getCourse, go, lockedPanel, keys, setFocus, setActiveCourse } from '../app.js';
 import { store, today } from '../store.js';
 import { session, lesson as loadLesson, lessonMeta, assetURL } from '../content.js';
 import { esc, md, $, $$, mascot, line, toast, confetti, modal, bar, shuffle, download, crumbs, qhelp } from '../ui.js';
@@ -14,19 +14,23 @@ import { glossify, askTeacher } from '../help.js';
 import { tip, clearTip } from '../tour.js';
 import { t as tr } from '../i18n.js';
 import { toggleSaved, isSaved } from './extras.js';
+import { diagram, DIAGRAMS } from '../visuals.js';
 
 let grids = [];
+// one listener for the whole app: a click outside an open menu closes it
+document.addEventListener('click', e => { if (!e.target.closest('.menu')) document.querySelectorAll('.menu-pop').forEach(p => { p.hidden = true; const b = p.parentElement.querySelector('[aria-expanded]'); if (b) b.setAttribute('aria-expanded', 'false'); }); });
 const killGrids = () => { grids.forEach(g => g.destroy()); grids = []; };
 export async function visual(v) {
   if (!v) return '';
   if (v.type === 'shot') return `<figure class="shot"><button class="zoomable" type="button" aria-label="Enlarge screenshot"><img data-asset="${v.file}" alt="${esc(v.alt || v.caption || '')}" data-callouts='${esc(JSON.stringify(v.callouts || []))}' data-caption="${esc(v.caption || '')}"><span class="zoomhint" aria-hidden="true">⤢ Enlarge</span></button><figcaption>${md(v.caption || '')}</figcaption></figure>`;
   if (v.type === 'grid') return `<div class="mini-grid" data-grid='${esc(JSON.stringify(v))}'></div>${v.caption ? `<p class="cap">${md(v.caption)}</p>` : ''}`;
   if (v.type === 'formula') return `<div class="formula-anat"><div class="ftext">${v.parts.map((p, i) => `<span class="fp c${i % 6}">${esc(p[0])}</span>`).join('')}</div><ul>${v.parts.filter(p => p[1]).map(p => `<li><span class="fp c${v.parts.indexOf(p) % 6}">${esc(p[0])}</span> ${md(p[1])}</li>`).join('')}</ul></div>`;
-  if (v.type === 'keys') return `<table class="keys"><tbody>${v.items.map(([k, w]) => `<tr><td>${md('[[' + k + ']]')}</td><td>${md(w)}</td></tr>`).join('')}</tbody></table>`;
+  if (v.type === 'keys') return `<table class="keys vkeys"><tbody>${v.items.map(([k, w]) => `<tr><td>${md('[[' + k + ']]')}</td><td>${md(w)}</td></tr>`).join('')}</tbody></table>`;
   if (v.type === 'table') return `<table class="tbl"><thead><tr>${v.head.map(h => `<th>${md(h)}</th>`).join('')}</tr></thead><tbody>${v.rows.map(r => `<tr>${r.map(c => `<td>${md(String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-  if (v.type === 'tip') return `<div class="tip">${mascot('thinking', 'xs')}<p>${md(v.text)}</p></div>`;
+  if (v.type === 'tip') return `<div class="tip"><span class="tip-i" aria-hidden="true">💡</span><p>${md(v.text)}</p></div>`;
   if (v.type === 'compare') return `<div class="compare"><div class="bad"><b>✗ ${md(v.bad.title)}</b><p>${md(v.bad.text)}</p></div><div class="good"><b>✓ ${md(v.good.title)}</b><p>${md(v.good.text)}</p></div></div>`;
-  if (v.type === 'steps') return `<ol class="steps">${v.items.map(s => `<li>${md(s)}</li>`).join('')}</ol>`;
+  if (v.type === 'steps') return `<ol class="steps vsteps">${v.items.map((s, i) => `<li><span class="stepn">${i + 1}</span><div>${md(s)}</div></li>`).join('')}</ol>`;
+  if (DIAGRAMS.includes(v.type)) return diagram(v);
   return '';
 }
 // screenshots open full size, with zoom and the numbered callouts listed beside them (F2)
@@ -49,25 +53,30 @@ register('lesson', async (main, courseId, id, partName, pos) => {
   killGrids(); clearTip();
   const c = await getCourse(courseId); const meta = lessonMeta(c, id); if (!meta) throw new Error('No such lesson');
   if (!canOpenLesson(c, meta)) { const i = moduleInfo(c, meta.module); main.innerHTML = i.reason === 'login' ? lockedPanel() : lockedPanel('test', `<h2>Module ${meta.module.n} isn’t open yet</h2><p>Pass the Module ${i.prev.n} test to open it, or test out of Module ${meta.module.n} if you already know it.</p><div class="row"><a class="btn" href="#/module/${c.id}/${i.prev.n}">Go to Module ${i.prev.n}</a><a class="btn ghost" href="#/mtest/${c.id}/${meta.module.n}">Test out of Module ${meta.module.n}</a></div>`); return; }
+  setActiveCourse(c.id);
   const L = await loadLesson(c, id); const st = store.lesson(id); if (st.status === 'new') { st.status = 'started'; st.startedAt = new Date().toISOString(); store.save(); }
   const reach = () => st.status === 'done' ? 4 : Math.max(st.maxPart || 0, st.part || 0);
   // the address decides the part; a part not reached yet sends you to the furthest one you have reached
   let pi = PARTS.indexOf(partName); if (pi < 0) { location.replace(`#/lesson/${c.id}/${id}/${PARTS[st.part || 0]}`); return; }
   if (pi > reach()) { toast(`Finish the ${PART_NAMES[reach()].toLowerCase()} first: the ${PART_NAMES[pi].toLowerCase()} opens after it.`); location.replace(`#/lesson/${c.id}/${id}/${PARTS[reach()]}`); return; }
-  st.part = pi; if (pi === 0 && pos) { const [s, k] = pos.split('-').map(n => (+n || 1) - 1); if (L.lecture[s]) { st.seg = s; st.slide = Math.min(k, L.lecture[s].slides.length); } }
+  st.part = pi; if (pi === 0 && pos && pos !== 'notes') { const [s, k] = pos.split('-').map(n => (+n || 1) - 1); if (L.lecture[s]) { st.seg = s; st.slide = Math.min(k, L.lecture[s].slides.length); } }
   store.save();
   const all = lessonList(c); const idx = all.findIndex(l => l.id === id); const next = all[idx + 1], prev = all[idx - 1];
   const partHref = i => `#/lesson/${c.id}/${id}/${PARTS[i]}`;
   const upNext = i => i < 4 ? `${tr(PART_NAMES[i + 1])} · about ${partMinutes(meta, i + 1)} min` : '';
   const advance = () => { const n = Math.min(4, st.part + 1); st.maxPart = Math.max(st.maxPart || 0, n); store.save(); go(partHref(n)); };
   const saved = isSaved('lesson:' + id);
-  main.innerHTML = `<div class="lesson">
-    <header class="lesson-head">${crumbs([[c.title, '#/course/' + c.id], [`Module ${meta.module.n}: ${meta.module.title}`, `#/module/${c.id}/${meta.module.n}`], [`Lesson ${lessonNo(meta)}`, ''], [tr(PART_NAMES[pi])]])}
-      <p class="eyebrow">${esc(lessonLabel(meta))} · about ${meta.minutes} min</p><h1>${esc(L.title)}</h1>
-      <nav class="parts" aria-label="Lesson parts">${PART_NAMES.map((p, i) => { const can = i <= reach(); return `<a class="part ${i === pi ? 'on' : ''} ${i < reach() || st.status === 'done' ? 'done' : ''} ${can ? '' : 'off'}" href="${can ? partHref(i) : '#'}" ${can ? '' : `aria-disabled="true" title="Finish the ${PART_NAMES[i - 1].toLowerCase()} to open the ${p.toLowerCase()}"`} data-p="${i}">${i + 1}. ${tr(p)}<small>${partMinutes(meta, i)} min</small></a>`; }).join('')}${qhelp('parts')}</nav>
-      <div class="lesson-tools"><button class="btn ghost sm" id="outlineBtn" type="button">☰ ${tr('Outline')}</button><button class="btn ghost sm" id="res" type="button">${tr('Downloads & screenshots')}</button><button class="btn ghost sm" id="notesBtn" type="button">✐ ${tr('Notes')}${store.d.notes[id] ? ' ·' : ''}</button><button class="btn ghost sm" id="bm" type="button" aria-pressed="${saved}">${saved ? '★ Saved' : '☆ Save lesson'}</button><button class="btn ghost sm" id="focusBtn" type="button" title="Hide everything else (F). Esc to leave.">⤢ ${tr('Full screen')}</button><button class="btn ghost sm" type="button" data-ask="1" data-where="${esc(lessonLabel(meta) + ': ' + L.title + ', ' + PART_NAMES[pi])}">${tr('Ask your teacher')}</button></div></header>
+  main.innerHTML = `<div class="lesson v3">
+    <header class="lesson-head">${crumbs([[c.title, '#/course/' + c.id], [`Module ${meta.module.n}: ${meta.module.title}`, `#/module/${c.id}/${meta.module.n}`], [`Lesson ${lessonNo(meta)}`]])}
+      <div class="lh-row"><div class="lh-title"><h1>${esc(L.title)}</h1><span class="lh-meta">${esc(lessonLabel(meta))} · about ${meta.minutes} min</span></div>
+        <div class="lh-tools"><button class="iconbtn" id="outlineBtn" type="button" title="Every slide and task in this lesson">☰<span>${tr('Outline')}</span></button><button class="iconbtn" id="focusBtn" type="button" title="Hide everything else (F). Esc to leave.">⤢<span>${tr('Full screen')}</span></button>
+          <div class="menu"><button class="iconbtn" id="moreBtn" type="button" aria-haspopup="true" aria-expanded="false">⋯<span>More</span></button><div class="menu-pop" id="morePop" hidden>
+            <a href="#/lesson/${c.id}/${id}/lecture/notes">📖 Read the lecture as notes</a><button type="button" id="res">⬇ ${tr('Downloads & screenshots')}</button><button type="button" id="notesBtn">✐ ${tr('Notes')}${store.d.notes[id] ? ' ·' : ''}</button><button type="button" id="bm" aria-pressed="${saved}">${saved ? '★ Saved' : '☆ Save lesson'}</button><button type="button" data-ask="1" data-where="${esc(lessonLabel(meta) + ': ' + L.title + ', ' + PART_NAMES[pi])}">✉ ${tr('Ask your teacher')}</button></div></div></div></div>
+      <nav class="parts stepper" aria-label="Lesson parts">${PART_NAMES.map((p, i) => { const can = i <= reach(); const done = i < reach() || st.status === 'done'; return `<a class="part ${i === pi ? 'on' : ''} ${done ? 'done' : ''} ${can ? '' : 'off'}" href="${can ? partHref(i) : '#'}" ${can ? '' : `aria-disabled="true" title="Finish the ${PART_NAMES[i - 1].toLowerCase()} to open the ${p.toLowerCase()}"`} ${i === pi ? 'aria-current="step"' : ''} data-p="${i}"><span class="pn">${done && i !== pi ? '✓' : i + 1}</span><span class="pl">${tr(p)}<small>${partMinutes(meta, i)} min</small></span></a>`; }).join('<i class="pline" aria-hidden="true"></i>')}${qhelp('parts')}</nav></header>
     <div id="partBody"></div></div>`;
   $$('.part.off').forEach(a => a.onclick = e => { e.preventDefault(); toast(a.title); });
+  const pop = $('#morePop'), mb = $('#moreBtn'); const closeMenu = () => { pop.hidden = true; mb.setAttribute('aria-expanded', 'false'); };
+  mb.onclick = e => { e.stopPropagation(); pop.hidden = !pop.hidden; mb.setAttribute('aria-expanded', String(!pop.hidden)); };  $$('a, button', pop).forEach(x => x.addEventListener('click', () => setTimeout(closeMenu, 0)));
   $('#bm').onclick = () => { toggleSaved({ type: 'lesson', key: 'lesson:' + id, course: c.id, lesson: id, title: L.title }); const on = isSaved('lesson:' + id); $('#bm').textContent = on ? '★ Saved' : '☆ Save lesson'; toast(on ? 'Saved. Find it in My stuff › Saved.' : 'Removed from Saved'); };
   $('#notesBtn').onclick = () => { const m = modal(`<h2>Your notes · ${esc(L.title)}</h2><textarea id="nt" rows="12" class="notes" placeholder="Write what you want to remember. Notes stay on this laptop, go into your backup, and all appear in My stuff › My notes.">${esc(store.d.notes[id] || '')}</textarea><div class="row end"><a class="btn ghost" href="#/notes">All my notes</a><button class="btn" id="ns" type="button">${tr('Save')}</button></div>`); $('#ns', m.el).onclick = () => { store.d.notes[id] = $('#nt', m.el).value; store.d.notesAt = store.d.notesAt || {}; store.d.notesAt[id] = new Date().toISOString(); store.save(); m.close(); toast('Notes saved'); }; };
   $('#res').onclick = () => resources(c, L);
@@ -77,7 +86,7 @@ register('lesson', async (main, courseId, id, partName, pos) => {
   keys.handler = e => { if (e.key === 'f' || e.key === 'F') { e.preventDefault(); focusToggle(); } else if ((e.key === 'n' || e.key === 'N') && st.part < reach()) { e.preventDefault(); go(partHref(st.part + 1)); } else if (keys.part) keys.part(e); };
   keys.part = null;
   const body = $('#partBody');
-  if (pi === 0) await lecture(body); else if (pi === 1) await demo(body); else if (pi === 2) await lab(body); else if (pi === 3) await quiz(body); else await recap(body);
+  if (pi === 0 && pos === 'notes') await notes(body); else if (pi === 0) await lecture(body); else if (pi === 1) await demo(body); else if (pi === 2) await lab(body); else if (pi === 3) await quiz(body); else await recap(body);
   setTimeout(() => tip('parts', $('.parts')), 400);
 
   // ---------- 1. lecture ----------
@@ -86,11 +95,13 @@ register('lesson', async (main, courseId, id, partName, pos) => {
     const seg = segs[st.seg]; const atCheck = st.slide >= seg.slides.length; const slide = seg.slides[Math.min(st.slide, seg.slides.length - 1)];
     const skey = `slide:${id}:${st.seg}-${st.slide}`;
     history.replaceState(null, '', `#/lesson/${c.id}/${id}/lecture/${st.seg + 1}-${Math.min(st.slide, seg.slides.length) + 1}`);
-    body.innerHTML = `<div class="card lecture"><div class="row between"><p class="eyebrow">Segment ${st.seg + 1} of ${segs.length}: ${esc(seg.title)} ${qhelp('segment')}</p><div class="row"><div class="dots" aria-label="Slide ${Math.min(st.slide + 1, seg.slides.length)} of ${seg.slides.length}">${seg.slides.map((s, i) => `<i class="${i === st.slide ? 'on' : i < st.slide ? 'done' : ''}"></i>`).join('')}<i class="q ${atCheck ? 'on' : ''}" title="Quick check">✓</i></div>${atCheck ? '' : `<button class="mini save-slide" type="button" aria-pressed="${isSaved(skey)}" title="Save this slide">${isSaved(skey) ? '★' : '☆'}</button>`}</div></div>
-      ${atCheck ? checkQuestion(seg.check) : `<div class="slide">${mascot(slide.pose || 'teaching', 'slide-m')}<div class="slide-body"><h2>${md(slide.h)}</h2>${(slide.p || []).map(p => `<p>${md(p)}</p>`).join('')}${await visual(slide.visual)}</div></div>`}
-      <div class="row between nav-row"><button class="btn ghost" id="back" type="button" ${st.seg === 0 && st.slide === 0 ? 'disabled' : ''}>← ${tr('Back')}</button>${atCheck ? '' : `<button class="btn" id="fwd" type="button">${st.slide === seg.slides.length - 1 ? 'Check yourself →' : tr('Next') + ' →'}</button>`}</div>
-      <details class="fulltext"><summary>Read the whole lecture as text</summary>${segs.map(s => `<h3>${esc(s.title)}</h3>${s.slides.map(sl => `<h4>${md(sl.h)}</h4>${(sl.p || []).map(p => `<p>${md(p)}</p>`).join('')}`).join('')}`).join('')}</details></div>`;
-    await hydrate(body, c.id); glossify($('.slide-body', body) || $('.checkq', body));
+    const total = segs.reduce((n, sg) => n + sg.slides.length + 1, 0); const at = segs.slice(0, st.seg).reduce((n, sg) => n + sg.slides.length + 1, 0) + Math.min(st.slide, seg.slides.length) + 1;
+    const steps = segs.map((sg, si) => `<div class="lseg ${si === st.seg ? 'on' : si < st.seg ? 'done' : ''}"><span class="lseg-t">${si < st.seg ? '✓ ' : ''}${esc(sg.title)}</span><span class="lseg-dots">${sg.slides.map((x, k) => `<i class="${si < st.seg || (si === st.seg && k < st.slide) ? 'done' : si === st.seg && k === st.slide ? 'on' : ''}"></i>`).join('')}<i class="q ${si < st.seg ? 'done' : si === st.seg && atCheck ? 'on' : ''}" title="Quick check"></i></span></div>`).join('');
+    body.innerHTML = `<div class="card lecture v3"><div class="lec-top"><div class="lec-steps" aria-label="Lecture progress">${steps}</div><div class="lec-right"><span class="lec-count">${atCheck ? 'Quick check' : `Slide ${at} of ${total}`}</span>${atCheck ? '' : `<button class="mini save-slide" type="button" aria-pressed="${isSaved(skey)}" title="Save this slide">${isSaved(skey) ? '★' : '☆'}</button>`}</div></div>
+      ${atCheck ? checkQuestion(seg.check) : await slideHTML(slide)}
+      <div class="lec-nav"><button class="btn ghost" id="back" type="button" ${st.seg === 0 && st.slide === 0 ? 'disabled' : ''}>← ${tr('Back')}</button><div class="lec-prog" aria-hidden="true"><i style="width:${Math.round(at / total * 100)}%"></i></div>${atCheck ? '<span class="muted small">Pick an answer</span>' : `<button class="btn" id="fwd" type="button">${st.slide === seg.slides.length - 1 ? 'Quick check →' : tr('Next') + ' →'}</button>`}</div></div>
+      <p class="readrow"><a href="#/lesson/${c.id}/${id}/lecture/notes">📖 Prefer reading? Open the whole lecture as one page of notes</a></p>`;
+    await hydrate(body, c.id); glossify($('.vs-side', body) || $('.slide-body', body) || $('.checkq', body));
     const save = () => store.save();
     const back = () => { if (st.slide > 0) st.slide--; else if (st.seg > 0) { st.seg--; st.slide = segs[st.seg].slides.length; } else return; save(); lecture(body); };
     const fwd = () => { if (atCheck) return; st.slide++; save(); lecture(body); };
@@ -99,7 +110,47 @@ register('lesson', async (main, courseId, id, partName, pos) => {
     keys.part = e => { if (e.key === 'ArrowRight') { e.preventDefault(); fwd(); } if (e.key === 'ArrowLeft') { e.preventDefault(); back(); } };
     if (atCheck) wireCheck(body, seg.check, () => { if (st.seg < segs.length - 1) { st.seg++; st.slide = 0; save(); lecture(body); scrollTo(0, 0); } else { st.seg = 0; st.slide = 0; advance(); } }, 'Next segment →', st.seg === segs.length - 1 ? `On to the demo · about ${partMinutes(meta, 1)} min →` : null);
   }
-  function checkQuestion(q) { return `<div class="checkq">${mascot('thinking', 'slide-m')}<div><p class="eyebrow">Quick check</p><h2>${md(q.q)}</h2><div class="opts">${q.options.map((o, i) => `<button class="opt" data-i="${i}" type="button">${md(o)}</button>`).join('')}</div><div class="feedback" role="status"></div></div></div>`; }
+  // the lecture as one page of notes: what you'll learn, the plan, then each part in order with its pictures,
+  // a check question with the answer tucked away, and the summary
+  async function notes(body) {
+    const segs = L.lecture; const plain = t => String(t).replace(/\*\*|`/g, '').replace(/[.:]$/, '');
+    const low = t => { const x = plain(t); return /^[A-Z][a-z]/.test(x) ? x[0].toLowerCase() + x.slice(1) : x; };
+    const list = a => a.length < 2 ? a.join('') : a.slice(0, -1).join('; ') + '; and ' + a.at(-1);
+    const words = segs.reduce((n, sg) => n + sg.slides.reduce((m, sl) => m + (sl.p || []).join(' ').split(/\s+/).length, 0), 0) * (segs.some(sg => sg.slides.some(sl => sl.say)) ? 1.4 : 1);
+    const num = n => ['', 'one idea', 'two ideas', 'three ideas', 'four ideas', 'five ideas'][n] || n + ' ideas'; const opener = (si, n) => si === 0 ? `First, ${num(n)}, in this order:` : si === segs.length - 1 ? `Finally, ${num(n)} to finish:` : `Then ${num(n)}:`;
+    const parts = [];
+    for (const [si, sg] of segs.entries()) {
+      const steps = [];
+      for (const [k, sl] of sg.slides.entries()) steps.push(`<div class="r-step" id="n${si + 1}-${k + 1}"><div class="r-head"><span class="r-num">${si + 1}.${k + 1}</span><h4>${md(sl.h)}</h4></div>${sl.say || (sl.points || []).length ? `${sl.say ? `<p class="r-say">${md(sl.say)}</p>` : ''}<ul class="vs-points">${(sl.points || []).map(p => `<li>${md(p)}</li>`).join('')}</ul>` : (sl.p || []).map(p => `<p>${md(p)}</p>`).join('')}${sl.visual ? `<div class="r-fig"><span class="r-figlab">Figure ${si + 1}.${k + 1}</span>${await visual(sl.visual)}</div>` : ''}${sl.real ? `<div class="vs-real"><span class="vs-real-i" aria-hidden="true">${esc(sl.real.icon || '🏢')}</span><div><span class="vs-tag">In real life</span><b>${md(sl.real.who)}</b><p>${md(sl.real.text)}</p></div></div>` : ''}${(sl.terms || []).length ? `<div class="vs-terms inline"><span class="vs-tag">📖 Words to know</span>${sl.terms.map(([t, d]) => `<div class="vs-term"><b>${md(t)}</b><span>${md(d)}</span></div>`).join('')}</div>` : ''}</div>`);
+      const q = sg.check;
+      parts.push(`<section class="r-part"><p class="eyebrow">Part ${si + 1} of ${segs.length}</p><h3>${esc(sg.title)}</h3><p class="r-lead">${opener(si, sg.slides.length)}</p><ol class="r-glance">${sg.slides.map((sl, k) => `<li><a href="#n${si + 1}-${k + 1}" data-jump="n${si + 1}-${k + 1}">${esc(plain(sl.h))}</a></li>`).join('')}</ol>${steps.join('')}
+        <aside class="r-check"><b>Check yourself</b><p>${md(q.q)}</p><ol type="A">${q.options.map(o => `<li>${md(o)}</li>`).join('')}</ol><details><summary>Show the answer</summary><p><b>${String.fromCharCode(65 + q.answer)}. ${md(q.options[q.answer])}</b> ${md(q.explain || '')}</p></details></aside></section>`);
+    }
+    body.innerHTML = `<article class="card reader"><div class="row between noprint"><a class="btn ghost sm" href="#/lesson/${c.id}/${id}/lecture">← Back to the slides</a><button class="btn ghost sm" type="button" id="prn">🖨 Print or save as PDF</button></div>
+      <header class="r-top"><p class="eyebrow">Lecture notes · ${esc(lessonLabel(meta))} · about ${Math.max(3, Math.round(words / 180))} minutes to read</p><h2>${esc(L.title)}</h2><p class="lead">${md(L.summary || '')}</p></header>
+      <section class="r-intro"><div><h3>By the end, you can</h3><ul class="ticks">${(L.objectives || []).map(o => `<li>${md(o)}</li>`).join('')}</ul></div>
+        <div><h3>How this lecture runs</h3><ol class="r-plan">${segs.map((sg, si) => `<li><a href="#n${si + 1}-1" data-jump="n${si + 1}-1"><b>${esc(sg.title)}</b></a><small>${esc(sg.slides.map(sl => plain(sl.h)).join(' · '))}</small></li>`).join('')}<li><b>Summary</b><small>What to remember</small></li></ol></div></section>
+      ${parts.join('')}
+      <section class="r-part r-sum"><p class="eyebrow">Summary</p><h3>What you can do now</h3><ul class="ticks">${L.recap.points.map(p => `<li>${md(p)}</li>`).join('')}</ul><div class="cheat"><b>Keep this line:</b> ${md(L.recap.cheat)}</div>
+        <div class="row noprint"><a class="btn" href="#/lesson/${c.id}/${id}/lecture">Back to the slides</a>${reach() >= 1 ? `<a class="btn ghost" href="#/lesson/${c.id}/${id}/demo">On to the demo →</a>` : '<span class="muted small">Finish the slides and their checks to open the demo.</span>'}</div></section></article>`;
+    await hydrate(body, c.id); glossify(body, 10);
+    $('#prn').onclick = () => print();
+    $$('[data-jump]', body).forEach(a => a.onclick = e => { e.preventDefault(); const el = document.getElementById(a.dataset.jump); el && el.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  }
+  // a visual-first slide: the idea in one line, the diagram, two or three short points, a real-life example, words to know
+  async function slideHTML(sl) {
+    const vis = await visual(sl.visual); const wide = sl.visual && (sl.visual.wide || ['flow', 'beforeafter', 'icons', 'bignum', 'shot', 'table', 'compare', 'layers', 'analogy', 'anatomy'].includes(sl.visual.type));
+    if (!sl.say && !(sl.points || []).length) return `<div class="vslide legacy"><h2 class="vs-h">${md(sl.h)}</h2><div class="vs-legacy slide-body">${(sl.p || []).map(p => `<p>${md(p)}</p>`).join('')}</div>${vis ? `<div class="vs-vis">${vis}</div>` : ''}</div>`;
+    const pts = (sl.points || []).length ? `<ul class="vs-points">${sl.points.map(p => `<li>${md(p)}</li>`).join('')}</ul>` : '';
+    const terms = (sl.terms || []).length ? `<div class="vs-terms"><span class="vs-tag">📖 Words to know</span>${sl.terms.map(([t, d]) => `<div class="vs-term"><b>${md(t)}</b><span>${md(d)}</span></div>`).join('')}</div>` : '';
+    const real = sl.real ? `<div class="vs-real"><span class="vs-real-i" aria-hidden="true">${esc(sl.real.icon || '🏢')}</span><div><span class="vs-tag">In real life</span><b>${md(sl.real.who)}</b><p>${md(sl.real.text)}</p></div></div>` : '';
+    // narrow diagrams sit beside the points; wide ones span the slide with the points underneath
+    const bodyHTML = !vis ? `<div class="vs-body novis"><div class="vs-side">${pts}${real}${terms}</div></div>`
+      : wide ? `<div class="vs-body wide"><div class="vs-vis">${vis}</div><div class="vs-side"><div>${pts}</div><div>${real}${terms}</div></div></div>`
+      : `<div class="vs-body"><div class="vs-vis">${vis}${terms}</div><div class="vs-side">${pts}${real}</div></div>`;
+    return `<div class="vslide"><h2 class="vs-h">${md(sl.h)}</h2>${sl.say ? `<p class="vs-say">${md(sl.say)}</p>` : ''}${bodyHTML}</div>`;
+  }
+  function checkQuestion(q) { return `<div class="checkq v3"><div><p class="eyebrow">✓ Quick check · one question to lock it in</p><h2>${md(q.q)}</h2><div class="opts">${q.options.map((o, i) => `<button class="opt" data-i="${i}" type="button">${md(o)}</button>`).join('')}</div><div class="feedback" role="status"></div></div></div>`; }
   function wireCheck(body, q, onNext, nextLabel, lastLabel) {
     let misses = 0; const fb = $('.feedback', body);
     const right = (b, shown) => { b.classList.add('right'); fb.innerHTML = `<p class="ok">✓ ${shown ? 'The answer is: ' + md(q.options[q.answer]) + '. ' : ''}${md(q.explain)}</p><button class="btn" id="cont" type="button">${lastLabel || nextLabel}</button>`; $('#cont', body).onclick = onNext; $('#cont', body).focus(); $$('.opt', body).forEach(x => x.disabled = true); };
@@ -136,6 +187,7 @@ register('lesson', async (main, courseId, id, partName, pos) => {
       else if (s.do === 'fill') await g.demoFill(s.from, s.to);
       else if (s.do === 'style') await g.demoStyle(s.at, s.style);
       else if (s.do === 'formulas') { g.showFormulas = !g.showFormulas; g.render(); await wait(900); }
+      else if (s.do === 'explain') { g.select(s.at); await wait(500); g.explain(); await wait(1800); }
       else if (s.do === 'sort') { g.select(s.at); await wait(400); g.wb.sortRegion(0, g.wb.currentRegion(0, g.sel.ar, g.sel.ac), [{ col: g.sel.ac, desc: !!s.desc }], true); g.render(); await wait(700); }
       else if (s.do === 'width') { g.sheet.widths[s.col.charCodeAt(0) - 65] = s.px; g.render(); await wait(700); }
       else if (s.do === 'insertRow') { g.wb.insertRows(0, s.row - 1, 1); g.render(); await wait(700); }

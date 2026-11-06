@@ -2,7 +2,7 @@
 import { store, today } from './store.js';
 import { session, catalog, course as loadCourse, getJSON } from './content.js';
 import { esc, $, $$, toast, mascot, modal, popover, closePopover, setKeyMap, md, confirmBox } from './ui.js';
-import { login } from './auth.js';
+import { login, aesKey, decryptBytes, b64 } from './auth.js';
 import { dayNum } from './srs.js';
 import { site, loadSite } from './site.js';
 import { t } from './i18n.js';
@@ -75,7 +75,7 @@ export function refreshChrome() {
   $('#topUser').innerHTML = `<a class="who" href="#/settings/profile" title="Your profile">${mascot(store.d.profile.avatar || 'avatar', 'av keep')}<span class="tl">${esc(nm)}</span>${session.isAdmin && !store.preview ? '<span class="tag tl">admin</span>' : ''}</a>${session.signedIn ? `<button class="btn ghost sm" id="signOut" type="button">${esc(t('Sign out'))}</button>` : `<a class="btn sm" href="#/login">${store.d.settings.lang === 'hi' ? esc(t('Student sign-in')) : '<span class="tl">Student sign-in</span><span class="ph">Sign in</span>'}</a>`}`;
   const so = $('#signOut'); if (so) so.onclick = async () => { if (store.preview) store.endPreview(); session.clear(); store.load('guest'); applyTheme(); toast('Signed out. The free lessons are still open.'); go('#/home'); };
   $('.admin-link').hidden = !session.isAdmin;
-  $('#sideFoot').innerHTML = `<small>${store.preview ? 'Preview mode: nothing is saved' : session.isAdmin ? 'Signed in as admin' : session.signedIn ? `${t('Signed in')}: ${esc(session.s.email)}` : `${t('Free access')}: Modules 1–2 and every tool`}</small>`;
+  $('#sideFoot').innerHTML = `<small>${store.preview ? 'Preview mode: nothing is saved' : session.isAdmin ? 'Signed in as admin' : session.signedIn ? `${t('Signed in')}: ${esc(session.s.email)}` : `${t('Free access')}: the free modules of every course, and every tool`}</small>`;
   drawBanner();
 }
 function drawBanner() {
@@ -102,7 +102,7 @@ async function route() {
   try { await v(main, ...rest.map(decodeURIComponent)); } catch (e) { console.error(e); main.innerHTML = e.message === 'locked' ? lockedPanel() : `<div class="card"><h2>Something went wrong</h2><p>${esc(e.message)}</p><div class="row"><a class="btn" href="#/home">${t('Go home')}</a><button class="btn ghost" id="errAsk" type="button">${t('Ask your teacher')}</button></div></div>`; const ea = $('#errAsk'); if (ea) ea.onclick = () => askTeacher({ where: location.hash, what: 'I saw this message: ' + e.message }); }
   refreshChrome(); if (!main.contains(document.activeElement)) main.focus({ preventScroll: true }); scrollTo(0, 0);
 }
-export const lockedPanel = (why = 'login', extra = '') => `<div class="card locked-card">${mascot('thinking')}<div>${why === 'login' ? `<h2>This part is for enrolled students</h2><p>Your teacher gives each student an email and password. With a login, Modules 3–8 open one at a time as you pass each module test, plus the course project, the final exam and the certificate. Modules 1–2 and every study tool stay free.</p><div class="row"><a class="btn" href="#/login">Student sign-in</a><button class="btn ghost" type="button" data-ask="login">Ask your teacher for a login</button><a class="btn ghost" href="#/course/c1">See the free lessons</a></div>` : extra}</div></div>`;
+export const lockedPanel = (why = 'login', extra = '') => `<div class="card locked-card">${mascot('thinking')}<div>${why === 'login' ? `<h2>This part is for enrolled students</h2><p>Your teacher gives each student an email and password. With a login, the rest of each course you’re enrolled in opens one module at a time as you pass each module test, then the course project, the final exam and the certificate. The free modules and every study tool stay open to everyone.</p><div class="row"><a class="btn" href="#/login">Student sign-in</a><button class="btn ghost" type="button" data-ask="login">Ask your teacher for a login</button><a class="btn ghost" href="#/courses">See the free lessons</a></div>` : extra}</div></div>`;
 document.addEventListener('click', e => {
   const q = e.target.closest('.qhelp'); if (q) { e.preventDefault(); popover(q, `<p>${md(HELP_TIPS[q.dataset.help] || '')}</p>`); return; }
   const g = e.target.closest('.gl'); if (g) { showGloss(g); return; }
@@ -137,7 +137,7 @@ register('login', async main => {
     e.preventDefault(); const f = new FormData(e.target); const btn = e.target.querySelector('button.btn:not(.ghost)'); btn.disabled = true; btn.textContent = 'Checking…'; $('#lerr').textContent = '';
     try {
       const p = await login(f.get('email'), f.get('pw')); const guest = JSON.parse(JSON.stringify(store.d)); const guestHas = Object.keys(guest.lessons).length + Object.keys(guest.cards).length > 0;
-      session.set({ id: p.id, email: p.email, name: p.name, role: p.role, keys: p.keys, adminKey: p.adminKey || null, expires: p.expires || null, open: !!p.open }, !!f.get('rem'));
+      session.set({ id: p.id, email: p.email, name: p.name, role: p.role, keys: p.keys, adminKey: p.adminKey || null, expires: p.expires || null, open: !!p.open }, !!f.get('rem')); await topUpAdminKeys();
       store.load(session.profileId()); const fresh = !Object.keys(store.d.lessons).length && !Object.keys(store.d.cards).length;
       if (guestHas && fresh && await confirmBox(`<b>Bring your progress with you?</b><br>You did some lessons on this laptop before signing in (${Object.values(guest.lessons).filter(l => l.status === 'done').length} finished). Sheetah can copy that progress into your login.`, 'Bring it across', 'Start fresh')) { Object.assign(store.d, guest); }
       if (!store.d.name) store.d.name = (p.name || '').split(' ')[0] || guest.name; store.save(); applyTheme();
@@ -146,13 +146,27 @@ register('login', async main => {
   };
 });
 
-export async function getCourse(id = 'c1') { return loadCourse(id); }
+// The course the learner is working on now (set when they open one of its lessons). Home, the study plan and notes follow it.
+export const liveCourses = () => ((app.catalog && app.catalog.courses) || []).filter(x => x.status === 'live');
+export const activeCourseId = () => { const a = store.d.active; const live = liveCourses().map(x => x.id); return a && (!live.length || live.includes(a)) ? a : 'c1'; };
+export function setActiveCourse(id) { if (id && store.d.active !== id && !store.preview) { store.d.active = id; store.save(); } }
+export async function getCourse(id) { return loadCourse(id || activeCourseId()); }
+// Each course key is also published encrypted with the admin key, so the admin's login opens a new course
+// by itself, without a new password or a new students.json.
+export async function topUpAdminKeys() {
+  if (!session.isAdmin || !session.s.adminKey) return;
+  const cat = app.catalog || await catalog().catch(() => ({ courses: [] })); let changed = false;
+  for (const x of (cat.courses || []).filter(x => x.status === 'live' && !session.has(x.id))) {
+    try { const r = await fetch(`content/${x.id}/s/admin.bin`, { cache: 'no-cache' }); if (!r.ok) continue; const raw = await decryptBytes(await aesKey(session.s.adminKey), await r.arrayBuffer()); session.s.keys = { ...session.s.keys, [x.id]: b64(raw) }; changed = true; } catch (e) { /* not published yet */ }
+  }
+  if (changed) session.set(session.s, !!localStorage.getItem('sheetah:session'));
+}
 export async function boot() {
   session.load(); store.load(session.profileId()); applyTheme(); matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
   shell(); applyTheme();
   const lib = getJSON('content/library.json').then(l => { setKeyMap(l.shortcuts); setGlossary(l.glossary); }).catch(() => {});
   await Promise.all([Promise.race([loadSite(), new Promise(r => setTimeout(r, 1500))]), lib]);
-  app.catalog = await catalog().catch(() => ({ courses: [] }));
+  app.catalog = await catalog().catch(() => ({ courses: [] })); await topUpAdminKeys();
   store.on(() => refreshChrome()); addEventListener('hashchange', route); await route();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
   reminders();

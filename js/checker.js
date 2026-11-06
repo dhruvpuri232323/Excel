@@ -2,6 +2,8 @@
 import { Workbook, parseRange, parseAddr, addr, rangeStr, shiftFormula, isErr, eachCell, compareValues, colIndex } from './engine.js';
 
 const near = (a, b) => typeof a === 'number' && typeof b === 'number' ? Math.abs(a - b) <= 1e-6 * Math.max(1, Math.abs(b)) : (typeof a === 'string' && typeof b === 'string' ? a.trim().toLowerCase() === b.trim().toLowerCase() : a === b || (isErr(a) && isErr(b) && a.code === b.code));
+// text-cleaning tasks need the exact text (spaces and capitals matter); elsewhere small differences are forgiven
+const same = (exact, a, b) => exact && typeof a === 'string' && typeof b === 'string' ? a === b : near(a, b);
 const show = v => v === null || v === undefined ? 'blank' : isErr(v) ? v.code : typeof v === 'number' ? String(+v.toFixed(6)) : typeof v === 'boolean' ? (v ? 'TRUE' : 'FALSE') : '“' + v + '”';
 function sheetIdx(wb, name) { if (name === undefined || name === null) return 0; const i = wb.sheetIndexByName(name); return i < 0 ? 0 : i; }
 function fnsIn(f) { return (String(f).toUpperCase().match(/[A-Z][A-Z0-9.]*(?=\()/g) || []); }
@@ -37,8 +39,10 @@ export function checkTask(task, ctx) {
       for (const fn of e.mustNotUse || []) if (String(f || '').toUpperCase().includes(fn.toUpperCase())) return fail(mistakeFor(task, f, v) || `Try this without ${fn}.`);
       if (e.regex && !new RegExp(e.regex, 'i').test(String(f || '').replace(/\s/g, ''))) return fail(mistakeFor(task, f, v) || e.regexMsg || 'Not quite. Check the formula against the task.');
       const want = e.ref ? wb.evaluate(e.ref, si) : e.value;
-      if (want !== undefined && !near(v, want)) return fail(mistakeFor(task, f, v) || `${task.cell} shows ${show(v)}, but the answer should be ${show(want)}.`);
+      if (want !== undefined && !same(e.exact, v, want)) return fail(mistakeFor(task, f, v) || `${task.cell} shows ${show(v)}, but the answer should be ${show(want)}.`);
       if (e.number && typeof v !== 'number') return fail(mistakeFor(task, f, v) || `${task.cell} holds text, not a number.`);
+      if (e.between && !(typeof v === 'number' && v >= e.between[0] && v <= e.between[1])) return fail(mistakeFor(task, f, v) || `${task.cell} shows ${show(v)}; it should be a number from ${e.between[0]} to ${e.between[1]}.`);
+      if (e.integer && !(typeof v === 'number' && Number.isInteger(v))) return fail(mistakeFor(task, f, v) || `${task.cell} should be a whole number.`);
       if (e.ref && f && ctx.inputs && ctx.inputs.length) { // try the formula on fresh data
         for (let k = 1; k <= 3; k++) { const w2 = new Workbook(wb.toSpec()); randomize(w2, si, ctx.inputs, k); const a = w2.value(si, p.r, p.c), b = w2.evaluate(e.ref, si); if (!near(a, b)) return fail(mistakeFor(task, f, a) || `This works for today’s numbers, but gives the wrong answer when the data changes. Point at the cells instead of typing numbers into the formula.`); }
       }
@@ -53,13 +57,28 @@ export function checkTask(task, ctx) {
         if (v === null && !f) { empty++; if (!bad) { bad = addr(r, c); badMsg = `${addr(r, c)} is still empty. Fill the formula across the whole range ${task.range}.`; } continue; }
         if (task.formula !== false && !f) { if (!bad) { bad = addr(r, c); badMsg = mistakeFor(task, f, v) || `${addr(r, c)} was typed in. Use a formula (and the fill handle) so every cell updates with the data.`; } continue; }
         const ref = shiftFormula(task.ref, r - first.r, c - first.c); const want = wb.evaluate(ref, si);
-        const ok = near(v, want); if (r === first.r && c === first.c) firstOk = ok;
+        const ok = same(task.exact, v, want); if (r === first.r && c === first.c) firstOk = ok;
         if (!ok && !bad) { bad = addr(r, c); badMsg = null; }
       }
       if (bad) { const f = wb.formula(si, parseAddr(bad).r, parseAddr(bad).c); return fail(badMsg || mistakeFor(task, f, wb.value(si, parseAddr(bad).r, parseAddr(bad).c), { firstOnly: firstOk && empty === 0 }) || (firstOk ? `The first cell is right, but ${bad} is wrong. When you copied the formula, a reference moved that should have stayed fixed. Lock it with $ (press F4).` : `${bad} doesn’t give the right answer yet.`)); }
       for (const fn of task.mustUse || []) if (!cells.every(({ r, c }) => String(wb.formula(si, r, c) || '').toUpperCase().includes(fn.toUpperCase()))) return fail(`Use ${fn} in every cell of ${task.range}.`);
       if (task.regex) { const f0 = wb.formula(si, g.r1, g.c1) || ''; if (!new RegExp(task.regex, 'i').test(f0.replace(/\s/g, ''))) return fail(task.regexMsg || 'Check the formula in the first cell.'); }
-      if (ctx.inputs && ctx.inputs.length) for (let k = 1; k <= 2; k++) { const w2 = new Workbook(wb.toSpec()); randomize(w2, si, ctx.inputs, k); for (const { r, c } of cells) { const ref = shiftFormula(task.ref, r - first.r, c - first.c); if (!near(w2.value(si, r, c), w2.evaluate(ref, si))) return fail(`${addr(r, c)} breaks when the numbers change. Point at cells rather than typing values into formulas.`); } }
+      if (ctx.inputs && ctx.inputs.length) for (let k = 1; k <= 2; k++) { const w2 = new Workbook(wb.toSpec()); randomize(w2, si, ctx.inputs, k); for (const { r, c } of cells) { const ref = shiftFormula(task.ref, r - first.r, c - first.c); if (!same(task.exact, w2.value(si, r, c), w2.evaluate(ref, si))) return fail(`${addr(r, c)} breaks when the numbers change. Point at cells rather than typing values into formulas.`); } }
+      return pass();
+    }
+    case 'spill': { // one formula whose answer spills into the cells below and to the right
+      const p = parseAddr(task.cell); const f = wb.formula(si, p.r, p.c); const v = wb.value(si, p.r, p.c);
+      if (!f) return fail(v === null ? `${task.cell} is still empty.` : (mistakeFor(task, f, v) || `${task.cell} was typed in. Type one formula, starting with =, in ${task.cell}.`));
+      if (isErr(v) && v.code === '#SPILL!') return fail(mistakeFor(task, f, v) || `${task.cell} shows #SPILL!: something is in the way. Clear the cells inside the dashed box below and to the right of ${task.cell}, so the answer has room to spill.`);
+      for (const fn of task.mustUse || []) if (!String(f).toUpperCase().includes(fn.toUpperCase())) return fail(mistakeFor(task, f, v) || `Use ${fn} in this formula.`);
+      for (const fn of task.mustNotUse || []) if (String(f).toUpperCase().includes(fn.toUpperCase())) return fail(mistakeFor(task, f, v) || `Try this without ${fn}.`);
+      if (task.regex && !new RegExp(task.regex, 'i').test(f.replace(/\s/g, ''))) return fail(mistakeFor(task, f, v) || task.regexMsg || 'Not quite. Check the formula against the task.');
+      const same = (w, k) => { const want = w.evaluateArray(task.ref, si), got = w.spillArray(si, p.r, p.c);
+        if (got.length !== want.length || got[0].length !== want[0].length) return `${task.cell} spills ${got.length} row${got.length === 1 ? '' : 's'} × ${got[0].length} column${got[0].length === 1 ? '' : 's'}; the answer is ${want.length} × ${want[0].length}${k ? ' when the data changes' : ''}.`;
+        for (let i = 0; i < want.length; i++) for (let j = 0; j < want[0].length; j++) if (!near(got[i][j], want[i][j])) return `${addr(p.r + i, p.c + j)} shows ${show(got[i][j])}, but it should be ${show(want[i][j])}${k ? ' when the data changes' : ''}.`;
+        return null; };
+      let bad = same(wb, 0); if (bad) return fail(mistakeFor(task, f, v) || bad);
+      if (ctx.inputs && ctx.inputs.length) for (let k = 1; k <= 2; k++) { const w2 = new Workbook(wb.toSpec()); randomize(w2, si, ctx.inputs, k); bad = same(w2, k); if (bad) return fail(`This works for today’s numbers, but not when the data changes: ${bad} Point at the cells instead of typing values into the formula.`); }
       return pass();
     }
     case 'values': {
@@ -126,7 +145,7 @@ export function checkTask(task, ctx) {
 export function applySolution(task, ctx) {
   const wb = ctx.wb, grid = ctx.grid; const si = sheetIdx(wb, task.sheet);
   switch (task.kind) {
-    case 'cell': { const p = parseAddr(task.cell); wb.setInput(si, p.r, p.c, task.solution); break; }
+    case 'cell': case 'spill': { const p = parseAddr(task.cell); wb.setInput(si, p.r, p.c, task.solution); break; }
     case 'range': { const g = parseRange(task.range); eachCell(g, (r, c) => wb.setInput(si, r, c, shiftFormula(task.solutionFormula || task.ref, r - g.r1, c - g.c1))); break; }
     case 'count': case 'values': for (const [a, v] of Object.entries(task.solutionValues || task.cells)) { const p = parseAddr(a); wb.setInput(si, p.r, p.c, typeof v === 'object' && v && v.date ? v.date : String(v)); } break;
     case 'format': { const g = parseRange(task.range); const st = {}; if (task.fmt) st.fmt = task.fmt[0] === 'General' ? null : task.fmt[0]; if (task.solutionFmt) st.fmt = task.solutionFmt; if (task.bold !== undefined) st.bold = task.bold || null; if (task.fill) st.fill = '#FFF2CC'; if (task.align) st.align = task.align; if (task.wrap) st.wrap = true; eachCell(g, (r, c) => wb.setStyle(si, r, c, st)); if (task.minWidth) wb.sheets[si].widths[colIndex(task.minWidth.col)] = task.minWidth.px + 10; break; }
@@ -149,7 +168,12 @@ export function describeCheck(task, inputs) {
       if (e.formula !== false && (e.formula || e.ref)) out.push(`${task.cell} holds a formula (it starts with =), not a typed-in number`);
       if (e.ref) out.push(`it gives the same answer as ${f(e.ref)}`); else if (e.value !== undefined) out.push(`it shows ${e.value}`);
       (e.mustUse || []).forEach(fn => out.push(`it uses ${fn}`)); (e.mustNotUse || []).forEach(fn => out.push(`it doesn’t use ${fn}`));
+      if (e.between) out.push(`it is a number from ${e.between[0]} to ${e.between[1]}${e.integer ? ', with no decimals' : ''}`);
       if (e.ref && inputs && inputs.length) out.push('it still gives the right answer when Sheetah changes the numbers in the data (3 different sets)');
+      break;
+    case 'spill':
+      out.push(`${task.cell} holds one formula (it starts with =), and its answer spills into the cells next to it`); out.push(`the whole spilled answer matches ${f(task.ref)}, cell by cell`);
+      (task.mustUse || []).forEach(fn => out.push(`it uses ${fn}`)); if (inputs && inputs.length) out.push('it still gives the right answer when Sheetah changes the numbers (2 different sets)');
       break;
     case 'range':
       out.push(`every cell in ${task.range} holds a formula`); out.push(`each one gives the right answer for its own row or column (the first is ${f(task.ref)})`);

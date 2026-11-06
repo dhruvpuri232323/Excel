@@ -4,9 +4,11 @@ import { register, go, applyTheme, getCourse, refreshChrome } from '../app.js';
 import { store } from '../store.js';
 import { session } from '../content.js';
 import { esc, md, $, $$, mascot, line, toast, bar } from '../ui.js';
-import { lessonList, isDone, nextStep, stepHref, hasKey, moduleInfo, who } from '../access.js';
+import { lessonList, isDone, nextStep, stepHref, hasKey, moduleInfo, who, freeModulesText } from '../access.js';
 import { runTest, questionsFrom, shuffleOpts } from './tests.js';
-import { shuffle } from '../ui.js';
+import { shuffle, dateField, readDate } from '../ui.js';
+import { buildPlan, setBaseline, iso } from '../plan.js';
+import { today } from '../store.js';
 
 const STEPS = ['welcome', 'look', 'name', 'why', 'level', 'tone', 'rhythm', 'computer', 'plan'];
 export const WHY = [['job', 'A job or interviews'], ['college', 'College or exams'], ['business', 'My own business'], ['work', 'Getting faster at work'], ['curious', 'Just curious']];
@@ -14,15 +16,11 @@ export const LEVEL = [['new', 'I’ve never really used Excel', 'Start at the ve
 export const TONES = [['warm', 'Warm and encouraging'], ['cheeky', 'Cheeky'], ['coach', 'Strict coach'], ['desi', 'Hinglish, yaar']];
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-export function finishDate(c) {
-  const p = store.d.plan; const left = lessonList(c).filter(l => !isDone(l.id)).length; if (!p.days.length || !left) return null;
-  const perDay = p.minutesGoal >= 60 ? 2 : 1; let d = new Date(); d.setHours(0, 0, 0, 0); let k = 0, guard = 0;
-  while (k < left && guard++ < 900) { d.setDate(d.getDate() + 1); if (p.days.includes(d.getDay())) k += perDay; }
-  return d;
-}
+// when the plan says everything (lessons, tests, project, exam) will be done
+export function finishDate(c) { const P = buildPlan(c); return P.last && !P.error ? new Date(P.last + 'T00:00:00') : null; }
 register('setup', async (main, step = 'welcome') => {
   let i = Math.max(0, STEPS.indexOf(step)); const s = store.d.settings, p = store.d.plan, pr = store.d.profile; const student = session.signedIn && !session.isAdmin;
-  const c = await getCourse('c1').catch(() => null);
+  const c = await getCourse().catch(() => null);
   const to = k => go('#/setup/' + STEPS[k]);
   const done = (href = '#/home') => { store.d.setupDone = true; store.save(); refreshChrome(); go(href); };
   const nav = (canNext = true, nextLabel = 'Next') => `<div class="row between setup-nav"><div class="row">${i ? `<button class="btn ghost" id="sb" type="button">← Back</button>` : ''}<button class="linkbtn" id="sskip" type="button">Skip setup</button></div><div class="row">${i && i < STEPS.length - 1 ? '<button class="btn ghost" id="snext0" type="button">Skip this</button>' : ''}<button class="btn" id="sn" type="button" ${canNext ? '' : 'disabled'}>${nextLabel} →</button></div></div>`;
@@ -67,15 +65,22 @@ register('setup', async (main, step = 'welcome') => {
     wire(); return;
   }
   if (st === 'rhythm') {
-    main.innerHTML = wrap('Your rhythm', `<p>Planning when you’ll study makes it far more likely to happen. Pick what’s realistic.</p>
-      <fieldset><legend>Study days</legend><div class="days">${DAYS.map((d, k) => `<label class="pill"><input type="checkbox" value="${k}" ${p.days.includes(k) ? 'checked' : ''}> ${d}</label>`).join('')}</div></fieldset>
-      <div class="grid2"><label class="big-label">Time of day <input type="time" id="tm" value="${p.time}"></label><fieldset><legend>Minutes a day</legend><div class="choices four">${[15, 30, 45, 60].map(m => `<button type="button" class="choice ${p.minutesGoal === m ? 'on' : ''}" data-m="${m}">${m} min</button>`).join('')}</div></fieldset></div>
-      <label class="ck"><input type="checkbox" id="rm" ${s.remind ? 'checked' : ''}> Remind me at my study time (one a day at most)</label><p class="muted small" id="rmHint">Your browser may ask for permission to show notifications. Without it, Sheetah reminds you inside the app.</p>`, { pose: 'focus' });
-    $$('.days input').forEach(x => x.onchange = () => { p.days = $$('.days input').filter(y => y.checked).map(y => +y.value); store.save(); });
-    $$('[data-m]').forEach(b => b.onclick = () => { p.minutesGoal = +b.dataset.m; store.save(); $$('[data-m]').forEach(x => x.classList.toggle('on', x === b)); });
+    if (!p.start) p.start = today();
+    const quick = [[1, '1 month'], [2, '2 months'], [3, '3 months'], [6, '6 months']];
+    const draw = () => { const P = c ? buildPlan(c) : null; $('#rplan').innerHTML = !p.end ? '<span class="muted">Pick a finish date to see your daily time.</span>' : P && P.error ? `<span class="pstat bad">⚠ ${esc(P.error)}</span>` : P ? `<div class="d-big"><div class="bn"><b>${P.dates.length}</b><span>study days</span></div><div class="bn"><b>≈ ${P.perDay}</b><span>minutes a day</span></div></div>${P.perDay > 120 ? '<p class="small warnbox">That’s a lot each day: try a later date.</p>' : ''}` : ''; };
+    main.innerHTML = wrap('When do you want to finish?', `<p>Pick a finish date and your study days. Sheetah builds the day-by-day plan for you, and you can change it any time.</p>
+      <fieldset><legend>Finish Excel Foundations by</legend><div class="choices four">${quick.map(([n, l]) => `<button type="button" class="choice" data-months="${n}"><b>${l}</b></button>`).join('')}</div><p class="small">or pick a date: ${dateField('end', p.end || '', { label: 'Finish date' })}</p></fieldset>
+      <fieldset><legend>Study days</legend><div class="days">${[1, 2, 3, 4, 5, 6, 0].map(k => `<label class="pill"><input type="checkbox" value="${k}" ${p.days.includes(k) ? 'checked' : ''}> ${DAYS[k]}</label>`).join('')}</div></fieldset>
+      <div id="rplan" class="plan-card"></div>
+      <div class="grid2"><label class="big-label">Usual study time <input type="time" id="tm" value="${p.time}"></label><label class="ck"><input type="checkbox" id="rm" ${s.remind ? 'checked' : ''}> Remind me at my study time</label></div><p class="muted small" id="rmHint"></p>`, { pose: 'focus' });
+    const mark = () => { $$('[data-months]').forEach(b => { const d = new Date(p.start + 'T00:00:00'); d.setMonth(d.getMonth() + +b.dataset.months); b.classList.toggle('on', iso(d) === p.end); }); };
+    const sync = () => { if (c) setBaseline(c); else store.save(); draw(); mark(); };
+    $$('[data-months]').forEach(b => b.onclick = () => { const d = new Date(p.start + 'T00:00:00'); d.setMonth(d.getMonth() + +b.dataset.months); p.end = iso(d); const box = $('[data-date="end"]'); const [y, m, dd] = p.end.split('-').map(Number); box.querySelector('[data-part="d"]').value = dd; box.querySelector('[data-part="m"]').value = m; box.querySelector('[data-part="y"]').value = y; sync(); });
+    $$('[data-date="end"] select').forEach(x => x.onchange = () => { const v = readDate(main, 'end'); if (v) { p.end = v; sync(); } });
+    $$('.days input').forEach(x => x.onchange = () => { p.days = $$('.days input').filter(y => y.checked).map(y => +y.value).sort(); sync(); });
     $('#tm').onchange = e => { p.time = e.target.value; store.save(); };
     $('#rm').onchange = async e => { s.remind = e.target.checked; store.save(); if (s.remind && 'Notification' in window && Notification.permission === 'default') { const r = await Notification.requestPermission(); $('#rmHint').textContent = r === 'granted' ? 'Done: you’ll get a reminder at your study time while Sheetah is open.' : 'No problem: Sheetah will remind you inside the app instead.'; } };
-    wire(); return;
+    draw(); mark(); wire(); return;
   }
   if (st === 'computer') {
     main.innerHTML = wrap('Which computer do you use Excel on?', `<p>Every shortcut Sheetah shows will match your keyboard.</p><div class="choices two">${[['win', 'Windows', 'Ctrl+C to copy'], ['mac', 'Mac', '⌘+C to copy']].map(([v, tt, ex]) => `<button type="button" class="choice ${s.os === v ? 'on' : ''}" data-v="${v}"><b>${tt}</b><small>${ex}</small></button>`).join('')}</div>`, { pose: 'teaching' });
@@ -85,7 +90,7 @@ register('setup', async (main, step = 'welcome') => {
   if (st === 'plan') {
     const fin = c && finishDate(c); const days = p.days.map(k => DAYS[k]).join(', ');
     const first = c ? stepHref(c, nextStep(c)) : '#/home'; const placement = pr.level === 'some' || pr.level === 'comfortable';
-    main.innerHTML = wrap(`You’re all set${store.d.name ? ', ' + esc(store.d.name) : ''}!`, `<div class="plan-card"><p class="lead">${fin ? `At <b>${p.minutesGoal} minutes</b> on <b>${days || 'no days yet'}</b>, you finish Excel Foundations around <b>${fin.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</b>.` : 'Pick some study days in your Study plan to see when you’ll finish.'}</p><p class="muted">Change any of this in Settings, or run setup again from there.</p></div>
+    main.innerHTML = wrap(`You’re all set${store.d.name ? ', ' + esc(store.d.name) : ''}!`, `<div class="plan-card"><p class="lead">${fin ? `About <b>${p.minutesGoal} minutes</b> on <b>${days || 'no days yet'}</b>, and you finish Excel Foundations, project and exam included, by <b>${fin.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</b>.` : 'Pick a finish date in your Study plan to see your day-by-day plan.'}</p><p class="muted">Your day-by-day plan is ready under <b>Study plan</b>. Change the dates there any time.</p></div>
       ${placement ? `<div class="tip">${mascot('thinking', 'xs')}<p>You said you already use Excel. A <b>10-minute placement check</b> suggests where to start and which modules you could skip.</p></div>` : ''}`,
       { pose: 'celebrate', nav: `<div class="row between setup-nav"><button class="btn ghost" id="sb" type="button">← Back</button><div class="row">${placement ? '<button class="btn ghost" id="spl" type="button">Placement check</button>' : ''}<button class="btn ghost" id="stour" type="button">Take the tour</button><button class="btn big" id="sfirst" type="button">Start lesson 1 →</button></div></div>` });
     $('#sb').onclick = () => to(i - 1); $('#stour').onclick = () => done('#/tour'); $('#sfirst').onclick = () => done(first); const pl = $('#spl'); if (pl) pl.onclick = () => done('#/placement/c1');
@@ -99,7 +104,7 @@ register('placement', async (main, courseId = 'c1') => {
   const last = store.d.placement && store.d.placement[c.id];
   main.innerHTML = `<section class="card"><div class="row between"><div><p class="eyebrow">${esc(c.title)} · optional</p><h1>Placement check</h1></div>${mascot('focus')}</div>
     <p class="lead">About 10 minutes: two or three questions from each module. At the end, Sheetah suggests where to start and which modules you could test out of. It doesn’t unlock anything by itself.</p>
-    ${reach.length < c.modules.length ? `<p class="warn">Without a student login, the check covers Modules 1–2 only.</p>` : ''}
+    ${reach.length < c.modules.length ? `<p class="warn">Without a student login, the check covers ${freeModulesText(c)} only.</p>` : ''}
     ${last ? `<p class="muted">Last time (${new Date(last.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}) Sheetah suggested starting at Module ${last.start}.</p>` : ''}
     <div class="row"><button class="btn big" id="pgo" type="button">Start the check</button><a class="btn ghost" href="#/course/${c.id}">Back to the map</a></div></section>`;
   $('#pgo').onclick = async () => {
