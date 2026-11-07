@@ -43,6 +43,10 @@ export function checkTask(task, ctx) {
       if (e.number && typeof v !== 'number') return fail(mistakeFor(task, f, v) || `${task.cell} holds text, not a number.`);
       if (e.between && !(typeof v === 'number' && v >= e.between[0] && v <= e.between[1])) return fail(mistakeFor(task, f, v) || `${task.cell} shows ${show(v)}; it should be a number from ${e.between[0]} to ${e.between[1]}.`);
       if (e.integer && !(typeof v === 'number' && Number.isInteger(v))) return fail(mistakeFor(task, f, v) || `${task.cell} should be a whole number.`);
+      if (e.oneOf) { // the answer must be one of the values in a range (random picks)
+        const g = parseRange(e.oneOf); const pool = []; eachCell(g, (r, c) => pool.push(wb.value(si, r, c)));
+        if (!pool.some(x => same(false, v, x))) return fail(mistakeFor(task, f, v) || `${task.cell} shows ${show(v)}, which isn’t one of the values in ${e.oneOf}.`);
+      }
       if (e.ref && f && ctx.inputs && ctx.inputs.length) { // try the formula on fresh data
         for (let k = 1; k <= 3; k++) { const w2 = new Workbook(wb.toSpec()); randomize(w2, si, ctx.inputs, k); const a = w2.value(si, p.r, p.c), b = w2.evaluate(e.ref, si); if (!near(a, b)) return fail(mistakeFor(task, f, a) || `This works for today’s numbers, but gives the wrong answer when the data changes. Point at the cells instead of typing numbers into the formula.`); }
       }
@@ -77,6 +81,12 @@ export function checkTask(task, ctx) {
         if (got.length !== want.length || got[0].length !== want[0].length) return `${task.cell} spills ${got.length} row${got.length === 1 ? '' : 's'} × ${got[0].length} column${got[0].length === 1 ? '' : 's'}; the answer is ${want.length} × ${want[0].length}${k ? ' when the data changes' : ''}.`;
         for (let i = 0; i < want.length; i++) for (let j = 0; j < want[0].length; j++) if (!near(got[i][j], want[i][j])) return `${addr(p.r + i, p.c + j)} shows ${show(got[i][j])}, but it should be ${show(want[i][j])}${k ? ' when the data changes' : ''}.`;
         return null; };
+      if (task.between) { // random answers: check the shape and that every value is in range
+        const got = wb.spillArray(si, p.r, p.c); const [lo, hi] = task.between;
+        if (got.length !== task.rows || got[0].length !== (task.cols || 1)) return fail(mistakeFor(task, f, v) || `${task.cell} spills ${got.length} × ${got[0].length}; the task asks for ${task.rows} × ${task.cols || 1}.`);
+        for (const row of got) for (const x of row) { if (typeof x !== 'number' || x < lo || x > hi) return fail(mistakeFor(task, f, v) || `${show(x)} is outside ${lo} to ${hi}.`); if (task.integer && !Number.isInteger(x)) return fail(mistakeFor(task, f, v) || `${show(x)} has decimals; the task asks for whole numbers.`); }
+        return pass();
+      }
       let bad = same(wb, 0); if (bad) return fail(mistakeFor(task, f, v) || bad);
       if (ctx.inputs && ctx.inputs.length) for (let k = 1; k <= 2; k++) { const w2 = new Workbook(wb.toSpec()); randomize(w2, si, ctx.inputs, k); bad = same(w2, k); if (bad) return fail(`This works for today’s numbers, but not when the data changes: ${bad} Point at the cells instead of typing values into the formula.`); }
       return pass();
@@ -169,10 +179,11 @@ export function describeCheck(task, inputs) {
       if (e.ref) out.push(`it gives the same answer as ${f(e.ref)}`); else if (e.value !== undefined) out.push(`it shows ${e.value}`);
       (e.mustUse || []).forEach(fn => out.push(`it uses ${fn}`)); (e.mustNotUse || []).forEach(fn => out.push(`it doesn’t use ${fn}`));
       if (e.between) out.push(`it is a number from ${e.between[0]} to ${e.between[1]}${e.integer ? ', with no decimals' : ''}`);
+      if (e.oneOf) out.push(`it shows one of the values in ${e.oneOf}`);
       if (e.ref && inputs && inputs.length) out.push('it still gives the right answer when Sheetah changes the numbers in the data (3 different sets)');
       break;
     case 'spill':
-      out.push(`${task.cell} holds one formula (it starts with =), and its answer spills into the cells next to it`); out.push(`the whole spilled answer matches ${f(task.ref)}, cell by cell`);
+      out.push(`${task.cell} holds one formula (it starts with =), and its answer spills into the cells next to it`); out.push(task.between ? `it spills ${task.rows} × ${task.cols || 1} values, each from ${task.between[0]} to ${task.between[1]}${task.integer ? ', whole numbers' : ''}` : `the whole spilled answer matches ${f(task.ref)}, cell by cell`);
       (task.mustUse || []).forEach(fn => out.push(`it uses ${fn}`)); if (inputs && inputs.length) out.push('it still gives the right answer when Sheetah changes the numbers (2 different sets)');
       break;
     case 'range':

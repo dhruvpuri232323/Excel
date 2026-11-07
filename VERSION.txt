@@ -1,0 +1,3 @@
+Sheetah site update v5 (7 Nov 2026)
+C1 complete + C2 Modules 1-3. Demo welcome names both courses.
+Copy everything in this folder into the TOP of your repository folder, next to index.html.

@@ -663,6 +663,8 @@ function textAround(a, after) {
   return after ? t.slice(h.k + h.len) : t.slice(0, h.k);
 }
 function stackRows(parts) { const W = Math.max(...parts.map(p => dimsOf(p)[1])); const vals = []; for (const p of parts) for (const r of p.vals) { const row = r.slice(); while (row.length < W) row.push(ERR.NA); vals.push(row); } return mkArr(vals); }
+// SUBTOTAL and AGGREGATE leave out cells that are themselves SUBTOTAL or AGGREGATE results, so subtotals aren't counted twice
+function skipNested(x, wb) { if (!x || !x.g || !wb) return x; const g = x.g; let any = false; const vals = x.vals.map((r, i) => r.map((v, j) => { const f = wb.formula(x.si, g.r1 + i, g.c1 + j); if (f && /\b(SUBTOTAL|AGGREGATE)\s*\(/i.test(f)) { any = true; return null; } return v; })); return any ? mkArr(vals) : x; }
 function lazyEach(run) { return { lazy: true, run }; }
 
 Object.assign(FN, {
@@ -781,11 +783,11 @@ Object.assign(FN, {
   AVERAGEIFS: wrap(a => { const x = ifsPick(a, 1); return x.length ? fix(meanOf(x)) : ERR.DIV0; }),
   MAXIFS: wrap(a => { const x = ifsPick(a, 1); return x.length ? Math.max(...x) : 0; }), MINIFS: wrap(a => { const x = ifsPick(a, 1); return x.length ? Math.min(...x) : 0; }),
   SUMPRODUCT: wrap(a => { if (!a.length) throw ERR.VALUE; const arrs = a.map(x => isArr(x) ? x : mkArr([[x]])); const [R, C] = dimsOf(arrs[0]); for (const x of arrs) { const [r, c] = dimsOf(x); if (r !== R || c !== C) throw ERR.VALUE; } let t = 0; for (let i = 0; i < R; i++) for (let j = 0; j < C; j++) { let p = 1; for (const x of arrs) { const v = x.vals[i][j]; if (isErr(v)) throw v; p *= typeof v === 'number' ? v : 0; } t += p; } return fix(t); }),
-  SUBTOTAL: wrap(a => { const code = Math.trunc(numArg(a[0])) % 100; const name = { 1: 'AVERAGE', 2: 'COUNT', 3: 'COUNTA', 4: 'MAX', 5: 'MIN', 6: 'PRODUCT', 7: 'STDEV.S', 8: 'STDEV.P', 9: 'SUM', 10: 'VAR.S', 11: 'VAR.P' }[code]; if (!name) throw ERR.VALUE; return FN[name](a.slice(1)); }),
-  AGGREGATE: wrap(a => {
+  SUBTOTAL: wrap((a, wb) => { const code = Math.trunc(numArg(a[0])) % 100; const name = { 1: 'AVERAGE', 2: 'COUNT', 3: 'COUNTA', 4: 'MAX', 5: 'MIN', 6: 'PRODUCT', 7: 'STDEV.S', 8: 'STDEV.P', 9: 'SUM', 10: 'VAR.S', 11: 'VAR.P' }[code]; if (!name) throw ERR.VALUE; return FN[name](a.slice(1).map(x => skipNested(x, wb))); }),
+  AGGREGATE: wrap((a, wb) => {
     const fnum = Math.trunc(numArg(a[0])), opt = Math.trunc(optNum(a[1], 0)); const name = { 1: 'AVERAGE', 2: 'COUNT', 3: 'COUNTA', 4: 'MAX', 5: 'MIN', 6: 'PRODUCT', 7: 'STDEV.S', 8: 'STDEV.P', 9: 'SUM', 10: 'VAR.S', 11: 'VAR.P', 12: 'MEDIAN', 13: 'MODE.SNGL', 14: 'LARGE', 15: 'SMALL', 16: 'PERCENTILE.INC', 17: 'QUARTILE.INC', 18: 'PERCENTILE.EXC', 19: 'QUARTILE.EXC' }[fnum];
     if (!name || opt < 0 || opt > 7) throw ERR.VALUE; const skipErr = [2, 3, 6, 7].includes(opt);
-    const clean = x => !skipErr || !isArr(x) ? x : mkArr(x.vals.map(r => r.map(v => isErr(v) ? null : v)));
+    const clean = x => { if (opt <= 3) x = skipNested(x, wb); return !skipErr || !isArr(x) ? x : mkArr(x.vals.map(r => r.map(v => isErr(v) ? null : v))); };
     return fnum >= 14 ? FN[name]([clean(a[2]), a[3]]) : FN[name](a.slice(2).map(clean));
   }),
   // ---- statistics ----
@@ -929,7 +931,7 @@ export function toFileFormula(f, names = {}) {
 export const FUNCTION_NAMES = Object.keys(FN).filter(n => n !== 'ANCHORARRAY' && n !== 'SINGLE').sort();
 
 // ---------- number formats ----------
-export function isDateFmt(f) { if (!f) return false; const g = f.replace(/"[^"]*"|\[[^\]]*\]|\\./g, ''); return /[dy]/i.test(g) || /(^|[^0#?])m{3,}/i.test(g) || /h/i.test(g) && /:/.test(g); }
+export function isDateFmt(f) { if (!f) return false; if (/\[(h+|m+|s+)\]/i.test(f)) return true; const g = f.replace(/"[^"]*"|\[[^\]]*\]|\\./g, ''); return /[dy]/i.test(g) || /(^|[^0#?])m{3,}/i.test(g) || /h/i.test(g) && /:/.test(g); }
 function generalNum(v) {
   if (v === 0) return '0'; const a = Math.abs(v);
   if (a >= 1e11 || a < 1e-9) { let s = v.toExponential(5).replace(/\.?0+e/, 'e'); return s.replace('e', 'E').replace(/E\+?(-?)(\d)$/, 'E+$10$2').replace('E+-', 'E-'); }
@@ -993,11 +995,13 @@ function fmtNumber(v, sec, negSection) {
 function fmtDate(v, sec) {
   const d = serialToDate(v); const frac = v - Math.floor(v); let secs = Math.round(frac * 86400); const H = Math.floor(secs / 3600) % 24, Mi = Math.floor(secs / 60) % 60, Se = secs % 60;
   const ampm = /AM\/PM/i.test(sec); const h12 = ((H + 11) % 12) + 1;
-  const tokens = sec.replace(/\[[^\]]*\]/g, '').match(/"[^"]*"|\\.|yyyy|yy|mmmmm|mmmm|mmm|mm|m|dddd|ddd|dd|d|hh|h|ss|s|AM\/PM|./gi) || [];
+  const tot = Math.round(v * 86400); // elapsed time: [h] keeps counting past 24 hours, [m] and [s] likewise
+  const tokens = sec.replace(/\[(?!h+\]|m+\]|s+\])[^\]]*\]/gi, '').match(/"[^"]*"|\\.|\[h+\]|\[m+\]|\[s+\]|yyyy|yy|mmmmm|mmmm|mmm|mm|m|dddd|ddd|dd|d|hh|h|ss|s|AM\/PM|./gi) || [];
   let out = '', lastWasH = false;
   for (let i = 0; i < tokens.length; i++) {
     const t = tokens[i], tl = t.toLowerCase();
     if (t[0] === '"') { out += t.slice(1, -1); continue; } if (t[0] === '\\') { out += t[1]; continue; }
+    if (t[0] === '[') { const k = tl[1], w = t.length - 2; const n = k === 'h' ? Math.floor(tot / 3600) : k === 'm' ? Math.floor(tot / 60) : tot; out += String(n).padStart(w, '0'); lastWasH = k === 'h'; continue; }
     if (tl === 'yyyy') out += d.y; else if (tl === 'yy') out += String(d.y).slice(-2);
     else if (tl === 'mmmm') out += cap(MONTHS_FULL[d.m - 1]); else if (tl === 'mmm') out += cap(MONTHS[d.m - 1]); else if (tl === 'mmmmm') out += MONTHS[d.m - 1][0].toUpperCase();
     else if (tl === 'mm' || tl === 'm') { const nextTok = (tokens.slice(i + 1).find(x => /[a-z]/i.test(x)) || '').toLowerCase(); const isMin = lastWasH || nextTok.startsWith('s'); const val = isMin ? Mi : d.m; out += tl === 'mm' ? String(val).padStart(2, '0') : val; }

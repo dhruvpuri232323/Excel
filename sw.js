@@ -1,6 +1,6 @@
 // Offline support: the app shell and lessons are cached as they are used.
 // The student list is always fetched fresh so new logins work straight away.
-const CACHE = 'sheetah-v4';
+const CACHE = 'sheetah-v5';
 const SHELL = ['./', 'index.html', 'css/app.css', 'css/grid.css', 'vendor/jszip.min.js', 'js/main.js', 'js/app.js', 'js/engine.js', 'js/grid.js', 'js/checker.js', 'js/xlsxcheck.js', 'js/xlsxwrite.js', 'js/store.js', 'js/srs.js', 'js/auth.js', 'js/content.js', 'js/ui.js',
   'js/access.js', 'js/site.js', 'js/i18n.js', 'js/help.js', 'js/tour.js', 'js/search.js', 'js/map.js', 'js/visuals.js', 'js/plan.js',
   'js/views/setup.js', 'js/views/home.js', 'js/views/lesson.js', 'js/views/review.js', 'js/views/study.js', 'js/views/tests.js', 'js/views/library.js', 'js/views/extras.js', 'js/views/helpviews.js', 'js/views/account.js',

@@ -4,11 +4,13 @@ import { register, go, applyTheme, getCourse, refreshChrome } from '../app.js';
 import { store } from '../store.js';
 import { session } from '../content.js';
 import { esc, md, $, $$, mascot, line, toast, bar } from '../ui.js';
-import { lessonList, isDone, nextStep, stepHref, hasKey, moduleInfo, who, freeModulesText } from '../access.js';
+import { lessonList, isDone, nextStep, stepHref, hasKey, moduleInfo, who, freeModulesText, override } from '../access.js';
 import { runTest, questionsFrom, shuffleOpts } from './tests.js';
 import { shuffle, dateField, readDate } from '../ui.js';
 import { buildPlan, setBaseline, iso } from '../plan.js';
 import { today } from '../store.js';
+const CNAMES = { c1: 'Excel Foundations', c2: 'Formulas & Functions' };
+function givenCourses() { const c = Object.keys(CNAMES).filter(k => session.has(k)).map(k => `<b>${CNAMES[k]}</b>`); return c.length ? c.join(' and ') : '<b>Excel Foundations</b>'; }
 
 const STEPS = ['welcome', 'look', 'name', 'why', 'level', 'tone', 'rhythm', 'computer', 'plan'];
 export const WHY = [['job', 'A job or interviews'], ['college', 'College or exams'], ['business', 'My own business'], ['work', 'Getting faster at work'], ['curious', 'Just curious']];
@@ -29,7 +31,7 @@ register('setup', async (main, step = 'welcome') => {
   const st = STEPS[i];
   if (st === 'welcome') {
     main.innerHTML = `<section class="card setup welcome">${mascot('hello', 'big')}<div class="grow"><p class="eyebrow">${student ? 'Signed in' : 'Welcome to Sheetah'}</p><h1>${student ? `Welcome, ${esc((session.s.name || '').split(' ')[0] || 'there')}!` : 'Learn Excel for a purpose, one lesson at a time'}</h1>
-      <p class="lead">${student ? `Your teacher has given you <b>Excel Foundations</b>. Modules open one at a time as you pass each module test.` : 'Short lessons with a lecture, a demo, hands-on practice on a real working sheet, a quiz and a recap. Modules 1 and 2 and every study tool are free.'}</p>
+      <p class="lead">${student ? `Your teacher has given you ${givenCourses()}. ${override() ? 'Every module is open for you.' : 'Modules open one at a time as you pass each module test.'}` : 'Short lessons with a lecture, a demo, hands-on practice on a real working sheet, a quiz and a recap. Modules 1 and 2 and every study tool are free.'}</p>
       <p>A few quick questions set Sheetah up for you. It takes about 90 seconds, and you can change everything later in Settings.</p>
       <div class="row"><button class="btn big" id="sgo" type="button">Start setup</button><button class="btn ghost" id="squick" type="button">Skip and start lesson 1</button>${student ? '' : '<a class="btn ghost" href="#/login">I have a student login</a>'}</div></div></section>`;
     $('#sgo').onclick = () => to(1); $('#squick').onclick = () => { if (!store.d.name) store.d.name = ''; done(c ? stepHref(c, nextStep(c)) : '#/home'); };
