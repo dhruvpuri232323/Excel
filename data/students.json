@@ -1,7 +1,7 @@
 {
  "app": "sheetah",
  "version": 1,
- "updated": "2026-10-27T12:16:13.899291Z",
+ "updated": "2026-11-07T12:48:41.663890Z",
  "entries": [
   {
    "id": "6212e89e30d67440625ddb1ca27e11af9a45ce8cc4c4149b2aa16ba61be4b700",
@@ -14,11 +14,16 @@
   {
    "id": "33c3aa4945a9e3b30290e3f95aa239c3133c33ab11cd29c37e2097c1d2e062ee",
    "role": "student",
-   "salt": "R/4x0h3tBfQvpWj7Y6661A==",
-   "iv": "Cqo+TRl0vLUD0bid",
+   "salt": "d5iTv7HZZ3ccYPVZGb9s6w==",
+   "iv": "RMzLTR3/Dtb1zN0j",
    "iter": 250000,
-   "data": "Odl7d593mSY9S1kZEtrkhAF9JIavR8OxHZ9uFao5KYCj2VWIQvfb0rUPYBAr443krfFTHycicnPYiFBFVUvzvFcB8l/WCFM0FnjkDrvRXmQmEcKGhsKTY0b7CiKlk4QS0U4R9RScYSjmpnzZyjjjk4zKPIwDMQftLIqGswplVjHnMiiEi1q2Au4fCHhputbUaxK8VskMMTL2QhQtiEa4n/wt2unLrW7QJY9OCRKGmYYE"
+   "data": "zlqLKEftGUeZ2/k1xBqb4ORmF1qcbjI3Quam4Ba+lW8N+ZtShJr19pMCxEr9reEyVJ1fr8e8qp+UrkNUCNet2mkWFPif2AWlCiUOLcuH1ze2X9QJmF3zVm+7bKCJjZ7u6xKfGgmXySWbFLoSXlyiNVVqxWvT7rsZ60iSZ0T3OCpV/sRsIJUq3jBncrhwu58TvOsD6MSgrhzKjDRIDqUJ1UoEoEln/PQE+JfE9vvbV/ujjEZRt4ym6u0hIFiM1rHvEQCxLFd7Azum6YY3bYPJUMzn6qyUNs0SRvYqKjLnekMeC4qbhVMu"
   }
  ],
- "roster": "uVbpsDoDn7yTblWnAvK/JiQL8J2GrKsxgHX6z1855JTJsItTOdhY+/OV4kWhztWG4GV11jOTa7ZJLDrGct06z86Z+B/XvY+OpYU1srkE0UgQ+ehNmTvUvv+sqQYCppznLpsBHYWxbz6sVVxQGlSfzb67pO7NRPC5bK6wcl2e4jg0qoIclq2EUNRHKov5UBurpooehGMs7Ad51Dv02ZFXb8YOyWhpk9aUlIvDEOy2I/OgcBReKIsyMKhZ6VUWD5DkJcKX+aHZK4DFS02zy2cPeX7EzbjR50GG3adkbghBNryZ5uVU+PMEqExJP790HCM9uRQjwKYQQVmeacxVtd2qmef3gTnAkOqeqXR7KN3KaNxYMOlFK+XpblKwx8qVMEfAG0iVEA+wS+ulkzaxwYMW1lUiHUC+nOdvAe6vnQ=="
+ "roster": "WXLqCLpzf+B53OW7YwP7vfs9r6aQsdSMUqfM8ahnDBOxbPfbwIRpPXVGjCimmIpRIgugwXwOuqK34s/6CM6pVbJ7uRr2mi7SMFg+Z6RWSjB4WItO0pIcomMFqvxaLbTXe9SxQBf1emB/6h15HxLK8XX40CrRsqDUop5+Kv5J7HURpBDhZ/TScawB/HQfqyTjc3JWJvUbFvLSm0GxLxfAPL2nkusnWz0h5yN8dAKWunRkea+KcAIcD3XzdhWDQkmBBAb+tvhPkTqvPLDNrWIS7Ze6Sahk99V5FATabSe1G7Rs0nhZK+XQuOG9mX0sTEPQqa+q3p4PYf1Nim522GcdAm8Oo06tWxbsU8mVsP7rDr4wJBDKK96nFTftuHaEp+PyyUfVUbr/UUX2yy95tGmKODbTS0CHE/PabRgFjWZgZmXrzNUyh8oijw==",
+ "site": {
+  "openFor": [
+   "33c3aa4945a9e3b30290e3f95aa239c3133c33ab11cd29c37e2097c1d2e062ee"
+  ]
+ }
 }
