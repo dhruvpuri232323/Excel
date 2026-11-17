@@ -34,9 +34,10 @@
    "modules": 8,
    "lessons": 33,
    "hours": 24,
-   "status": "soon",
+   "status": "live",
    "group": "specialist",
-   "short": "Data analysis"
+   "short": "Data analysis",
+   "free": true
   },
   {
    "id": "p2",
@@ -46,9 +47,10 @@
    "modules": 8,
    "lessons": 31,
    "hours": 23,
-   "status": "soon",
+   "status": "live",
    "group": "specialist",
-   "short": "Dashboards"
+   "short": "Dashboards",
+   "free": true
   },
   {
    "id": "p3",
@@ -58,9 +60,10 @@
    "modules": 9,
    "lessons": 37,
    "hours": 27,
-   "status": "soon",
+   "status": "live",
    "group": "specialist",
-   "short": "Finance"
+   "short": "Finance",
+   "free": true
   },
   {
    "id": "p4",
@@ -70,9 +73,10 @@
    "modules": 8,
    "lessons": 30,
    "hours": 23,
-   "status": "soon",
+   "status": "live",
    "group": "specialist",
-   "short": "Operations"
+   "short": "Operations",
+   "free": true
   },
   {
    "id": "p5",
@@ -82,9 +86,10 @@
    "modules": 8,
    "lessons": 32,
    "hours": 24,
-   "status": "soon",
+   "status": "live",
    "group": "specialist",
-   "short": "Power Query"
+   "short": "Power Query",
+   "free": true
   },
   {
    "id": "p6",
@@ -94,9 +99,10 @@
    "modules": 9,
    "lessons": 33,
    "hours": 25,
-   "status": "soon",
+   "status": "live",
    "group": "specialist",
-   "short": "Automation"
+   "short": "Automation",
+   "free": true
   }
  ]
 }

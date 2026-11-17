@@ -38,6 +38,7 @@
 .xg-c { position: absolute; height: var(--xg-rh, 24px); box-sizing: border-box; padding: 0 5px; display: flex; align-items: center; white-space: nowrap; overflow: hidden; border-right: 1px solid var(--xg-line); border-bottom: 1px solid var(--xg-line); background: var(--xg-bg); }
 .xg-c.n, .xg-c.b { justify-content: flex-end; }
 .xg-c.b { justify-content: center; }
+.xg-c.ck { justify-content: center; font-size: 17px; line-height: 1; cursor: pointer; color: #1D6F42; }
 .xg-c.err { color: #C2255C; justify-content: center; }
 .xg-c.f { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 12px; color: var(--xg-acc); justify-content: flex-start; }
 .xg-c.wrap { white-space: normal; line-height: 1.1; font-size: 12px; }
@@ -91,3 +92,24 @@
 .xg-find .msg { display: block; margin-top: 8px; color: #6B6A63; }
 
 .xg-keys { display: flex; gap: 4px; flex-wrap: wrap; padding: 6px; border-top: 1px solid var(--xg-line); background: var(--xg-head, #F3F2EE); } .xg-keys button { min-width: 40px; height: 38px; border: 1px solid var(--xg-line); border-radius: 8px; background: var(--xg-bg, #fff); font: 600 15px/1 var(--mono, monospace); color: inherit; } .xg-keys button[data-k='Type here'], .xg-keys button[data-k='Enter'] { font-family: inherit; padding: 0 10px; }
+/* Trace precedents (blue) and dependents (green) */
+.xg-c.tp { box-shadow: inset 0 0 0 2px #3557D6; background-color: rgba(53, 87, 214, .12) !important; }
+.xg-c.td { box-shadow: inset 0 0 0 2px #1E8E5A; background-color: rgba(30, 142, 90, .12) !important; }
+.xg-c.tp.td { box-shadow: inset 0 0 0 2px #3557D6, inset 0 0 0 4px #1E8E5A; }
+.xg-trace-key { display: inline-flex; align-items: center; gap: 6px; margin-left: 12px; }
+.xg-trace-key .k { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+.xg-trace-key .k.tp { background: #3557D6; } .xg-trace-key .k.td { background: #1E8E5A; margin-left: 6px; }
+.xg-btn.on { outline: 2px solid #3557D6; background: rgba(53,87,214,.12); }
+
+.xg-ddbtn { position: absolute; z-index: 4; width: 17px; display: none; align-items: center; justify-content: center; background: #F3F4F7; border: 1px solid #B9BDCA; font-size: 11px; color: #333; cursor: pointer; box-sizing: border-box; }
+.xg-ddmenu { position: absolute; z-index: 6; background: #fff; border: 1px solid #9AA0B0; box-shadow: 0 6px 16px rgba(0,0,0,.18); max-height: 220px; overflow: auto; font-size: 13px; color: #1D2030; }
+.xg-ddopt { padding: 4px 10px; cursor: pointer; white-space: nowrap; } .xg-ddopt:hover, .xg-ddopt.hi { background: #DCE6F7; } .xg-ddopt.on { font-weight: 700; }
+[data-theme="dark"] .xg-ddbtn { background: #2A2E3E; color: #E6E8F0; border-color: #4A5068; } [data-theme="dark"] .xg-ddmenu { background: #23263A; color: #E6E8F0; border-color: #4A5068; }
+.xg-find select { display: block; width: 100%; margin-top: 3px; height: 30px; border: 1px solid var(--xg-line); border-radius: 7px; padding: 0 6px; font: inherit; background: var(--xg-bg); color: inherit; }
+.xg-find .xg-dv-tab { margin: 4px 0 2px; font-size: 12px; font-weight: 700; border-bottom: 2px solid #217346; display: inline-block; padding-bottom: 2px; }
+.xg-find label small { color: var(--xg-muted, #777); font-weight: 400; }
+.xg-c .xg-bar { position: absolute; top: 3px; bottom: 3px; border-radius: 1px; opacity: .85; pointer-events: none; }
+.xg-c .xg-over { position: relative; }
+.xg-c .xg-icon { position: absolute; left: 4px; font-weight: 700; font-size: 11px; pointer-events: none; }
+.xg-c svg.spark { position: absolute; left: 0; top: 0; pointer-events: none; }
+.xg-cf label[hidden] { display: none; } .xg-cf { width: 330px; }

@@ -1,0 +1,2366 @@
+{
+ "id": "p6",
+ "code": "P6",
+ "title": "Automation: Macros, VBA & Office Scripts",
+ "level": "Specialist",
+ "hours": 25,
+ "summary": "P6 turns the jobs you repeat every day into one click: record macros, then write VBA that loops, decides, asks and checks, and builds real reports, PDFs and emails, safely. It ends with Office Scripts for Excel on the web.",
+ "prereq": "Builds on C1 · Excel Foundations and C2 · Formulas & Functions. No coding background is needed: every line of VBA is explained from the start.",
+ "outcomes": [
+  "Decide what is worth automating, and keep macro workbooks safe: file types, the Trust Center, blocked files and trusted locations.",
+  "Record macros with absolute and relative references, run them from buttons and shortcuts, and clean up the recorder’s code.",
+  "Find your way round the Visual Basic Editor and Excel’s objects: workbooks, sheets, ranges, properties and methods.",
+  "Write VBA with variables, decisions, loops and arrays that work on however many rows the data has.",
+  "Talk to users with message boxes, input boxes, UserForms and events, and stop bad input before it lands.",
+  "Debug with breakpoints, stepping and the Immediate window, handle errors, and make slow macros fast.",
+  "Automate real reports: format, split, merge files from a folder, save PDFs and prepare emails.",
+  "Write your own worksheet functions, and automate Excel for the web with Office Scripts and Power Automate."
+ ],
+ "modules": [
+  {
+   "n": 1,
+   "title": "Macros and the macro recorder",
+   "summary": "What’s worth automating, macro security and .xlsm files, recording with absolute and relative references, and the Personal Macro Workbook.",
+   "free": true,
+   "testInfo": "What to automate, security and file types, recording, and cleaning recorded code",
+   "lessons": [
+    {
+     "id": "p6-1-1",
+     "num": "1.1",
+     "title": "What to automate",
+     "summary": "A macro is a list of steps Excel can repeat for you. It’s worth it for jobs you do the same way, often, and it’s the wrong tool for jobs a formula, a Table or Power Query does better. Macros can’t be undone, so save first.",
+     "minutes": 30,
+     "free": true,
+     "objectives": [
+      "Say what a macro is, and spot jobs worth automating.",
+      "Choose between a formula, Power Query, a macro and an Office Script for a job.",
+      "Turn on the Developer tab and run a macro from the Macros list.",
+      "Explain why Undo can’t reverse a macro, and work on a copy."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p6-p6-1-1-notes.docx",
+       "name": "1.1 What to automate - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p6-p6-1-1-practice.xlsx",
+       "name": "1.1 What to automate - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p6-p6-1-1-solution.xlsx",
+       "name": "1.1 What to automate - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "a/p6-p6-1-1-Module1.bas",
+       "name": "1.1 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Arjun’s 20 minutes"
+      ],
+      [
+       0,
+       1,
+       "A macro is a recipe card"
+      ],
+      [
+       0,
+       2,
+       "Worth it? Do the maths"
+      ],
+      [
+       1,
+       0,
+       "Which tool for which job?"
+      ],
+      [
+       1,
+       1,
+       "Undo can’t undo a macro"
+      ],
+      [
+       1,
+       2,
+       "Turn on the Developer tab"
+      ]
+     ],
+     "tasks": [
+      "Which of Arjun’s jobs is the best one for a macro?",
+      "Run FormatDailyReport: Developer › Macros, pick it, Run.",
+      "Now press Ctrl+Z. What happens?",
+      "Put Arjun’s steps for automating a job in order.",
+      "Every month a CSV of branch sales arrives and needs the same cleaning before the report. T",
+      "Click the button that opens the list of macros."
+     ],
+     "real": false
+    },
+    {
+     "id": "p6-1-2",
+     "num": "1.2",
+     "title": "Macro security and .xlsm files",
+     "summary": "Macros can do anything you can, so Excel switches them off until you say so. Save macro workbooks as .xlsm, enable content only in files you trust, and unblock files from the internet in their Properties, or keep them in a trusted location.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Explain why Excel disables macros, and what a macro could do.",
+      "Choose the right file type: .xlsx, .xlsm, .xlsb or .xlam.",
+      "Enable macros with the yellow bar, and know when not to.",
+      "Unblock a file from the internet, and use trusted locations."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p6-p6-1-2-notes.docx",
+       "name": "1.2 Macro security and .xlsm files - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p6-p6-1-2-practice.xlsx",
+       "name": "1.2 Macro security and .xlsm files - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p6-p6-1-2-solution.xlsx",
+       "name": "1.2 Macro security and .xlsm files - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "a/p6-p6-1-2-Module1.bas",
+       "name": "1.2 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A macro can do anything you can"
+      ],
+      [
+       0,
+       1,
+       "Four file types"
+      ],
+      [
+       0,
+       2,
+       "Save as .xlsx and the code is gone"
+      ],
+      [
+       1,
+       0,
+       "SECURITY WARNING: Enable Content"
+      ],
+      [
+       1,
+       1,
+       "SECURITY RISK: blocked from the internet"
+      ],
+      [
+       1,
+       2,
+       "The Trust Center and trusted locations"
+      ]
+     ],
+     "tasks": [
+      "Why won’t MarkDispatched run yet? Try Developer › Macros › Run first.",
+      "Unblock the file and switch its macros on: the Files tab › Properties… › tick Unblock › OK",
+      "Now run MarkDispatched.",
+      "Meena adds her own macro to a copy and wants to save it. Which Save as type?",
+      "An email from an unknown sender has Order details.xlsm attached, and asks you to enable co",
+      "In the Trust Center, click the setting Excel recommends for most people."
+     ],
+     "real": false
+    },
+    {
+     "id": "p6-1-3",
+     "num": "1.3",
+     "title": "Recording a macro",
+     "summary": "Developer › Record Macro writes VBA while you work: every click, including the mistakes. Absolute references record exact cells; Use Relative References records moves from the active cell. Run the result from the Macros list, a shortcut key or a button.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Record a macro with a good name, a description and a shortcut key.",
+      "Choose absolute or relative references before you record.",
+      "Run a macro from Alt+F8, a Ctrl+Shift shortcut and a button on the sheet.",
+      "Plan a recording so it holds only the steps you want."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p6-p6-1-3-notes.docx",
+       "name": "1.3 Recording a macro - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p6-p6-1-3-practice.xlsx",
+       "name": "1.3 Recording a macro - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p6-p6-1-3-solution.xlsx",
+       "name": "1.3 Recording a macro - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "a/p6-p6-1-3-Module1.bas",
+       "name": "1.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Name it, then do the steps"
+      ],
+      [
+       0,
+       1,
+       "Every click is recorded"
+      ],
+      [
+       0,
+       2,
+       "Shortcut keys: use Ctrl+Shift"
+      ],
+      [
+       1,
+       0,
+       "Absolute: the same cells every time"
+      ],
+      [
+       1,
+       1,
+       "Relative: moves from where you are"
+      ],
+      [
+       1,
+       2,
+       "Four ways to run a macro"
+      ]
+     ],
+     "tasks": [
+      "Record a macro called FormatHeader that makes A1:H1 bold with the light blue fill (the sec",
+      "Give FormatHeader the shortcut Ctrl+Shift+H.",
+      "Click I2 first. Then turn on Use Relative References and record StampChecked: type Checked",
+      "Add a button on the sheet that runs FormatHeader, with the text Format header.",
+      "Which macro name will Excel accept?",
+      "Why give a macro Ctrl+Shift+P rather than Ctrl+P?"
+     ],
+     "real": false
+    },
+    {
+     "id": "p6-1-4",
+     "num": "1.4",
+     "title": "The Personal Macro Workbook and cleaning up",
+     "summary": "Macros you want in every workbook go in the Personal Macro Workbook, PERSONAL.XLSB, which opens hidden with Excel. Recorded code works but is wordy: delete the Selects, the settings you didn’t change, and replace fixed ranges with ranges that grow.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Store a macro in the Personal Macro Workbook and run it from any workbook.",
+      "Read recorded code: Sub, comments, Select and Selection.",
+      "Shorten recorded code by acting on ranges directly and deleting unchanged settings.",
+      "Replace a fixed range with CurrentRegion so the macro works on any number of rows."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p6-p6-1-4-notes.docx",
+       "name": "1.4 The Personal Macro Workbook and cleaning up - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p6-p6-1-4-practice.xlsx",
+       "name": "1.4 The Personal Macro Workbook and cleaning up - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p6-p6-1-4-solution.xlsx",
+       "name": "1.4 The Personal Macro Workbook and cleaning up - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "a/p6-p6-1-4-Module1.bas",
+       "name": "1.4 Module1.bas"
+      },
+      {
+       "label": "Model answer: code for PERSONAL.XLSB › Module1",
+       "file": "a/p6-p6-1-4-PERSONAL-Module1.txt",
+       "name": "1.4 PERSONAL-Module1.txt"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "PERSONAL.XLSB"
+      ],
+      [
+       0,
+       1,
+       "What goes where"
+      ],
+      [
+       1,
+       0,
+       "Reading a recorded macro"
+      ],
+      [
+       1,
+       1,
+       "Cut the Selects"
+      ],
+      [
+       1,
+       2,
+       "Fixed ranges break tomorrow"
+      ]
+     ],
+     "tasks": [
+      "Clean up FormatReport: no Select or Selection left, and it must still format the sheet exa",
+      "Tomorrow there are 14 orders. Make FormatReport format the number columns and the borders ",
+      "Click K1, then record InsertCompanyName, stored in the Personal Macro Workbook: it types N",
+      "Meena opens Arjun’s orders file on her own computer and clicks a button that runs PERSONAL",
+      "Which recorded line can you usually delete without changing what the macro does?"
+     ],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "The Visual Basic Editor and Excel’s objects",
+   "summary": "A tour of the editor, objects, properties and methods, and Subs, Functions and good names.",
+   "free": false,
+   "testInfo": "The editor, objects, properties and methods, Subs and Functions",
+   "lessons": [
+    {
+     "id": "p6-2-1",
+     "num": "2.1",
+     "title": "A tour of the Visual Basic Editor",
+     "summary": "Alt+F11 opens the Visual Basic Editor: the Project Explorer lists every workbook’s sheets and modules, the code window holds the macros, and the Immediate window answers questions and runs single lines. Insert a module, write a Sub, and press F5.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Open the Visual Basic Editor and name its windows.",
+      "Insert a module, rename it, and write a Sub in it.",
+      "Run a Sub with F5 from the code window.",
+      "Use the Immediate window to ask questions and print values with Debug.Print."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-2-1-notes.docx",
+       "name": "2.1 A tour of the Visual Basic Editor - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-2-1-practice.xlsx",
+       "name": "2.1 A tour of the Visual Basic Editor - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-2-1-solution.xlsx",
+       "name": "2.1 A tour of the Visual Basic Editor - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-2-1-Module1.bas",
+       "name": "2.1 Module1.bas"
+      },
+      {
+       "label": "Model answer: Tools.bas",
+       "file": "s/p6-p6-2-1-Tools.bas",
+       "name": "2.1 Tools.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Alt+F11: the editor behind the workbook"
+      ],
+      [
+       0,
+       1,
+       "Where code lives"
+      ],
+      [
+       0,
+       2,
+       "Write a Sub and press F5"
+      ],
+      [
+       1,
+       0,
+       "Ask a question with ?"
+      ],
+      [
+       1,
+       1,
+       "Debug.Print: notes from a running macro"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-2-2",
+     "num": "2.2",
+     "title": "Objects, properties and methods",
+     "summary": "VBA talks to Excel through objects: the application, workbooks, worksheets and ranges, each inside the one before. Properties describe an object (.Value, .Font.Bold) and methods make it do something (.Copy, .Clear). Say which sheet, and use With to name an object once.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Describe Excel’s objects as a hierarchy: Application, Workbook, Worksheet, Range.",
+      "Read and set properties, and call methods, with the dot.",
+      "Refer to a sheet by name and to cells with Range and Cells.",
+      "Qualify ranges with their sheet, and use With … End With."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-2-2-notes.docx",
+       "name": "2.2 Objects, properties and methods - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-2-2-practice.xlsx",
+       "name": "2.2 Objects, properties and methods - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-2-2-solution.xlsx",
+       "name": "2.2 Objects, properties and methods - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-2-2-Module1.bas",
+       "name": "2.2 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Objects inside objects"
+      ],
+      [
+       0,
+       1,
+       "The dot goes one level down"
+      ],
+      [
+       0,
+       2,
+       "Properties describe, methods do"
+      ],
+      [
+       1,
+       0,
+       "Say which sheet"
+      ],
+      [
+       1,
+       1,
+       "Cells(row, column)"
+      ],
+      [
+       1,
+       2,
+       "With … End With"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-2-3",
+     "num": "2.3",
+     "title": "Subs, Functions and good names",
+     "summary": "A Sub does something; a Function works out a value and gives it back. Build big macros from small Subs that call each other, write Functions for calculations you reuse, and name everything so it reads like English. Private keeps helpers out of the Macros list.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Tell a Sub from a Function, and know which appear in the Macros list.",
+      "Call one Sub from another to build a routine from small steps.",
+      "Write a Function with arguments that returns a value.",
+      "Name procedures well, comment them, and make helpers Private."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-2-3-notes.docx",
+       "name": "2.3 Subs, Functions and good names - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-2-3-practice.xlsx",
+       "name": "2.3 Subs, Functions and good names - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-2-3-solution.xlsx",
+       "name": "2.3 Subs, Functions and good names - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-2-3-Module1.bas",
+       "name": "2.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A Sub does, a Function answers"
+      ],
+      [
+       0,
+       1,
+       "Arguments: what goes in"
+      ],
+      [
+       0,
+       2,
+       "Small Subs, one routine"
+      ],
+      [
+       1,
+       0,
+       "Names that say what they do"
+      ],
+      [
+       1,
+       1,
+       "Comments and long lines"
+      ],
+      [
+       1,
+       2,
+       "Private: helpers stay hidden"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Variables, decisions and ranges",
+   "summary": "Variables and data types, If and Select Case, MsgBox and InputBox, and finding the last row.",
+   "free": false,
+   "testInfo": "Variables and types, If and Select Case, MsgBox and InputBox, and finding the data",
+   "lessons": [
+    {
+     "id": "p6-3-1",
+     "num": "3.1",
+     "title": "Variables and data types",
+     "summary": "A variable is a named box that holds a value while the macro runs. Declare each one with Dim and a type (Long, Double, String, Boolean, Date), put Option Explicit at the top so typos are caught, use Const for numbers that never change, and Set for objects like sheets.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Declare variables with Dim and the right data type.",
+      "Use Option Explicit to catch misspelt names before the macro runs.",
+      "Use Const for fixed values and Set for object variables.",
+      "Recognise Overflow and Type mismatch errors and what causes them."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-3-1-notes.docx",
+       "name": "3.1 Variables and data types - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-3-1-practice.xlsx",
+       "name": "3.1 Variables and data types - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-3-1-solution.xlsx",
+       "name": "3.1 Variables and data types - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-3-1-Module1.bas",
+       "name": "3.1 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A variable is a labelled box"
+      ],
+      [
+       0,
+       1,
+       "Pick the right type"
+      ],
+      [
+       0,
+       2,
+       "Option Explicit catches typos"
+      ],
+      [
+       1,
+       0,
+       "Const: a value that never changes"
+      ],
+      [
+       1,
+       1,
+       "Objects need Set"
+      ],
+      [
+       1,
+       2,
+       "Overflow and Type mismatch"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-3-2",
+     "num": "3.2",
+     "title": "Decisions: If and Select Case",
+     "summary": "If … Then … Else lets a macro do different things for different data: Big or Normal, priority or standard. ElseIf adds more tests in order; And and Or combine conditions. Select Case is the tidy way to choose between many values or ranges, with Case Else for everything else.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write If … Then … Else … End If and single-line Ifs.",
+      "Use ElseIf in the right order, and combine tests with And, Or and Not.",
+      "Choose between many values with Select Case, including lists, ranges (To) and Is.",
+      "Remember that text comparisons are case-sensitive."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-3-2-notes.docx",
+       "name": "3.2 Decisions: If and Select Case - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-3-2-practice.xlsx",
+       "name": "3.2 Decisions: If and Select Case - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-3-2-solution.xlsx",
+       "name": "3.2 Decisions: If and Select Case - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-3-2-Module1.bas",
+       "name": "3.2 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A fork in the road"
+      ],
+      [
+       0,
+       1,
+       "ElseIf: tests in order"
+      ],
+      [
+       0,
+       2,
+       "And, Or, Not"
+      ],
+      [
+       1,
+       0,
+       "Many choices, one value"
+      ],
+      [
+       1,
+       1,
+       "Ranges with To and Is"
+      ],
+      [
+       1,
+       2,
+       "\"chennai\" isn’t \"Chennai\""
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-3-3",
+     "num": "3.3",
+     "title": "Talking to the user: MsgBox and InputBox",
+     "summary": "MsgBox shows a message and can ask Yes or No: check what it returns before doing anything risky. InputBox asks for text and gives back \"\" on Cancel; Application.InputBox with Type:=1 accepts only numbers and gives back False on Cancel. Always handle Cancel.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Show messages with buttons, an icon, a title and several lines.",
+      "Ask Yes/No with MsgBox and act on vbYes or vbNo.",
+      "Ask for text with InputBox and handle Cancel and empty answers.",
+      "Ask for a number with Application.InputBox Type:=1."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-3-3-notes.docx",
+       "name": "3.3 Talking to the user: MsgBox and InputBox - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-3-3-practice.xlsx",
+       "name": "3.3 Talking to the user: MsgBox and InputBox - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-3-3-solution.xlsx",
+       "name": "3.3 Talking to the user: MsgBox and InputBox - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-3-3-Module1.bas",
+       "name": "3.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Buttons, icon, title"
+      ],
+      [
+       0,
+       1,
+       "Use the answer"
+      ],
+      [
+       0,
+       2,
+       "Messages on several lines"
+      ],
+      [
+       1,
+       0,
+       "InputBox and Cancel"
+      ],
+      [
+       1,
+       1,
+       "Application.InputBox for numbers"
+      ],
+      [
+       1,
+       2,
+       "Check what people type"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-3-4",
+     "num": "3.4",
+     "title": "Finding the data: the last row and friends",
+     "summary": "Data grows, so never hard-code where it ends. Cells(Rows.Count, 1).End(xlUp).Row finds the last used row, like Ctrl+↑ from the bottom; the next empty row is one below. Build ranges from it with Range(Cells, Cells), and use Offset and Resize to step past the header.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Find the last row with Cells(Rows.Count, col).End(xlUp).Row and the last column with End(xlToLeft).",
+      "Write to the next empty row to add data.",
+      "Build ranges from numbers with Range(Cells(r1, c1), Cells(r2, c2)) and from formulas with &.",
+      "Use Offset and Resize to work on the data without its header."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-3-4-notes.docx",
+       "name": "3.4 Finding the data: the last row and friends - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-3-4-practice.xlsx",
+       "name": "3.4 Finding the data: the last row and friends - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-3-4-solution.xlsx",
+       "name": "3.4 Finding the data: the last row and friends - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-3-4-Module1.bas",
+       "name": "3.4 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Ctrl+↑ from the very bottom"
+      ],
+      [
+       0,
+       1,
+       "Why not End(xlDown) from the top?"
+      ],
+      [
+       0,
+       2,
+       "The next empty row"
+      ],
+      [
+       1,
+       0,
+       "Range(Cells, Cells) and &"
+      ],
+      [
+       1,
+       1,
+       "Offset and Resize"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Loops and arrays",
+   "summary": "For…Next down the rows, For Each over cells and sheets, Do loops, and arrays for speed.",
+   "free": false,
+   "testInfo": "For, For Each and Do loops, deleting rows, and arrays",
+   "lessons": [
+    {
+     "id": "p6-4-1",
+     "num": "4.1",
+     "title": "For…Next: down the rows",
+     "summary": "For r = 2 To lastRow … Next r repeats the same lines once for each row, with r counting up. Inside, Cells(r, column) is the current row. Add up as you go with total = total + …, and loop backwards with Step -1 when you delete rows.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write For … To … Next loops with a counter variable.",
+      "Loop over every data row with Cells(r, column), from 2 to the last row.",
+      "Count and add up inside a loop, and decide with If inside a loop.",
+      "Delete rows safely by looping backwards with Step -1."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-4-1-notes.docx",
+       "name": "4.1 For…Next: down the rows - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-4-1-practice.xlsx",
+       "name": "4.1 For…Next: down the rows - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-4-1-solution.xlsx",
+       "name": "4.1 For…Next: down the rows - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-4-1-Module1.bas",
+       "name": "4.1 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Same lines, every row"
+      ],
+      [
+       0,
+       1,
+       "Watch it run with F8"
+      ],
+      [
+       0,
+       2,
+       "Decide inside the loop"
+      ],
+      [
+       1,
+       0,
+       "Add up as you go"
+      ],
+      [
+       1,
+       1,
+       "Delete rows: go backwards"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-4-2",
+     "num": "4.2",
+     "title": "For Each: cells and sheets",
+     "summary": "For Each c In a range visits every cell in it, and For Each ws In ThisWorkbook.Worksheets visits every sheet, with no counter to manage. Use it to clean, check or colour every cell, and to do the same job on every branch’s sheet.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Loop over every cell of a range with For Each … Next.",
+      "Loop over every worksheet in a workbook, and skip the ones you don’t want.",
+      "Clean and check data cell by cell: Trim, IsEmpty.",
+      "Choose between For … Next and For Each."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-4-2-notes.docx",
+       "name": "4.2 For Each: cells and sheets - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-4-2-practice.xlsx",
+       "name": "4.2 For Each: cells and sheets - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-4-2-solution.xlsx",
+       "name": "4.2 For Each: cells and sheets - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-4-2-Module1.bas",
+       "name": "4.2 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "For Each c In range"
+      ],
+      [
+       0,
+       1,
+       "Clean every cell"
+      ],
+      [
+       1,
+       0,
+       "For Each ws In Worksheets"
+      ],
+      [
+       1,
+       1,
+       "Skip the sheets you don’t want"
+      ],
+      [
+       1,
+       2,
+       "For … Next or For Each?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-4-3",
+     "num": "4.3",
+     "title": "Do loops: until something happens",
+     "summary": "A Do loop repeats while (or until) a condition holds, for when you don’t know how many times: walk down until a blank cell, keep asking until the answer is valid, search until you find a match. Make sure something inside changes the condition, or it never ends.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Write Do While … Loop and Do Until … Loop.",
+      "Put the test at the end with Loop Until so the body runs at least once.",
+      "Search down a column until a match or a blank.",
+      "Spot and fix a loop that never ends, and stop one with Esc or Reset."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-4-3-notes.docx",
+       "name": "4.3 Do loops: until something happens - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-4-3-practice.xlsx",
+       "name": "4.3 Do loops: until something happens - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-4-3-solution.xlsx",
+       "name": "4.3 Do loops: until something happens - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-4-3-Module1.bas",
+       "name": "4.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Walk down until a blank"
+      ],
+      [
+       0,
+       1,
+       "Ask until the answer is valid"
+      ],
+      [
+       0,
+       2,
+       "Search until found"
+      ],
+      [
+       1,
+       0,
+       "The missing r = r + 1"
+      ],
+      [
+       1,
+       1,
+       "Stopping and fixing"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-4-4",
+     "num": "4.4",
+     "title": "Arrays and speed",
+     "summary": "An array is one variable with numbered slots. Array() makes a list, LBound and UBound give its ends, and Split and Join turn text into arrays and back. Read a whole range into an array with one .Value, work on it in memory, and write it back in one go: that’s what makes big macros fast.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Make and loop over arrays with Array, LBound and UBound.",
+      "Split text into an array and Join an array into text.",
+      "Grow an array with ReDim Preserve.",
+      "Read a range into a 2-D array and write results back in one step, for speed."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-4-4-notes.docx",
+       "name": "4.4 Arrays and speed - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-4-4-practice.xlsx",
+       "name": "4.4 Arrays and speed - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-4-4-solution.xlsx",
+       "name": "4.4 Arrays and speed - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-4-4-Module1.bas",
+       "name": "4.4 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A row of numbered boxes"
+      ],
+      [
+       0,
+       1,
+       "Split, Join and ReDim Preserve"
+      ],
+      [
+       1,
+       0,
+       "Every cell is a trip to Excel"
+      ],
+      [
+       1,
+       1,
+       "Read once, work, write once"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Events and UserForms",
+   "summary": "Event macros that run when cells change or the file opens, and UserForms for entering data.",
+   "free": false,
+   "testInfo": "Worksheet_Change and Workbook_Open, EnableEvents, UserForms, their controls and events",
+   "lessons": [
+    {
+     "id": "p6-5-1",
+     "num": "5.1",
+     "title": "Worksheet and workbook events",
+     "summary": "An event macro runs by itself when something happens: Worksheet_Change when someone edits a cell, Workbook_Open when the file opens. It lives in the sheet’s or ThisWorkbook’s own code window, and Target tells it which cells changed. Turn events off while it writes to the sheet, or it sets itself off again.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write Worksheet_Change in a sheet’s code window, and use Target and Intersect to react to one column only.",
+      "Stop an event macro from setting itself off with Application.EnableEvents.",
+      "Handle several columns in one Worksheet_Change.",
+      "Run code when the workbook opens with Workbook_Open."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-5-1-notes.docx",
+       "name": "5.1 Worksheet and workbook events - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-5-1-practice.xlsx",
+       "name": "5.1 Worksheet and workbook events - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-5-1-solution.xlsx",
+       "name": "5.1 Worksheet and workbook events - solution.xlsx"
+      },
+      {
+       "label": "Model answer: code for Sheet1",
+       "file": "s/p6-p6-5-1-Sheet1.txt",
+       "name": "5.1 Sheet1.txt"
+      },
+      {
+       "label": "Model answer: code for ThisWorkbook",
+       "file": "s/p6-p6-5-1-ThisWorkbook.txt",
+       "name": "5.1 ThisWorkbook.txt"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Something happens, a macro runs"
+      ],
+      [
+       0,
+       1,
+       "The sheet’s own code window"
+      ],
+      [
+       0,
+       2,
+       "Only the column you care about"
+      ],
+      [
+       1,
+       0,
+       "A macro that never stops"
+      ],
+      [
+       1,
+       1,
+       "Events off while you write"
+      ],
+      [
+       1,
+       2,
+       "When the workbook opens"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-5-2",
+     "num": "5.2",
+     "title": "UserForms: a form for orders",
+     "summary": "A UserForm is a dialog box you design: boxes to type in, lists to pick from, buttons to click. Each control has a name; its events (cmdAdd_Click, UserForm_Initialize) live in the form’s own code window. A macro shows it with frmOrder.Show; the form’s code fills the lists, checks what was typed, writes the row and unloads itself.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Find your way around a UserForm: controls, names and the form’s code window.",
+      "Show a form from a macro, and fill its lists in UserForm_Initialize.",
+      "Write the form’s values into the next empty row when a button is clicked.",
+      "Check what was typed before writing, and close the form with Unload Me."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-5-2-notes.docx",
+       "name": "5.2 UserForms: a form for orders - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-5-2-practice.xlsx",
+       "name": "5.2 UserForms: a form for orders - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-5-2-solution.xlsx",
+       "name": "5.2 UserForms: a form for orders - solution.xlsx"
+      },
+      {
+       "label": "Model answer: frmOrder (the form’s controls and code)",
+       "file": "s/p6-p6-5-2-frmOrder.txt",
+       "name": "5.2 frmOrder.txt"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-5-2-Module1.bas",
+       "name": "5.2 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why a form?"
+      ],
+      [
+       0,
+       1,
+       "Controls, names and properties"
+      ],
+      [
+       0,
+       2,
+       "Show it, fill it"
+      ],
+      [
+       1,
+       0,
+       "Write the row"
+      ],
+      [
+       1,
+       1,
+       "Check before you write"
+      ],
+      [
+       1,
+       2,
+       "Close the form"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-5-3",
+     "num": "5.3",
+     "title": "Controls that react",
+     "summary": "Controls have events of their own: txtPacks_Change runs at every keystroke, cboBranch_Change whenever a branch is picked. Use them to show the amount as it’s typed, to switch the Add button on only when the order is complete, to read a tick box, and to fill a list box with the branch’s orders.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Use a control’s Change event to update the form as the user types.",
+      "Share code between events with a private Sub in the form.",
+      "Switch a button on and off with Enabled.",
+      "Read a CheckBox, and fill a ListBox with AddItem."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-5-3-notes.docx",
+       "name": "5.3 Controls that react - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-5-3-practice.xlsx",
+       "name": "5.3 Controls that react - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-5-3-solution.xlsx",
+       "name": "5.3 Controls that react - solution.xlsx"
+      },
+      {
+       "label": "Model answer: frmOrder (the form’s controls and code)",
+       "file": "s/p6-p6-5-3-frmOrder.txt",
+       "name": "5.3 frmOrder.txt"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-5-3-Module1.bas",
+       "name": "5.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The amount, as she types"
+      ],
+      [
+       0,
+       1,
+       "Add only when it’s complete"
+      ],
+      [
+       1,
+       0,
+       "A tick box"
+      ],
+      [
+       1,
+       1,
+       "A list of today’s orders"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-5-4",
+     "num": "5.4",
+     "title": "Forms for everyone",
+     "summary": "A form is only useful if people can reach it and can’t break it. Give it a button on the sheet and open it with the workbook; catch the X with UserForm_QueryClose so half-typed orders aren’t lost; and protect the sheet with UserInterfaceOnly so people can’t type over orders while your code still can.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Open a form from a sheet button and from Workbook_Open.",
+      "Tell modal and modeless forms apart, and know when each is right.",
+      "Catch the X button with UserForm_QueryClose and Cancel.",
+      "Protect a sheet so only your code can write to it."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-5-4-notes.docx",
+       "name": "5.4 Forms for everyone - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-5-4-practice.xlsx",
+       "name": "5.4 Forms for everyone - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-5-4-solution.xlsx",
+       "name": "5.4 Forms for everyone - solution.xlsx"
+      },
+      {
+       "label": "Model answer: code for ThisWorkbook",
+       "file": "s/p6-p6-5-4-ThisWorkbook.txt",
+       "name": "5.4 ThisWorkbook.txt"
+      },
+      {
+       "label": "Model answer: frmOrder (the form’s controls and code)",
+       "file": "s/p6-p6-5-4-frmOrder.txt",
+       "name": "5.4 frmOrder.txt"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-5-4-Module1.bas",
+       "name": "5.4 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A button, or open with the file"
+      ],
+      [
+       0,
+       1,
+       "Modal or modeless"
+      ],
+      [
+       1,
+       0,
+       "Catch the X"
+      ],
+      [
+       1,
+       1,
+       "Lock the sheet, not the code"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "Debugging, errors and speed",
+   "summary": "Find bugs with the debugger, handle run-time errors, leave Excel as you found it, and make long macros fast.",
+   "free": false,
+   "testInfo": "the debugger, error handling, clean-up and speed",
+   "lessons": [
+    {
+     "id": "p6-6-1",
+     "num": "6.1",
+     "title": "Finding bugs",
+     "summary": "A bug is code that runs but does the wrong thing, or stops with an error. Don’t guess: stop the macro where it goes wrong with a breakpoint or F8, read the values in Locals and the Immediate window, and you’ll see which line and which value are wrong. Debug.Print leaves a trail; Stop and Debug.Assert stop when something unexpected happens.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Step through a macro with F8, Shift+F8 and Run to Cursor, and stop it at breakpoints.",
+      "Read values while it’s stopped: Locals, hovering, and ? in the Immediate window.",
+      "Fix the common bugs: the wrong column for the last row, overflowing types, off-by-one loops.",
+      "Leave a trail with Debug.Print, and stop on surprises with Stop and Debug.Assert."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-6-1-notes.docx",
+       "name": "6.1 Finding bugs - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-6-1-practice.xlsx",
+       "name": "6.1 Finding bugs - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-6-1-solution.xlsx",
+       "name": "6.1 Finding bugs - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-6-1-Module1.bas",
+       "name": "6.1 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Wrong answer, no error"
+      ],
+      [
+       0,
+       1,
+       "Breakpoints and the keys"
+      ],
+      [
+       0,
+       2,
+       "Ask the Immediate window"
+      ],
+      [
+       1,
+       0,
+       "Overflow: a type too small"
+      ],
+      [
+       1,
+       1,
+       "One short: off by one"
+      ],
+      [
+       1,
+       2,
+       "Leave a trail, stop on surprises"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-6-2",
+     "num": "6.2",
+     "title": "Handling run-time errors",
+     "summary": "Some errors aren’t bugs: a sheet someone deleted, a file that isn’t there, packs typed in words. On Error GoTo sends the macro to a handler instead of the grey error box; Err says what went wrong; Resume Next carries on after the line that failed. On Error Resume Next skips one risky line, if you check Err straight after.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Catch run-time errors with On Error GoTo and a handler label, with Exit Sub before it.",
+      "Tell the user what went wrong with Err.Number and Err.Description.",
+      "Carry on after a bad row with Resume Next, or retry with Resume.",
+      "Test something risky with On Error Resume Next, check Err, and switch back with On Error GoTo 0."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-6-2-notes.docx",
+       "name": "6.2 Handling run-time errors - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-6-2-practice.xlsx",
+       "name": "6.2 Handling run-time errors - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-6-2-solution.xlsx",
+       "name": "6.2 Handling run-time errors - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-6-2-Module1.bas",
+       "name": "6.2 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The grey box isn’t for users"
+      ],
+      [
+       0,
+       1,
+       "On Error GoTo"
+      ],
+      [
+       1,
+       0,
+       "Resume Next: carry on"
+      ],
+      [
+       1,
+       1,
+       "One risky line: Resume Next"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-6-3",
+     "num": "6.3",
+     "title": "Clean exits and your own errors",
+     "summary": "A macro that turns off screen updating, events or automatic calculation must turn them back on however it ends, error or not. One CleanUp label that every route goes through does it. Log what went wrong for later, and raise your own errors, with Err.Raise, when your code finds something it can’t carry on with.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Put settings back on every way out with a CleanUp label and Resume CleanUp.",
+      "Log errors to a sheet with the time, the macro and Err.Number and Err.Description.",
+      "Raise your own errors with Err.Raise and vbObjectError, with a message that says what to fix.",
+      "Know which Application settings outlive a macro."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-6-3-notes.docx",
+       "name": "6.3 Clean exits and your own errors - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-6-3-practice.xlsx",
+       "name": "6.3 Clean exits and your own errors - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-6-3-solution.xlsx",
+       "name": "6.3 Clean exits and your own errors - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-6-3-Module1.bas",
+       "name": "6.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Settings that stay changed"
+      ],
+      [
+       0,
+       1,
+       "One way out: CleanUp"
+      ],
+      [
+       1,
+       0,
+       "Log it for later"
+      ],
+      [
+       1,
+       1,
+       "Raise your own errors"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-6-4",
+     "num": "6.4",
+     "title": "Fast macros",
+     "summary": "Macros are slow when they talk to Excel more than they need to: selecting cells, redrawing the screen after every change, recalculating after every write. Work on ranges directly instead of selecting, switch off ScreenUpdating and automatic calculation while you write, show progress in the status bar, and time it with Timer to know what helped.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Work on cells directly instead of Select and Selection.",
+      "Switch off ScreenUpdating and automatic calculation while a macro writes, and put them back.",
+      "Show progress in the status bar, and give it back.",
+      "Time a macro with Timer, and know which change made the difference."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-6-4-notes.docx",
+       "name": "6.4 Fast macros - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-6-4-practice.xlsx",
+       "name": "6.4 Fast macros - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-6-4-solution.xlsx",
+       "name": "6.4 Fast macros - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-6-4-Module1.bas",
+       "name": "6.4 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The recorder’s habits"
+      ],
+      [
+       0,
+       1,
+       "Screen and calculation off while you write"
+      ],
+      [
+       1,
+       0,
+       "Tell people it’s working"
+      ],
+      [
+       1,
+       1,
+       "Measure, don’t guess"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Automating reports",
+   "summary": "A summary sheet in one click, a file per branch and back, PDFs set up for printing, and emails with attachments.",
+   "free": false,
+   "testInfo": "building report sheets, splitting and merging files, PDFs and page setup, and Outlook emails",
+   "lessons": [
+    {
+     "id": "p6-7-1",
+     "num": "7.1",
+     "title": "A report sheet in one click",
+     "summary": "Every evening Arjun builds the same summary by hand: a new sheet, a row per branch, totals, formatting. A macro does it in a second: add the sheet (replacing yesterday’s if it’s there), fill it with CountIfs and SumIfs, add a total row, and format it the same way every time.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Add a sheet with Worksheets.Add, name it with today’s date, and replace an old one without Excel asking.",
+      "Fill a summary from the data with WorksheetFunction.CountIfs and SumIfs.",
+      "Write a total row with formulas from code.",
+      "Format a report from code: bold headers, fills, number formats, AutoFit."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-7-1-notes.docx",
+       "name": "7.1 A report sheet in one click - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-7-1-practice.xlsx",
+       "name": "7.1 A report sheet in one click - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-7-1-solution.xlsx",
+       "name": "7.1 A report sheet in one click - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-7-1-Module1.bas",
+       "name": "7.1 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The evening routine"
+      ],
+      [
+       0,
+       1,
+       "Add it, name it, replace yesterday’s"
+      ],
+      [
+       1,
+       0,
+       "CountIfs and SumIfs from code"
+      ],
+      [
+       1,
+       1,
+       "The look, from code"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-7-2",
+     "num": "7.2",
+     "title": "One file per branch, and back again",
+     "summary": "Each branch manager wants only their own orders, in their own file; each evening the branches send their files back to be put together. Workbooks.Add, SaveAs and Close make and save a file per branch; Dir and Workbooks.Open go through a folder of files and copy each one in. After opening another file, say ThisWorkbook when you mean yours.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Make a new workbook per branch, copy that branch’s rows in, save it into a folder and close it.",
+      "Make the folder if it isn’t there, and replace yesterday’s files without Excel asking.",
+      "Loop through a folder’s files with Dir, open each, copy its rows, and close it.",
+      "Tell ThisWorkbook from ActiveWorkbook once other files are open."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-7-2-notes.docx",
+       "name": "7.2 One file per branch, and back again - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-7-2-practice.xlsx",
+       "name": "7.2 One file per branch, and back again - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-7-2-solution.xlsx",
+       "name": "7.2 One file per branch, and back again - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-7-2-Module1.bas",
+       "name": "7.2 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Make, fill, save, close"
+      ],
+      [
+       0,
+       1,
+       "Safe to run any evening"
+      ],
+      [
+       1,
+       0,
+       "Dir goes through a folder"
+      ],
+      [
+       1,
+       1,
+       "ThisWorkbook, not ActiveWorkbook"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-7-3",
+     "num": "7.3",
+     "title": "PDFs that print properly",
+     "summary": "Branch managers want a PDF they can open on a phone and print in the office. ExportAsFixedFormat makes a PDF of a sheet, a range or the whole workbook. Set the sheet’s PageSetup first, so it comes out landscape, one page wide, with headings on every page and a page number at the bottom.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Export a sheet, a range or a workbook to PDF with ExportAsFixedFormat.",
+      "Name each PDF from the branch and the date, into the Reports folder.",
+      "Set up the page first: orientation, fit to one page wide, print titles, footer.",
+      "Know the footer codes &P, &N, &D and &A."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-7-3-notes.docx",
+       "name": "7.3 PDFs that print properly - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-7-3-practice.xlsx",
+       "name": "7.3 PDFs that print properly - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-7-3-solution.xlsx",
+       "name": "7.3 PDFs that print properly - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-7-3-Module1.bas",
+       "name": "7.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "ExportAsFixedFormat"
+      ],
+      [
+       0,
+       1,
+       "Just the part they need"
+      ],
+      [
+       1,
+       0,
+       "Landscape, one page wide"
+      ],
+      [
+       1,
+       1,
+       "Header and footer codes"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-7-4",
+     "num": "7.4",
+     "title": "Emailing the reports",
+     "summary": "The last step of the evening is four emails, each to a branch manager with their PDF attached. From Excel, CreateObject(\"Outlook.Application\") starts Outlook; CreateItem(0) makes an email; set To, Subject and Body, attach the file, then Display it to check or Send it. Read the addresses from a sheet and loop.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Make an Outlook email from Excel: To, Subject, Body and an attachment.",
+      "Display an email to check it, and Send once you trust the macro.",
+      "Send one email per row of a list, skipping rows without an address.",
+      "Check a file exists before attaching it, and report what was skipped."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-7-4-notes.docx",
+       "name": "7.4 Emailing the reports - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-7-4-practice.xlsx",
+       "name": "7.4 Emailing the reports - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-7-4-solution.xlsx",
+       "name": "7.4 Emailing the reports - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-7-4-Module1.bas",
+       "name": "7.4 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Excel drives Outlook"
+      ],
+      [
+       0,
+       1,
+       "Display first, Send later"
+      ],
+      [
+       1,
+       0,
+       "Addresses from a sheet"
+      ],
+      [
+       1,
+       1,
+       "Don’t send what isn’t there"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Your own functions and add-ins",
+   "summary": "VBA functions used in cells, made friendly with optional arguments, ranges and errors, then shared as an add-in.",
+   "free": false,
+   "testInfo": "user-defined functions, optional and range arguments, CVErr, and add-ins",
+   "lessons": [
+    {
+     "id": "p6-8-1",
+     "num": "8.1",
+     "title": "Functions for your cells",
+     "summary": "A Function in a module, unlike a Sub, gives back an answer, so you can use it in a cell like SUM: =GSTAmount(H2). Write the rule once, in VBA, and every cell that uses it follows the rule. It must be Public, in a standard module; it gets the cells’ values through its arguments, and it can’t change other cells.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write a Function that takes arguments and gives back a value.",
+      "Use your Function in cells, and fill it down like any formula.",
+      "Build a text answer with \\ (whole division), Mod and IIf.",
+      "Know why a cell shows #NAME? or #VALUE! with your function."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-8-1-notes.docx",
+       "name": "8.1 Functions for your cells - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-8-1-practice.xlsx",
+       "name": "8.1 Functions for your cells - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-8-1-solution.xlsx",
+       "name": "8.1 Functions for your cells - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-8-1-Module1.bas",
+       "name": "8.1 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A rule Excel doesn’t have"
+      ],
+      [
+       0,
+       1,
+       "In a cell, like SUM"
+      ],
+      [
+       1,
+       0,
+       "Cartons and packs"
+      ],
+      [
+       1,
+       1,
+       "#NAME? and #VALUE!"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-8-2",
+     "num": "8.2",
+     "title": "Friendlier functions",
+     "summary": "Good worksheet functions behave like Excel’s own. Optional arguments with defaults keep the common case short; a Range argument lets a function look at many cells; an error value like #N/A says ‘not found’ honestly instead of a misleading 0; and a description shows people how to use it in the Insert Function box.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Give a function Optional arguments with default values.",
+      "Take a Range argument and loop through its cells.",
+      "Give back an Excel error like #N/A with CVErr.",
+      "Describe a function for the Insert Function box with Application.MacroOptions."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-8-2-notes.docx",
+       "name": "8.2 Friendlier functions - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-8-2-practice.xlsx",
+       "name": "8.2 Friendlier functions - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-8-2-solution.xlsx",
+       "name": "8.2 Friendlier functions - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-8-2-Module1.bas",
+       "name": "8.2 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Optional, with a default"
+      ],
+      [
+       0,
+       1,
+       "A whole range in, one answer out"
+      ],
+      [
+       1,
+       0,
+       "Not found? Say #N/A"
+      ],
+      [
+       1,
+       1,
+       "A description in Insert Function"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-8-3",
+     "num": "8.3",
+     "title": "Add-ins: your tools in every workbook",
+     "summary": "An add-in (.xlam) is a workbook that loads quietly with Excel and lends its functions and macros to every file you open. Its code must work on the workbook in front, ActiveWorkbook and ActiveSheet, not on ThisWorkbook, which is now the add-in itself. Save it to the AddIns folder, tick it in Excel Add-ins, and give its macros a button.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Know what an add-in is, and how it differs from Personal.xlsb.",
+      "Write add-in macros that act on ActiveSheet and ActiveWorkbook.",
+      "Save a workbook as an add-in and install it with Developer › Excel Add-ins.",
+      "Give add-in macros a button on the ribbon or Quick Access Toolbar."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-8-3-notes.docx",
+       "name": "8.3 Add-ins: your tools in every workbook - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-8-3-practice.xlsx",
+       "name": "8.3 Add-ins: your tools in every workbook - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-8-3-solution.xlsx",
+       "name": "8.3 Add-ins: your tools in every workbook - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-8-3-Module1.bas",
+       "name": "8.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why an add-in"
+      ],
+      [
+       0,
+       1,
+       "ThisWorkbook is the add-in now"
+      ],
+      [
+       1,
+       0,
+       "Save as .xlam, then tick it"
+      ],
+      [
+       1,
+       1,
+       "A button for each tool"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "title": "Office Scripts, Power Automate and handover",
+   "summary": "Office Scripts for Excel on the web, flows that run them on a schedule, and handing your tools over safely.",
+   "free": false,
+   "testInfo": "Office Scripts, Power Automate flows, and handing over macros safely",
+   "lessons": [
+    {
+     "id": "p6-9-1",
+     "num": "9.1",
+     "title": "Office Scripts",
+     "summary": "Excel for the web can’t run VBA. Office Scripts do the same kind of job there: small programs in TypeScript, started from the Automate tab, that read and change the workbook. Everything begins with main(workbook); ranges have get and set methods; getValues and setValues move a whole block at once.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Open the Code Editor from the Automate tab, write a script and run it.",
+      "Change formats and values with get…() and set…() methods.",
+      "Read a block with getValues, work on it in a loop, and write it back with setValues.",
+      "Build a summary sheet and print a check line with console.log."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-9-1-notes.docx",
+       "name": "9.1 Office Scripts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-9-1-practice.xlsx",
+       "name": "9.1 Office Scripts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-9-1-solution.xlsx",
+       "name": "9.1 Office Scripts - solution.xlsx"
+      },
+      {
+       "label": "Model answer: FormatOrders",
+       "file": "s/p6-p6-9-1-FormatOrders.osts",
+       "name": "9.1 FormatOrders.osts"
+      },
+      {
+       "label": "Model answer: AddGST",
+       "file": "s/p6-p6-9-1-AddGST.osts",
+       "name": "9.1 AddGST.osts"
+      },
+      {
+       "label": "Model answer: BranchSummary",
+       "file": "s/p6-p6-9-1-BranchSummary.osts",
+       "name": "9.1 BranchSummary.osts"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Where VBA can’t go"
+      ],
+      [
+       0,
+       1,
+       "The Automate tab and the Code Editor"
+      ],
+      [
+       0,
+       2,
+       "main, the workbook, and get / set"
+      ],
+      [
+       1,
+       0,
+       "Formatting the orders"
+      ],
+      [
+       1,
+       1,
+       "getValues and setValues"
+      ],
+      [
+       2,
+       0,
+       "Totals by branch with a Map"
+      ],
+      [
+       2,
+       1,
+       "When a script stops"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-9-2",
+     "num": "9.2",
+     "title": "Power Automate: scripts that run themselves",
+     "summary": "Power Automate runs your Office Scripts without anyone opening Excel: at six every evening, when a file arrives, or from a button. A flow passes values into main through its parameters and gets back whatever main returns, which the next step can put in an email or a Teams message.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Describe a flow: a trigger, then actions, including Excel’s Run script.",
+      "Give main a parameter and a return type, so a flow can pass data in and get an answer back.",
+      "Write a script that’s safe in a flow: named sheets, no selection, no outside calls.",
+      "Choose between VBA, Office Scripts and a flow for a job."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-9-2-notes.docx",
+       "name": "9.2 Power Automate: scripts that run themselves - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-9-2-practice.xlsx",
+       "name": "9.2 Power Automate: scripts that run themselves - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-9-2-solution.xlsx",
+       "name": "9.2 Power Automate: scripts that run themselves - solution.xlsx"
+      },
+      {
+       "label": "Model answer: BranchTotal",
+       "file": "s/p6-p6-9-2-BranchTotal.osts",
+       "name": "9.2 BranchTotal.osts"
+      },
+      {
+       "label": "Model answer: BranchLines",
+       "file": "s/p6-p6-9-2-BranchLines.osts",
+       "name": "9.2 BranchLines.osts"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "When this happens, do that"
+      ],
+      [
+       0,
+       1,
+       "The Run script action"
+      ],
+      [
+       1,
+       0,
+       "Parameters: values the flow passes in"
+      ],
+      [
+       1,
+       1,
+       "Results: what the flow gets back"
+      ],
+      [
+       1,
+       2,
+       "In a flow, nobody is looking"
+      ],
+      [
+       2,
+       0,
+       "Picking the tool"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p6-9-3",
+     "num": "9.3",
+     "title": "Handing over your tools",
+     "summary": "A macro only helps the team if someone else can run it, change it and trust it after you’ve moved on. Option Explicit and good names catch mistakes early; settings on a sheet let people change rates and folders without touching code; a locked project and a digital signature protect it; and a Readme sheet and a code backup make the handover real.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Use Option Explicit and declared variables so typos are caught before a macro runs.",
+      "Move numbers and paths the team changes onto a Settings sheet and read them in code.",
+      "Lock a VBA project and sign it with a digital certificate, and know what each does.",
+      "Write a header comment, a Readme sheet and a code backup for handover."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p6-p6-9-3-notes.docx",
+       "name": "9.3 Handing over your tools - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p6-p6-9-3-practice.xlsx",
+       "name": "9.3 Handing over your tools - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p6-p6-9-3-solution.xlsx",
+       "name": "9.3 Handing over your tools - solution.xlsx"
+      },
+      {
+       "label": "Model answer: Module1.bas",
+       "file": "s/p6-p6-9-3-Module1.bas",
+       "name": "9.3 Module1.bas"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Option Explicit catches the typo"
+      ],
+      [
+       0,
+       1,
+       "Settings on a sheet, not in the code"
+      ],
+      [
+       0,
+       2,
+       "A header, names and constants"
+      ],
+      [
+       1,
+       0,
+       "Lock the project"
+      ],
+      [
+       1,
+       1,
+       "Sign your macros"
+      ],
+      [
+       2,
+       0,
+       "A Readme sheet"
+      ],
+      [
+       2,
+       1,
+       "Back up the code"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  }
+ ],
+ "upcoming": [],
+ "project": {
+  "title": "A one-click monthly report for Nilgiri Tea Traders",
+  "brief": "A folder of branch files arrives every month. Build the macro workbook that combines them, checks them, builds the report, saves each branch’s PDF and prepares the emails, with buttons Meena can use.",
+  "coming": false
+ },
+ "exam": {
+  "questions": 40,
+  "tasks": 6,
+  "minutes": 90,
+  "pass": 75,
+  "attempts": 3,
+  "gapHours": 48,
+  "coming": false
+ },
+ "downloads": [
+  {
+   "label": "Course handbook",
+   "file": "a/p6-handbook.docx",
+   "name": "Sheetah P6 handbook.docx"
+  },
+  {
+   "label": "Cheat sheet",
+   "file": "a/p6-cheatsheet.docx",
+   "name": "Sheetah P6 cheat sheet.docx"
+  }
+ ]
+}

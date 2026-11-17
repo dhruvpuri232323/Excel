@@ -549,17 +549,17 @@
       [
        0,
        1,
-       "Gaps stop the jump"
+       "A gap stops the jump, and shows you the gap"
       ],
       [
        1,
        0,
-       "Ctrl+Home and Ctrl+End"
+       "Ctrl+Home and Ctrl+End: the two corners"
       ],
       [
        1,
        1,
-       "Moving between sheets"
+       "Move between sheets without the mouse"
       ]
      ],
      "tasks": [],
@@ -599,12 +599,12 @@
       [
        0,
        0,
-       "Shift extends the selection"
+       "Shift turns a move into a selection"
       ],
       [
        0,
        1,
-       "The current region"
+       "Ctrl+A selects the table you’re in"
       ],
       [
        1,
@@ -614,7 +614,7 @@
       [
        1,
        1,
-       "Type a range into the Name Box"
+       "Type a range in the Name Box"
       ]
      ],
      "tasks": [],
@@ -664,17 +664,17 @@
       [
        0,
        1,
-       "Split, zoom and New Window"
+       "Split, New Window and zoom"
       ],
       [
        1,
        0,
-       "Insert, rename, move"
+       "Insert, rename, move and copy sheets"
       ],
       [
        1,
        1,
-       "Colour and group"
+       "Colour and group sheets"
       ]
      ],
      "tasks": [],
@@ -742,7 +742,7 @@
       [
        1,
        1,
-       "How to centre across a selection"
+       "Center Across Selection, step by step"
       ]
      ],
      "tasks": [],
@@ -836,7 +836,7 @@
       [
        0,
        0,
-       "Format Painter"
+       "Format Painter copies the look, not the content"
       ],
       [
        0,
@@ -846,12 +846,12 @@
       [
        1,
        0,
-       "Cell styles"
+       "Cell styles give cells a meaning"
       ],
       [
        1,
        1,
-       "Themes"
+       "Themes restyle a whole workbook"
       ]
      ],
      "tasks": [],
@@ -895,7 +895,7 @@
       [
        0,
        1,
-       "Widen or AutoFit"
+       "Widen it, or AutoFit"
       ],
       [
        1,
@@ -963,17 +963,17 @@
       [
        0,
        1,
-       "Point, don’t type numbers"
+       "Point at cells, don’t type numbers"
       ],
       [
        1,
        0,
-       "Excel calculates in a fixed order"
+       "Brackets, powers, × ÷, then + −"
       ],
       [
        1,
        1,
-       "Brackets for totals with tax"
+       "Brackets make totals with tax clear"
       ]
      ],
      "tasks": [],
@@ -1022,7 +1022,7 @@
       [
        0,
        1,
-       "The big five"
+       "The big four: SUM, AVERAGE, MAX, MIN"
       ],
       [
        1,
@@ -1086,7 +1086,7 @@
       [
        1,
        1,
-       "The status bar: a free calculator"
+       "The status bar is a free calculator"
       ]
      ],
      "tasks": [],
@@ -1428,7 +1428,7 @@
       [
        0,
        0,
-       "Ctrl+T"
+       "Ctrl+T turns a list into a Table"
       ],
       [
        0,
@@ -1502,7 +1502,7 @@
       [
        1,
        1,
-       "Number filters and clearing"
+       "Number filters, combining and clearing"
       ]
      ],
      "tasks": [],
@@ -1556,7 +1556,7 @@
       [
        1,
        0,
-       "Numbers and dates"
+       "Numbers, dates, and checking old data"
       ],
       [
        1,
@@ -1619,17 +1619,17 @@
       [
        0,
        1,
-       "Orientation and scaling"
+       "Orientation and Scale to Fit"
       ],
       [
        1,
        0,
-       "Print Titles"
+       "Print Titles repeat the header"
       ],
       [
        1,
        1,
-       "Headers and footers"
+       "Headers, footers and page breaks"
       ]
      ],
      "tasks": [],
@@ -1683,7 +1683,7 @@
       [
        1,
        0,
-       "Share from OneDrive or SharePoint"
+       "Share one file, not copies"
       ],
       [
        1,
@@ -1737,17 +1737,17 @@
       [
        0,
        1,
-       "Protect Sheet"
+       "Protect Sheet, step by step"
       ],
       [
        1,
        0,
-       "Workbook and file"
+       "Workbook and file protection"
       ],
       [
        1,
        1,
-       "What it doesn’t do"
+       "What protection doesn’t do"
       ]
      ],
      "tasks": [],

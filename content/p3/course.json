@@ -1,0 +1,2610 @@
+{
+ "id": "p3",
+ "code": "P3",
+ "title": "Finance & Financial Modelling",
+ "level": "Specialist",
+ "hours": 27,
+ "summary": "P3 teaches the finance you need at work and at home, in Excel: loans and EMIs, investment decisions, accounts, budgets, and a full three-statement model with a DCF valuation.",
+ "prereq": "Builds on C1 · Excel Foundations and C2 · Formulas & Functions. P1’s what-if tools (data tables, Goal Seek) come back in Modules 2 and 9.",
+ "outcomes": [
+  "Use Excel’s time-value functions (FV, PV, PMT, NPER, RATE) with the right signs and periods.",
+  "Build loan EMI and amortisation schedules, and compare loan offers on their true cost.",
+  "Appraise investments with NPV, IRR, XNPV, XIRR, payback and MIRR.",
+  "Turn transactions into a trial balance and financial statements, with depreciation and ratios.",
+  "Build driver-based budgets and forecasts, and explain variances.",
+  "Lay out models to professional standards: inputs, calculations, outputs and checks.",
+  "Build a linked three-statement model and value a business with a DCF.",
+  "Test a model with scenarios, sensitivity tables, Goal Seek and Solver, and present the results."
+ ],
+ "modules": [
+  {
+   "n": 1,
+   "title": "Time value of money",
+   "summary": "Interest and compounding, FV and PV with Excel’s sign convention, SIPs and annuities with PMT, NPER and RATE, and growth, inflation and real returns.",
+   "free": true,
+   "testInfo": "Compounding, FV and PV, annuities, CAGR and real returns",
+   "lessons": [
+    {
+     "id": "p3-1-1",
+     "num": "1.1",
+     "title": "Interest and compounding",
+     "summary": "Money today is worth more than the same money later. Simple interest pays on the principal only; compound interest pays on interest too, and how often it compounds changes the real rate.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Explain why money has a time value.",
+      "Work out simple and compound interest with a formula.",
+      "Compound more than once a year, and convert a nominal rate to an effective rate with EFFECT.",
+      "Estimate doubling time with the rule of 72."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p3-p3-1-1-notes.docx",
+       "name": "1.1 Interest and compounding - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p3-p3-1-1-practice.xlsx",
+       "name": "1.1 Interest and compounding - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p3-p3-1-1-solution.xlsx",
+       "name": "1.1 Interest and compounding - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Money has a time value"
+      ],
+      [
+       0,
+       1,
+       "Simple interest: on the principal only"
+      ],
+      [
+       0,
+       2,
+       "Compound interest: interest on interest"
+      ],
+      [
+       1,
+       0,
+       "Compounding more often"
+      ],
+      [
+       1,
+       1,
+       "Nominal and effective rates"
+      ],
+      [
+       1,
+       2,
+       "The rule of 72"
+      ]
+     ],
+     "tasks": [
+      "In B8, work out the simple interest Meera would earn over the five years.",
+      "In B9, work out what the deposit is worth after five years, compounded yearly.",
+      "In B10, work out the value after five years if interest is compounded quarterly (B5 times ",
+      "In B11, find the deposit’s effective annual rate with EFFECT.",
+      "In G3:G5, work out each bank’s effective rate. Write it in G3 and fill down.",
+      "Which bank pays Meera the most?",
+      "In B12, estimate how many years Meera’s money takes to double, with the rule of 72."
+     ],
+     "real": false
+    },
+    {
+     "id": "p3-1-2",
+     "num": "1.2",
+     "title": "FV, PV and the sign convention",
+     "summary": "Excel solves time-value problems with five numbers: rate, periods, payment, present value and future value. FV moves money forward, PV brings it back, and the signs say which way the money flows.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Name the five time-value arguments: rate, nper, pmt, pv and fv.",
+      "Use FV to grow a lump sum and PV to discount a future amount.",
+      "Apply Excel’s sign convention: money out is negative, money in is positive.",
+      "Match the rate to the period when compounding monthly."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p3-p3-1-2-notes.docx",
+       "name": "1.2 FV, PV and the sign convention - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p3-p3-1-2-practice.xlsx",
+       "name": "1.2 FV, PV and the sign convention - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p3-p3-1-2-solution.xlsx",
+       "name": "1.2 FV, PV and the sign convention - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Five numbers describe every TVM problem"
+      ],
+      [
+       0,
+       1,
+       "The sign convention: money out is negative"
+      ],
+      [
+       0,
+       2,
+       "FV: what a lump sum grows to"
+      ],
+      [
+       1,
+       0,
+       "PV runs the clock backwards"
+      ],
+      [
+       1,
+       1,
+       "Compare money at different times"
+      ],
+      [
+       1,
+       2,
+       "Match the rate to the period"
+      ]
+     ],
+     "tasks": [
+      "In B6, use FV to work out what Meera’s ₹1,00,000 deposit is worth at the end.",
+      "In B12, use PV to work out how much must be invested today to have B9 in B11 years, as a p",
+      "Someone types =FV(B3,B4,0,B2) in B6 and gets −1,40,255. What happened?",
+      "In E7, work out what the ₹13 lakh paid in 4 years is worth today, at the return in E5.",
+      "At an 8% return, which offer for the plot is worth more?",
+      "In E12, work out the value of the ₹50,000 deposit after E11 years at E10, compounded month"
+     ],
+     "real": false
+    },
+    {
+     "id": "p3-1-3",
+     "num": "1.3",
+     "title": "Regular savings: SIPs and annuities",
+     "summary": "A SIP, an EMI, rent and a pension are all streams of equal payments. FV, PV and PMT handle them with the pmt argument, NPER finds how long, and RATE finds the return a plan really gives.",
+     "minutes": 45,
+     "free": true,
+     "objectives": [
+      "Value a stream of equal payments with FV and PV.",
+      "Choose type 1 for payments at the start of each period and 0 for the end.",
+      "Work out the payment, the time or the rate needed for a goal with PMT, NPER and RATE.",
+      "Use RATE to test what a savings plan really earns."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p3-p3-1-3-notes.docx",
+       "name": "1.3 Regular savings: SIPs and annuities - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p3-p3-1-3-practice.xlsx",
+       "name": "1.3 Regular savings: SIPs and annuities - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p3-p3-1-3-solution.xlsx",
+       "name": "1.3 Regular savings: SIPs and annuities - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "An annuity is a stream of equal payments"
+      ],
+      [
+       0,
+       1,
+       "FV of a SIP"
+      ],
+      [
+       0,
+       2,
+       "Start or end of the period: type"
+      ],
+      [
+       1,
+       0,
+       "PMT: how much a month to reach a goal"
+      ],
+      [
+       1,
+       1,
+       "NPER: how long it takes"
+      ],
+      [
+       1,
+       2,
+       "RATE: what a plan really earns"
+      ]
+     ],
+     "tasks": [
+      "In B5, work out what Meera’s SIP is worth after B4 years if she pays at the end of each mo",
+      "In B6, work out the same SIP paid at the start of each month.",
+      "In B7, work out how much Meera pays in altogether.",
+      "In E6, use PMT to find the monthly SIP, paid at the start of each month, that reaches the ",
+      "In E12, work out the savings Meera needs at retirement to draw E9 a month (at the end of e",
+      "In H6, use RATE to find the yearly return the savings plan gives. Premiums are paid at the",
+      "The plan returns about 5.4% a year. A bank deposit pays 7%. What should Meera conclude?"
+     ],
+     "real": false
+    },
+    {
+     "id": "p3-1-4",
+     "num": "1.4",
+     "title": "Growth, inflation and real returns",
+     "summary": "Growth over several years is measured with CAGR, not the average of yearly rates. Inflation shrinks what money buys, so the return that matters is the real one. RRI, FVSCHEDULE and PDURATION do the arithmetic.",
+     "minutes": 45,
+     "free": true,
+     "objectives": [
+      "Measure growth over several years with CAGR, using RRI.",
+      "Grow money through different yearly returns with FVSCHEDULE.",
+      "Project future costs with inflation and work out a real return.",
+      "Find how long money takes to reach a target with PDURATION."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p3-p3-1-4-notes.docx",
+       "name": "1.4 Growth, inflation and real returns - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p3-p3-1-4-practice.xlsx",
+       "name": "1.4 Growth, inflation and real returns - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p3-p3-1-4-solution.xlsx",
+       "name": "1.4 Growth, inflation and real returns - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "a/p3-p3-1-4-real.xlsx",
+       "name": "1.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Average growth misleads"
+      ],
+      [
+       0,
+       1,
+       "CAGR: one steady rate from start to end"
+      ],
+      [
+       0,
+       2,
+       "Different returns each year: FVSCHEDULE"
+      ],
+      [
+       1,
+       0,
+       "Inflation shrinks money"
+      ],
+      [
+       1,
+       1,
+       "Real return: what you gain in buying power"
+      ],
+      [
+       1,
+       2,
+       "How long to reach a target: PDURATION"
+      ]
+     ],
+     "tasks": [
+      "In C3:C7, work out each year’s growth in revenue. Write it in C3 and fill down.",
+      "In F2, work out the average of the yearly growth rates.",
+      "In F3, work out the CAGR from 2021 to 2026 with RRI.",
+      "In B16, work out what ₹1,00,000 invested in the fund (B10) was worth after the five years ",
+      "In F9, work out the real return of the deposit (F7) when inflation is F8.",
+      "In F14, work out what the college course will cost when it’s needed, if its cost rises at ",
+      "In F15, use PDURATION to find how many years money takes to double at the deposit rate in "
+     ],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Loans and EMIs",
+   "summary": "The EMI with PMT, IPMT and PPMT, amortisation schedules, prepayments and rate changes, and comparing loan offers on their true cost.",
+   "free": false,
+   "testInfo": "EMIs, schedules, prepayments and true loan costs",
+   "lessons": [
+    {
+     "id": "p3-2-1",
+     "num": "2.1",
+     "title": "The EMI: PMT, IPMT and PPMT",
+     "summary": "An EMI is the same payment every month until a loan is repaid. PMT works it out; IPMT and PPMT split any month’s EMI into interest and principal, and the totals show what a loan really costs.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Work out a loan’s EMI with PMT, shown as a positive amount.",
+      "Find the total paid and the total interest over a loan.",
+      "Split any month’s EMI into interest and principal with IPMT and PPMT.",
+      "See how the tenure trades a lower EMI for more interest."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-2-1-notes.docx",
+       "name": "2.1 The EMI: PMT, IPMT and PPMT - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-2-1-practice.xlsx",
+       "name": "2.1 The EMI: PMT, IPMT and PPMT - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-2-1-solution.xlsx",
+       "name": "2.1 The EMI: PMT, IPMT and PPMT - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Equated monthly instalment"
+      ],
+      [
+       0,
+       1,
+       "PMT works out the EMI"
+      ],
+      [
+       0,
+       2,
+       "What the loan really costs"
+      ],
+      [
+       1,
+       0,
+       "IPMT: the interest part"
+      ],
+      [
+       1,
+       1,
+       "PPMT: the principal part"
+      ],
+      [
+       1,
+       2,
+       "Tenure: a lower EMI costs more interest"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-2-2",
+     "num": "2.2",
+     "title": "The amortisation schedule",
+     "summary": "An amortisation schedule shows every EMI split into interest and principal, and the balance left after it. Build it row by row, check it ends at zero, then build it in one formula with SEQUENCE.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Lay out an amortisation schedule: opening balance, EMI, interest, principal, closing balance.",
+      "Link each row to the one above, with $ locks on the inputs.",
+      "Check the schedule: the balance ends at zero and the principal adds up to the loan.",
+      "Build a schedule column with IPMT and SEQUENCE, and find any month’s balance with PV."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-2-2-notes.docx",
+       "name": "2.2 The amortisation schedule - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-2-2-practice.xlsx",
+       "name": "2.2 The amortisation schedule - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-2-2-solution.xlsx",
+       "name": "2.2 The amortisation schedule - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Five columns tell the whole story"
+      ],
+      [
+       0,
+       1,
+       "Each row follows from the one above"
+      ],
+      [
+       0,
+       2,
+       "Check it: the balance ends at zero"
+      ],
+      [
+       1,
+       0,
+       "Any month directly"
+      ],
+      [
+       1,
+       1,
+       "A whole column in one formula"
+      ],
+      [
+       1,
+       2,
+       "The balance at any month"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-2-3",
+     "num": "2.3",
+     "title": "Prepayments and rate changes",
+     "summary": "CUMIPMT and CUMPRINC total the interest and principal over any stretch of months. When you prepay or the rate changes, NPER and PMT show the new tenure or the new EMI.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Total a year’s interest and principal with CUMIPMT and CUMPRINC.",
+      "Find the balance at any point and the effect of a prepayment.",
+      "Compare keeping the EMI (shorter loan) with keeping the end date (smaller EMI).",
+      "Work out a new EMI or tenure when a floating rate changes."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-2-3-notes.docx",
+       "name": "2.3 Prepayments and rate changes - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-2-3-practice.xlsx",
+       "name": "2.3 Prepayments and rate changes - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-2-3-solution.xlsx",
+       "name": "2.3 Prepayments and rate changes - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "CUMIPMT: interest over a range of months"
+      ],
+      [
+       0,
+       1,
+       "Year by year"
+      ],
+      [
+       0,
+       2,
+       "Five years in: where the money went"
+      ],
+      [
+       1,
+       0,
+       "Prepay and keep the EMI"
+      ],
+      [
+       1,
+       1,
+       "Or keep the end date and cut the EMI"
+      ],
+      [
+       1,
+       2,
+       "When the rate rises"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-2-4",
+     "num": "2.4",
+     "title": "Comparing loan offers",
+     "summary": "The headline rate isn’t the price. Fees, flat rates and “no-cost” EMIs all hide the true cost, and RATE uncovers it from the money you actually receive and pay.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Work out the true annual rate of a loan with fees, using RATE on the money you actually receive.",
+      "Convert a flat rate into its reducing-balance equivalent.",
+      "Uncover the cost of a “no-cost” EMI.",
+      "Compare offers side by side and choose on the true rate and the total paid."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-2-4-notes.docx",
+       "name": "2.4 Comparing loan offers - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-2-4-practice.xlsx",
+       "name": "2.4 Comparing loan offers - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-2-4-solution.xlsx",
+       "name": "2.4 Comparing loan offers - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p3-p3-2-4-real.xlsx",
+       "name": "2.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The headline rate isn’t the price"
+      ],
+      [
+       0,
+       1,
+       "RATE finds the true rate"
+      ],
+      [
+       0,
+       2,
+       "Compare like with like"
+      ],
+      [
+       1,
+       0,
+       "A flat rate charges interest on the whole loan, all the time"
+      ],
+      [
+       1,
+       1,
+       "The “no-cost” EMI"
+      ],
+      [
+       1,
+       2,
+       "Choose on the true rate, then check the total"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Investment appraisal",
+   "summary": "NPV and the discount rate, IRR and where it misleads, XNPV and XIRR for real dates, and payback, MIRR and choosing between projects.",
+   "free": false,
+   "testInfo": "NPV, IRR, XNPV and XIRR, payback and choosing projects",
+   "lessons": [
+    {
+     "id": "p3-3-1",
+     "num": "3.1",
+     "title": "NPV and the discount rate",
+     "summary": "An investment is money out now for money back later. Discount every year’s cash flow to today and add them up: if the net present value is above zero, the project earns more than the return you require.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Lay out a project as yearly cash flows, with year 0 for the money spent now.",
+      "Discount each cash flow and add them up to get the NPV.",
+      "Use Excel’s NPV function correctly, keeping year 0 outside it.",
+      "Read the NPV rule, and see how the discount rate changes the answer."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-3-1-notes.docx",
+       "name": "3.1 NPV and the discount rate - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-3-1-practice.xlsx",
+       "name": "3.1 NPV and the discount rate - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-3-1-solution.xlsx",
+       "name": "3.1 NPV and the discount rate - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "An investment is a stream of cash flows"
+      ],
+      [
+       0,
+       1,
+       "Discount each year, then add"
+      ],
+      [
+       0,
+       2,
+       "NPV in Excel: keep year 0 outside"
+      ],
+      [
+       1,
+       0,
+       "The NPV rule"
+      ],
+      [
+       1,
+       1,
+       "The discount rate is the return you require"
+      ],
+      [
+       1,
+       2,
+       "The NPV profile"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-3-2",
+     "num": "3.2",
+     "title": "IRR and where it misleads",
+     "summary": "The internal rate of return is the discount rate that makes NPV zero: the project’s own return. It’s easy to explain, but it can mislead on projects of different sizes and on unusual cash flows, where NPV and MIRR do better.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Explain IRR as the rate where NPV is zero, and work it out with IRR.",
+      "Compare IRR with the required return to accept or reject.",
+      "Spot when IRR and NPV disagree: projects of different size, and cash flows that change sign twice.",
+      "Use MIRR with realistic finance and reinvestment rates."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-3-2-notes.docx",
+       "name": "3.2 IRR and where it misleads - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-3-2-practice.xlsx",
+       "name": "3.2 IRR and where it misleads - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-3-2-solution.xlsx",
+       "name": "3.2 IRR and where it misleads - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "IRR: the project’s own return"
+      ],
+      [
+       0,
+       1,
+       "IRR in Excel"
+      ],
+      [
+       0,
+       2,
+       "IRR and NPV usually agree"
+      ],
+      [
+       1,
+       0,
+       "Size: a high IRR on a small project"
+      ],
+      [
+       1,
+       1,
+       "Two IRRs: cash flows that change sign twice"
+      ],
+      [
+       1,
+       2,
+       "MIRR: realistic reinvestment"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-3-3",
+     "num": "3.3",
+     "title": "XNPV and XIRR for real dates",
+     "summary": "Real cash doesn’t arrive on neat anniversaries. XIRR and XNPV take a date for every amount, so investments made on odd days, and projects paid in milestones, are valued correctly.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain why IRR and NPV assume evenly spaced cash flows.",
+      "Work out the yearly return on dated investments with XIRR.",
+      "Value dated cash flows with XNPV, and see how it differs from NPV.",
+      "Set out dated cash flows with the right signs, including today’s value."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-3-3-notes.docx",
+       "name": "3.3 XNPV and XIRR for real dates - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-3-3-practice.xlsx",
+       "name": "3.3 XNPV and XIRR for real dates - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-3-3-solution.xlsx",
+       "name": "3.3 XNPV and XIRR for real dates - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Cash doesn’t arrive on anniversaries"
+      ],
+      [
+       0,
+       1,
+       "XIRR: the yearly return on dated flows"
+      ],
+      [
+       0,
+       2,
+       "Signs and dates, set out properly"
+      ],
+      [
+       1,
+       0,
+       "XNPV: discount by the actual days"
+      ],
+      [
+       1,
+       1,
+       "Same flows, different answers"
+      ],
+      [
+       1,
+       2,
+       "When to use which"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-3-4",
+     "num": "3.4",
+     "title": "Payback, MIRR and choosing between projects",
+     "summary": "Payback says how fast the money comes back; it ignores everything after that. Put payback, NPV, IRR, MIRR and the profitability index side by side, and when they disagree, let NPV decide.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Work out the payback period from a cumulative cash flow, including the part year.",
+      "Explain what payback and discounted payback leave out.",
+      "Use the profitability index to rank projects when money is limited.",
+      "Build an appraisal summary and choose between projects when the measures disagree."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-3-4-notes.docx",
+       "name": "3.4 Payback, MIRR and choosing between projects - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-3-4-practice.xlsx",
+       "name": "3.4 Payback, MIRR and choosing between projects - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-3-4-solution.xlsx",
+       "name": "3.4 Payback, MIRR and choosing between projects - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p3-p3-3-4-real.xlsx",
+       "name": "3.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The payback period"
+      ],
+      [
+       0,
+       1,
+       "Payback in Excel"
+      ],
+      [
+       0,
+       2,
+       "What payback leaves out"
+      ],
+      [
+       1,
+       0,
+       "The profitability index"
+      ],
+      [
+       1,
+       1,
+       "When the measures disagree"
+      ],
+      [
+       1,
+       2,
+       "The appraisal summary"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Accounting in Excel",
+   "summary": "From a journal to a trial balance with SUMIFS, the P&L and balance sheet from a mapped trial balance, depreciation with SLN, DB, DDB and SYD, and financial ratios.",
+   "free": false,
+   "testInfo": "Double entry, statements, depreciation and ratios",
+   "lessons": [
+    {
+     "id": "p3-4-1",
+     "num": "4.1",
+     "title": "From journal to trial balance",
+     "summary": "Every transaction is recorded twice: a debit and an equal credit. Keep the journal as one long Excel table, and SUMIFS turns it into each account’s balance and a trial balance whose two columns must agree.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Record a transaction as a debit and an equal credit.",
+      "Say which accounts carry debit balances and which carry credit balances.",
+      "Keep a journal as a long table and total each account with SUMIFS.",
+      "Build a trial balance, check it, and know what it can’t catch."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-4-1-notes.docx",
+       "name": "4.1 From journal to trial balance - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-4-1-practice.xlsx",
+       "name": "4.1 From journal to trial balance - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-4-1-solution.xlsx",
+       "name": "4.1 From journal to trial balance - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Every transaction has two sides"
+      ],
+      [
+       0,
+       1,
+       "Debit and credit, without the jargon"
+      ],
+      [
+       0,
+       2,
+       "The journal as an Excel table"
+      ],
+      [
+       1,
+       0,
+       "Each account’s total with SUMIFS"
+      ],
+      [
+       1,
+       1,
+       "The trial balance"
+      ],
+      [
+       1,
+       2,
+       "What a balanced trial balance can’t prove"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-4-2",
+     "num": "4.2",
+     "title": "The P&L and the balance sheet",
+     "summary": "Map every account in the trial balance to a line of the statements, and SUMIFS builds the profit and loss account and the balance sheet. The profit links the two, and a check cell proves they balance.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Map trial-balance accounts to statement lines and total each line with SUMIFS.",
+      "Lay out a profit and loss account from revenue down to profit after tax.",
+      "Build a balance sheet, with the year’s profit added to equity.",
+      "Write a balance check that says whether assets equal equity and liabilities."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-4-2-notes.docx",
+       "name": "4.2 The P&L and the balance sheet - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-4-2-practice.xlsx",
+       "name": "4.2 The P&L and the balance sheet - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-4-2-solution.xlsx",
+       "name": "4.2 The P&L and the balance sheet - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "From trial balance to statements"
+      ],
+      [
+       0,
+       1,
+       "The P&L, top to bottom"
+      ],
+      [
+       0,
+       2,
+       "Signs: income is a credit"
+      ],
+      [
+       1,
+       0,
+       "What it owns, and how that’s funded"
+      ],
+      [
+       1,
+       1,
+       "Profit links the two statements"
+      ],
+      [
+       1,
+       2,
+       "The balance check"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-4-3",
+     "num": "4.3",
+     "title": "Depreciation: SLN, DB, DDB and SYD",
+     "summary": "A machine is used up over years, so its cost is spread over those years as depreciation. Excel has a function for each common method; they charge the same machine at different speeds.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain why a fixed asset’s cost is spread over its useful life.",
+      "Work out straight-line depreciation with SLN.",
+      "Work out accelerated depreciation with DB, DDB and SYD, period by period.",
+      "Build a depreciation schedule and a book value, and compare the methods."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-4-3-notes.docx",
+       "name": "4.3 Depreciation: SLN, DB, DDB and SYD - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-4-3-practice.xlsx",
+       "name": "4.3 Depreciation: SLN, DB, DDB and SYD - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-4-3-solution.xlsx",
+       "name": "4.3 Depreciation: SLN, DB, DDB and SYD - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why depreciate?"
+      ],
+      [
+       0,
+       1,
+       "Straight line: SLN"
+      ],
+      [
+       0,
+       2,
+       "Faster at first: DB and DDB"
+      ],
+      [
+       1,
+       0,
+       "Year by year, one function each"
+      ],
+      [
+       1,
+       1,
+       "Same machine, different timing"
+      ],
+      [
+       1,
+       2,
+       "Depreciation in the statements"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-4-4",
+     "num": "4.4",
+     "title": "Financial ratios",
+     "summary": "Ratios divide one number by another so years and companies of different sizes can be compared. Margins and returns show profitability; current ratio and debt to equity show safety; working-capital days show where cash gets stuck.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Work out gross and net margins, and returns on equity and capital employed.",
+      "Judge liquidity with the current and quick ratios, and leverage with debt to equity and interest cover.",
+      "Measure working capital in days: debtor, inventory and creditor days.",
+      "Read three years of ratios together and say what changed."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-4-4-notes.docx",
+       "name": "4.4 Financial ratios - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-4-4-practice.xlsx",
+       "name": "4.4 Financial ratios - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-4-4-solution.xlsx",
+       "name": "4.4 Financial ratios - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p3-p3-4-4-real.xlsx",
+       "name": "4.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Ratios make numbers comparable"
+      ],
+      [
+       0,
+       1,
+       "Margins: how much of each rupee is kept"
+      ],
+      [
+       0,
+       2,
+       "Returns: ROE and ROCE"
+      ],
+      [
+       1,
+       0,
+       "Can it pay its bills? Current and quick ratios"
+      ],
+      [
+       1,
+       1,
+       "How much debt? Debt to equity and interest cover"
+      ],
+      [
+       1,
+       2,
+       "Working capital in days"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Budgets and forecasts",
+   "summary": "A driver-based budget, monthly phasing with seasonality, budget versus actual with price and volume variances, and rolling forecasts.",
+   "free": false,
+   "testInfo": "Driver budgets, phasing, variances and forecasts",
+   "lessons": [
+    {
+     "id": "p3-5-1",
+     "num": "5.1",
+     "title": "A driver-based budget",
+     "summary": "A budget is the year’s plan in numbers. Build it from drivers (volumes, prices, costs per unit, fixed costs) rather than last year plus 10%, and every line explains itself and changes when a driver does.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Say what a budget is for and who uses it.",
+      "Build revenue and material costs from volume, price and cost per unit.",
+      "Treat costs as variable, fixed or a % of revenue.",
+      "Turn the drivers into a budget P&L, and work out what a change in one driver does."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-5-1-notes.docx",
+       "name": "5.1 A driver-based budget - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-5-1-practice.xlsx",
+       "name": "5.1 A driver-based budget - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-5-1-solution.xlsx",
+       "name": "5.1 A driver-based budget - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "What a budget is for"
+      ],
+      [
+       0,
+       1,
+       "Drivers, not last year plus 10%"
+      ],
+      [
+       0,
+       2,
+       "Three kinds of cost"
+      ],
+      [
+       1,
+       0,
+       "The budget P&L"
+      ],
+      [
+       1,
+       1,
+       "What if a driver changes?"
+      ],
+      [
+       1,
+       2,
+       "Keep the drivers in one place"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-5-2",
+     "num": "5.2",
+     "title": "Monthly phasing and seasonality",
+     "summary": "A yearly budget is phased into months so it can be tracked. Seasonality weights spread sales the way they really fall (Diwali high, monsoon low); variable costs follow sales, fixed costs spread evenly.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain why a budget is phased by month.",
+      "Work out seasonality weights from last year’s monthly sales.",
+      "Phase revenue and variable costs by the weights, and fixed costs evenly.",
+      "Check that the months add back to the year, and spot the weak months."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-5-2-notes.docx",
+       "name": "5.2 Monthly phasing and seasonality - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-5-2-practice.xlsx",
+       "name": "5.2 Monthly phasing and seasonality - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-5-2-solution.xlsx",
+       "name": "5.2 Monthly phasing and seasonality - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why phase the budget by month?"
+      ],
+      [
+       0,
+       1,
+       "Seasonality weights from history"
+      ],
+      [
+       0,
+       2,
+       "Phase each line the right way"
+      ],
+      [
+       1,
+       0,
+       "The months must add back to the year"
+      ],
+      [
+       1,
+       1,
+       "Monthly profit swings"
+      ],
+      [
+       1,
+       2,
+       "Real month headers"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-5-3",
+     "num": "5.3",
+     "title": "Budget versus actual",
+     "summary": "Each month, compare actual results with the budget. The variance is actual minus budget; whether it’s good news depends on the line. Split a sales variance into price and volume to see what really happened.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Work out variances in rupees and as a percentage of budget.",
+      "Label each variance favourable or adverse, depending on whether the line is income or a cost.",
+      "Split a revenue variance into volume and price.",
+      "Decide which variances deserve a question, and why."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-5-3-notes.docx",
+       "name": "5.3 Budget versus actual - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-5-3-practice.xlsx",
+       "name": "5.3 Budget versus actual - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-5-3-solution.xlsx",
+       "name": "5.3 Budget versus actual - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Variance = actual − budget"
+      ],
+      [
+       0,
+       1,
+       "Favourable or adverse?"
+      ],
+      [
+       0,
+       2,
+       "Percentages and materiality"
+      ],
+      [
+       1,
+       0,
+       "Volume and price variance"
+      ],
+      [
+       1,
+       1,
+       "Flex the budget for volume"
+      ],
+      [
+       1,
+       2,
+       "A variance report people read"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-5-4",
+     "num": "5.4",
+     "title": "Rolling forecasts",
+     "summary": "The budget stays fixed; the forecast moves. Each month, combine the actuals so far with a fresh forecast for the rest of the year to get the full-year outlook. A run-rate keeps the seasonality; a straight-line trend can miss it.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Explain how a forecast differs from a budget.",
+      "Combine year-to-date actuals with a forecast for the remaining months into a full-year outlook.",
+      "Forecast the remaining months with a run rate on the budget.",
+      "Use FORECAST.LINEAR for a trend, and see why it misleads on seasonal sales."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-5-4-notes.docx",
+       "name": "5.4 Rolling forecasts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-5-4-practice.xlsx",
+       "name": "5.4 Rolling forecasts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-5-4-solution.xlsx",
+       "name": "5.4 Rolling forecasts - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p3-p3-5-4-real.xlsx",
+       "name": "5.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Budget vs forecast"
+      ],
+      [
+       0,
+       1,
+       "Actuals + forecast = the outlook"
+      ],
+      [
+       0,
+       2,
+       "The run-rate method"
+      ],
+      [
+       1,
+       0,
+       "FORECAST.LINEAR: a straight-line trend"
+      ],
+      [
+       1,
+       1,
+       "Why a straight line misses Diwali"
+      ],
+      [
+       1,
+       2,
+       "Look twelve months ahead"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "Modelling standards",
+   "summary": "Inputs, calculations and outputs; consistent formulas, timelines and flags; checks and error traps; and documenting and reviewing a model.",
+   "free": false,
+   "testInfo": "Model layout, timelines, checks and review",
+   "lessons": [
+    {
+     "id": "p3-6-1",
+     "num": "6.1",
+     "title": "Inputs, calculations and outputs",
+     "summary": "A model others can trust keeps every assumption in one place, works everything out in formulas that point at those inputs, and shows the answers separately. No numbers typed inside formulas; names for the key inputs.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain why models separate inputs, calculations and outputs.",
+      "Use a colour code that shows which cells to change.",
+      "Link calculations to inputs on another sheet, with no numbers typed inside formulas.",
+      "Name a key input and use the name in formulas."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-6-1-notes.docx",
+       "name": "6.1 Inputs, calculations and outputs - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-6-1-practice.xlsx",
+       "name": "6.1 Inputs, calculations and outputs - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-6-1-solution.xlsx",
+       "name": "6.1 Inputs, calculations and outputs - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why models go wrong"
+      ],
+      [
+       0,
+       1,
+       "Inputs → calculations → outputs"
+      ],
+      [
+       0,
+       2,
+       "A colour code everyone reads"
+      ],
+      [
+       1,
+       0,
+       "No numbers inside formulas"
+      ],
+      [
+       1,
+       1,
+       "Linking across sheets"
+      ],
+      [
+       1,
+       2,
+       "Names for the key inputs"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-6-2",
+     "num": "6.2",
+     "title": "Consistent formulas, timelines and flags",
+     "summary": "Every row of a model should hold one formula, the same in every column. A timeline of real dates drives the model; flags of 1 and 0 switch things on and off; SUMIFS rolls months up into years.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write one formula per row that works in every column, with no special first column.",
+      "Build a timeline with EDATE, EOMONTH and a financial-year row.",
+      "Use flags (1 or 0) with IF and AND to switch costs and revenue on and off.",
+      "Roll monthly figures up into financial years with SUMIFS."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-6-2-notes.docx",
+       "name": "6.2 Consistent formulas, timelines and flags - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-6-2-practice.xlsx",
+       "name": "6.2 Consistent formulas, timelines and flags - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-6-2-solution.xlsx",
+       "name": "6.2 Consistent formulas, timelines and flags - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Consistent formulas"
+      ],
+      [
+       0,
+       1,
+       "A timeline block"
+      ],
+      [
+       0,
+       2,
+       "EDATE and EOMONTH"
+      ],
+      [
+       1,
+       0,
+       "Flags: 1 or 0"
+      ],
+      [
+       1,
+       1,
+       "Two conditions with AND"
+      ],
+      [
+       1,
+       2,
+       "Months into years with SUMIFS"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-6-3",
+     "num": "6.3",
+     "title": "Checks and error traps",
+     "summary": "A check is a cell that compares two things that must agree and shows 0 when they do. Add checks for totals, balance and inputs, gather them into one master check, and trap the errors you expect, without hiding the ones you don’t.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write checks that return 0 when two figures agree, allowing for rounding.",
+      "Check that parts add up to totals and that a balance sheet balances.",
+      "Count inputs typed as text, and gather all checks into one master check.",
+      "Trap an expected divide-by-zero with IF, and know when IFERROR hides too much."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-6-3-notes.docx",
+       "name": "6.3 Checks and error traps - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-6-3-practice.xlsx",
+       "name": "6.3 Checks and error traps - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-6-3-solution.xlsx",
+       "name": "6.3 Checks and error traps - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "What a check is"
+      ],
+      [
+       0,
+       1,
+       "Writing a check"
+      ],
+      [
+       0,
+       2,
+       "One master check"
+      ],
+      [
+       1,
+       0,
+       "Numbers stored as text"
+      ],
+      [
+       1,
+       1,
+       "Trap the error you expect"
+      ],
+      [
+       1,
+       2,
+       "When a check fails"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-6-4",
+     "num": "6.4",
+     "title": "Documenting and reviewing a model",
+     "summary": "A model someone else can use explains itself: a cover, a colour key, sources and notes. Reviewing a model means hunting for typed numbers, broken patterns and wrong references with Excel’s own tools, then asking whether the answers make sense.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Document a model so others can use it: purpose, key, sources and notes.",
+      "Use ISFORMULA and FORMULATEXT to expose what a model really holds.",
+      "Review a model with Show Formulas, Trace Precedents and Go To Special.",
+      "Sense-check a model’s answers against what you know."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-6-4-notes.docx",
+       "name": "6.4 Documenting and reviewing a model - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-6-4-practice.xlsx",
+       "name": "6.4 Documenting and reviewing a model - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-6-4-solution.xlsx",
+       "name": "6.4 Documenting and reviewing a model - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p3-p3-6-4-real.xlsx",
+       "name": "6.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A model others can use"
+      ],
+      [
+       0,
+       1,
+       "Show what cells really hold"
+      ],
+      [
+       0,
+       2,
+       "Units, sources and notes"
+      ],
+      [
+       1,
+       0,
+       "Excel’s review tools"
+      ],
+      [
+       1,
+       1,
+       "A reviewer’s checklist"
+      ],
+      [
+       1,
+       2,
+       "Does the answer make sense?"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "The three-statement model",
+   "summary": "Revenue and cost drivers, working capital, fixed-asset and debt schedules, the cash flow statement, and a balance sheet that balances.",
+   "free": false,
+   "testInfo": "Drivers, working capital, schedules, cash flow and balancing",
+   "lessons": [
+    {
+     "id": "p3-7-1",
+     "num": "7.1",
+     "title": "Revenue and cost drivers",
+     "summary": "A three-statement model forecasts the P&L, the balance sheet and the cash flow together, year by year. It starts with the P&L: revenue from a growth rate, each cost from its own driver, and EBITDA and its margin.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Explain what a three-statement model is and how the statements link.",
+      "Lay out a model with actual years followed by forecast years.",
+      "Forecast revenue from growth and each cost from its own driver.",
+      "Work out EBITDA, its margin and revenue growth a year (CAGR), and sense-check them against history."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-7-1-notes.docx",
+       "name": "7.1 Revenue and cost drivers - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-7-1-practice.xlsx",
+       "name": "7.1 Revenue and cost drivers - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-7-1-solution.xlsx",
+       "name": "7.1 Revenue and cost drivers - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Three statements, linked"
+      ],
+      [
+       0,
+       1,
+       "The layout"
+      ],
+      [
+       0,
+       2,
+       "A driver for every line"
+      ],
+      [
+       1,
+       0,
+       "Revenue: growth on last year"
+      ],
+      [
+       1,
+       1,
+       "Costs: % of revenue, or their own growth"
+      ],
+      [
+       1,
+       2,
+       "Margins and operating leverage"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-7-2",
+     "num": "7.2",
+     "title": "Working capital",
+     "summary": "Profit isn’t cash: money is tied up in stock and in customers who haven’t paid, and freed by suppliers who haven’t been paid. Forecast each balance from its days, and the increase in working capital is cash the business needs to grow.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain why working capital ties up cash.",
+      "Work out receivable, inventory and payable days from a year’s accounts.",
+      "Forecast the balances from days, and net working capital.",
+      "Work out the increase in working capital, and what a change in days does to cash."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-7-2-notes.docx",
+       "name": "7.2 Working capital - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-7-2-practice.xlsx",
+       "name": "7.2 Working capital - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-7-2-solution.xlsx",
+       "name": "7.2 Working capital - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Profit isn’t cash"
+      ],
+      [
+       0,
+       1,
+       "Net working capital"
+      ],
+      [
+       0,
+       2,
+       "Days: the driver"
+      ],
+      [
+       1,
+       0,
+       "From days back to rupees"
+      ],
+      [
+       1,
+       1,
+       "Growth needs cash"
+      ],
+      [
+       1,
+       2,
+       "The cash conversion cycle"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-7-3",
+     "num": "7.3",
+     "title": "Fixed assets and debt",
+     "summary": "Two schedules feed the model: the fixed-asset ‘corkscrew’ (opening + capex − depreciation = closing) and the loan corkscrew (opening + drawn − repaid = closing), with interest on the average balance.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Build a fixed-asset schedule where each year’s closing net block becomes the next year’s opening.",
+      "Forecast depreciation as a % of the opening net block.",
+      "Build a term-loan schedule with drawdowns and repayments that never exceed what’s owed.",
+      "Work out interest on the average balance, and explain why."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-7-3-notes.docx",
+       "name": "7.3 Fixed assets and debt - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-7-3-practice.xlsx",
+       "name": "7.3 Fixed assets and debt - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-7-3-solution.xlsx",
+       "name": "7.3 Fixed assets and debt - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Capex and depreciation"
+      ],
+      [
+       0,
+       1,
+       "The corkscrew"
+      ],
+      [
+       0,
+       2,
+       "Depreciation choices"
+      ],
+      [
+       1,
+       0,
+       "The loan corkscrew"
+      ],
+      [
+       1,
+       1,
+       "Interest on the average balance"
+      ],
+      [
+       1,
+       2,
+       "Will the lender be repaid?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-7-4",
+     "num": "7.4",
+     "title": "The cash flow statement",
+     "summary": "The cash flow statement explains how cash changed: cash from operations (profit, plus non-cash charges, less the increase in working capital), from investing (capex) and from financing (loans and dividends). Its closing cash is the balance sheet’s cash.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Name the three sections of a cash flow statement and what goes in each.",
+      "Work out cash from operations from profit with the indirect method.",
+      "Get the signs right: cash in positive, cash out negative.",
+      "Work out the net change and closing cash, which link to the balance sheet."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-7-4-notes.docx",
+       "name": "7.4 The cash flow statement - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-7-4-practice.xlsx",
+       "name": "7.4 The cash flow statement - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-7-4-solution.xlsx",
+       "name": "7.4 The cash flow statement - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Three kinds of cash flow"
+      ],
+      [
+       0,
+       1,
+       "Start from profit"
+      ],
+      [
+       0,
+       2,
+       "Signs: in is plus, out is minus"
+      ],
+      [
+       1,
+       0,
+       "Investing and financing"
+      ],
+      [
+       1,
+       1,
+       "Closing cash: the link"
+      ],
+      [
+       1,
+       2,
+       "Reading a cash flow"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-7-5",
+     "num": "7.5",
+     "title": "The balance sheet: making it balance",
+     "summary": "Every balance sheet line comes from a schedule: cash from the cash flow, retained earnings from profit less dividends. If every change is in the cash flow, assets equal equity and liabilities in every year. A balance check shows when they don’t, and the size of the gap shows why.",
+     "minutes": 50,
+     "free": false,
+     "objectives": [
+      "Link each balance sheet line to its schedule, and roll retained earnings forward.",
+      "Explain why a fully linked model balances.",
+      "Add a balance check, and use the pattern of the gap to find what’s wrong.",
+      "Avoid circular references, and know what to do when one is unavoidable."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-7-5-notes.docx",
+       "name": "7.5 The balance sheet: making it balance - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-7-5-practice.xlsx",
+       "name": "7.5 The balance sheet: making it balance - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-7-5-solution.xlsx",
+       "name": "7.5 The balance sheet: making it balance - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p3-p3-7-5-real.xlsx",
+       "name": "7.5 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Every line has a home"
+      ],
+      [
+       0,
+       1,
+       "Retained earnings: the profit link"
+      ],
+      [
+       0,
+       2,
+       "Why it balances"
+      ],
+      [
+       1,
+       0,
+       "The balance check"
+      ],
+      [
+       1,
+       1,
+       "Reading the gap"
+      ],
+      [
+       1,
+       2,
+       "Circular references"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Valuation and DCF",
+   "summary": "Free cash flow, the cost of capital, discounting and terminal value, and from enterprise value to a value per share.",
+   "free": false,
+   "testInfo": "Free cash flow, WACC, terminal value and value per share",
+   "lessons": [
+    {
+     "id": "p3-8-1",
+     "num": "8.1",
+     "title": "Free cash flow",
+     "summary": "A business is worth the cash it will produce for everyone who funds it. Free cash flow to the firm is operating profit after tax, plus depreciation, less capex and the increase in working capital: the cash left for lenders and owners together.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain the idea of a discounted cash flow (DCF) valuation.",
+      "Work out EBIT and the tax on it, and NOPAT.",
+      "Build free cash flow to the firm from NOPAT, depreciation, capex and working capital.",
+      "Explain why free cash flow is measured before interest and loans."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-8-1-notes.docx",
+       "name": "8.1 Free cash flow - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-8-1-practice.xlsx",
+       "name": "8.1 Free cash flow - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-8-1-solution.xlsx",
+       "name": "8.1 Free cash flow - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Value = the cash it will produce"
+      ],
+      [
+       0,
+       1,
+       "Free cash flow to the firm"
+      ],
+      [
+       0,
+       2,
+       "Before financing"
+      ],
+      [
+       1,
+       0,
+       "Saanjh’s free cash flow"
+      ],
+      [
+       1,
+       1,
+       "What drives free cash flow"
+      ],
+      [
+       1,
+       2,
+       "Sense checks"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-8-2",
+     "num": "8.2",
+     "title": "The cost of capital",
+     "summary": "The discount rate is the return investors could expect elsewhere for the same risk. The cost of equity comes from CAPM (risk-free rate + beta × equity risk premium), the cost of debt is after tax, and the WACC weights the two.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Explain why the discount rate is the return investors expect, not the loan rate.",
+      "Work out beta from monthly returns with SLOPE.",
+      "Work out the cost of equity with CAPM, and the after-tax cost of debt.",
+      "Combine them into the weighted average cost of capital (WACC)."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-8-2-notes.docx",
+       "name": "8.2 The cost of capital - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-8-2-practice.xlsx",
+       "name": "8.2 The cost of capital - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-8-2-solution.xlsx",
+       "name": "8.2 The cost of capital - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The discount rate"
+      ],
+      [
+       0,
+       1,
+       "Cost of equity: CAPM"
+      ],
+      [
+       0,
+       2,
+       "Beta from returns"
+      ],
+      [
+       1,
+       0,
+       "Cost of debt, after tax"
+      ],
+      [
+       1,
+       1,
+       "The weighted average"
+      ],
+      [
+       1,
+       2,
+       "Why not use the loan rate?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-8-3",
+     "num": "8.3",
+     "title": "Discounting and terminal value",
+     "summary": "Discount each year’s free cash flow at the WACC, then add a terminal value for every year after the forecast: the final year’s cash growing for ever, discounted back. The total is the enterprise value, and the terminal value is usually most of it.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Work out discount factors and present values for each forecast year, and check them with NPV.",
+      "Work out a terminal value with the growing-for-ever (Gordon growth) formula.",
+      "Discount the terminal value and add it to get enterprise value.",
+      "Cross-check the terminal value with an exit multiple, and judge how much of the value it carries."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-8-3-notes.docx",
+       "name": "8.3 Discounting and terminal value - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-8-3-practice.xlsx",
+       "name": "8.3 Discounting and terminal value - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-8-3-solution.xlsx",
+       "name": "8.3 Discounting and terminal value - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Discount factors"
+      ],
+      [
+       0,
+       1,
+       "Present value of five years"
+      ],
+      [
+       0,
+       2,
+       "The business doesn’t stop in year 5"
+      ],
+      [
+       1,
+       0,
+       "Growing for ever"
+      ],
+      [
+       1,
+       1,
+       "Cross-check with an exit multiple"
+      ],
+      [
+       1,
+       2,
+       "Enterprise value"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-8-4",
+     "num": "8.4",
+     "title": "From enterprise value to value per share",
+     "summary": "Enterprise value belongs to lenders and owners together. Take off debt and add cash to get the owners’ equity value, divide by the number of shares, and then test how much the answer moves with WACC and growth.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Turn enterprise value into equity value with net debt.",
+      "Work out a value per share, and the multiples it implies.",
+      "Build a sensitivity table of value per share by WACC and terminal growth.",
+      "Explain why a valuation is a range, and how value differs from price."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-8-4-notes.docx",
+       "name": "8.4 From enterprise value to value per share - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-8-4-practice.xlsx",
+       "name": "8.4 From enterprise value to value per share - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-8-4-solution.xlsx",
+       "name": "8.4 From enterprise value to value per share - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p3-p3-8-4-real.xlsx",
+       "name": "8.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Take off what’s owed"
+      ],
+      [
+       0,
+       1,
+       "Value per share"
+      ],
+      [
+       0,
+       2,
+       "What the value implies"
+      ],
+      [
+       1,
+       0,
+       "A sensitivity table"
+      ],
+      [
+       1,
+       1,
+       "A range, not a number"
+      ],
+      [
+       1,
+       2,
+       "Value isn’t price"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "title": "Scenarios, sensitivity and presenting",
+   "summary": "Scenario switches, sensitivity and tornado charts, Goal Seek and loan sizing, and presenting a model.",
+   "free": false,
+   "testInfo": "Scenarios, tornadoes, Goal Seek and the summary",
+   "lessons": [
+    {
+     "id": "p3-9-1",
+     "num": "9.1",
+     "title": "Scenario switches",
+     "summary": "A scenario changes several assumptions together: a base case, an upside, a downside. Keep each scenario’s inputs in a table, pick the live set with a switch, and the whole model follows.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain what a scenario is, and how it differs from changing one input.",
+      "Lay out a scenario table and a live column that the model reads.",
+      "Pick the live inputs with XLOOKUP, INDEX/MATCH or CHOOSE from a switch cell.",
+      "Add a drop-down to the switch, and compare scenarios side by side."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-9-1-notes.docx",
+       "name": "9.1 Scenario switches - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-9-1-practice.xlsx",
+       "name": "9.1 Scenario switches - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-9-1-solution.xlsx",
+       "name": "9.1 Scenario switches - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Base, upside, downside"
+      ],
+      [
+       0,
+       1,
+       "A scenario table and a live column"
+      ],
+      [
+       0,
+       2,
+       "Picking the live value"
+      ],
+      [
+       1,
+       0,
+       "A drop-down on the switch"
+      ],
+      [
+       1,
+       1,
+       "Results side by side"
+      ],
+      [
+       1,
+       2,
+       "Switches vs Scenario Manager"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-9-2",
+     "num": "9.2",
+     "title": "Sensitivity and tornado charts",
+     "summary": "Flex each assumption up and down, one at a time, and see how far the answer moves. A tornado chart ranks the assumptions by their swing, so the debate goes to the few that matter.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Flex one input at a time between a sensible low and high, and record the result.",
+      "Work out each driver’s change from the base case and its swing.",
+      "Sort the drivers by swing with SORTBY, and chart them as a tornado.",
+      "Explain what a tornado shows and what it misses."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-9-2-notes.docx",
+       "name": "9.2 Sensitivity and tornado charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-9-2-practice.xlsx",
+       "name": "9.2 Sensitivity and tornado charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-9-2-solution.xlsx",
+       "name": "9.2 Sensitivity and tornado charts - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Which assumptions matter?"
+      ],
+      [
+       0,
+       1,
+       "Data tables do the flexing"
+      ],
+      [
+       0,
+       2,
+       "Change and swing"
+      ],
+      [
+       1,
+       0,
+       "Widest bar on top"
+      ],
+      [
+       1,
+       1,
+       "Reading a tornado"
+      ],
+      [
+       1,
+       2,
+       "What a tornado misses"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-9-3",
+     "num": "9.3",
+     "title": "Goal Seek, Solver and loan sizing",
+     "summary": "Goal Seek works a model backwards: what margin justifies the investor’s price, what loan keeps the DSCR above the bank’s minimum. When the answer must meet several conditions at once, Solver takes over.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Use Goal Seek on a model to find the input that hits a target, and check it.",
+      "Size a loan from the cash available and a minimum DSCR, with PV.",
+      "Work out the DSCR each year for a chosen loan, and the lowest.",
+      "Know when Solver is needed instead of Goal Seek."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-9-3-notes.docx",
+       "name": "9.3 Goal Seek, Solver and loan sizing - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-9-3-practice.xlsx",
+       "name": "9.3 Goal Seek, Solver and loan sizing - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-9-3-solution.xlsx",
+       "name": "9.3 Goal Seek, Solver and loan sizing - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Goal Seek on a model"
+      ],
+      [
+       0,
+       1,
+       "Questions Goal Seek answers"
+      ],
+      [
+       0,
+       2,
+       "Check Goal Seek’s answer"
+      ],
+      [
+       1,
+       0,
+       "How lenders size a loan"
+      ],
+      [
+       1,
+       1,
+       "The largest loan: PV"
+      ],
+      [
+       1,
+       2,
+       "Solver: several conditions at once"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p3-9-4",
+     "num": "9.4",
+     "title": "Presenting a model",
+     "summary": "The people who decide won’t read the model. Give them one page: the answer first, the range of outcomes, what it depends on, and what you’re asking for, with numbers that update when the model does.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write an executive summary that puts the answer first.",
+      "Build headline text that updates from the model with & and TEXT.",
+      "Compare the results with what’s on the table, such as an offer.",
+      "Choose what to show an investor and a lender, and check the model before it goes out."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p3-p3-9-4-notes.docx",
+       "name": "9.4 Presenting a model - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p3-p3-9-4-practice.xlsx",
+       "name": "9.4 Presenting a model - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p3-p3-9-4-solution.xlsx",
+       "name": "9.4 Presenting a model - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p3-p3-9-4-real.xlsx",
+       "name": "9.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Answer first"
+      ],
+      [
+       0,
+       1,
+       "Headlines that update"
+      ],
+      [
+       0,
+       2,
+       "Compare with what’s on the table"
+      ],
+      [
+       1,
+       0,
+       "One chart, one message"
+      ],
+      [
+       1,
+       1,
+       "Investor or lender: different pages"
+      ],
+      [
+       1,
+       2,
+       "Before it goes out"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  }
+ ],
+ "upcoming": [],
+ "project": {
+  "title": "A three-statement model and valuation for Saanjh Snacks",
+  "brief": "Three years of Saanjh Snacks’ accounts and the founder’s plans: build a five-year model with linked P&L, balance sheet and cash flow, a debt schedule for a new factory loan, a DCF valuation, and scenarios for the lender’s meeting.",
+  "coming": false
+ },
+ "exam": {
+  "questions": 40,
+  "tasks": 6,
+  "minutes": 90,
+  "pass": 75,
+  "attempts": 3,
+  "gapHours": 48,
+  "coming": false
+ },
+ "downloads": [
+  {
+   "label": "Course handbook",
+   "file": "a/p3-handbook.docx",
+   "name": "Sheetah P3 handbook.docx"
+  },
+  {
+   "label": "Cheat sheet",
+   "file": "a/p3-cheatsheet.docx",
+   "name": "Sheetah P3 cheat sheet.docx"
+  }
+ ]
+}

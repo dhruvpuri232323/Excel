@@ -1,0 +1,3 @@
+Sub InsertCompanyName()
+    ActiveCell.FormulaR1C1 = "Nilgiri Tea Traders Pvt Ltd"
+End Sub

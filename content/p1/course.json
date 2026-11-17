@@ -1,0 +1,2376 @@
+{
+ "id": "p1",
+ "code": "P1",
+ "title": "Excel for Data Analysis",
+ "level": "Specialist",
+ "hours": 24,
+ "summary": "P1 turns a confident formula writer into an analyst: clean and combine real exports, summarise them with PivotTables, find what drives the numbers, test what-if questions, forecast, and say honestly what the data does and doesn’t show.",
+ "prereq": "Builds on C1 · Excel Foundations and C2 · Formulas & Functions.",
+ "outcomes": [
+  "Run a repeatable analysis, from a sharp question to a checked answer.",
+  "Clean messy exports: text, numbers and dates that aren’t, inconsistent categories, duplicates and blanks.",
+  "Combine and reconcile datasets with lookups on several criteria, VSTACK and match-status columns.",
+  "Summarise with PivotTables, groupings, slicers and timelines, and with GROUPBY and PIVOTBY.",
+  "Use the core techniques: segments, Pareto (ABC), variance, growth and moving averages.",
+  "Run what-if analysis and simple forecasts with Goal Seek, data tables, Solver and FORECAST.",
+  "Use descriptive statistics, correlation, regression and t-tests, and say honestly what they can’t show.",
+  "Write reusable logic with LET and LAMBDA."
+ ],
+ "modules": [
+  {
+   "n": 1,
+   "title": "The analysis workflow",
+   "summary": "From a sharp question to a checked answer, understanding a dataset before you trust it, and the working habits that keep an analysis honest.",
+   "free": true,
+   "testInfo": "Questions, profiling and working habits",
+   "lessons": [
+    {
+     "id": "p1-1-1",
+     "num": "1.1",
+     "title": "From question to answer",
+     "summary": "The six steps of an analysis, turning a vague request into a sharp question, and answering it with formulas you can check.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Name the six steps of an analysis: ask, get, clean, analyse, check, tell.",
+      "Turn a vague request into a sharp question with a measure, a group, a period and a filter.",
+      "Answer a sharp question from an order export with COUNTIFS and SUMIFS.",
+      "Check an answer before you share it, and say what it can’t tell you."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p1-p1-1-1-notes.docx",
+       "name": "1.1 From question to answer - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p1-p1-1-1-practice.xlsx",
+       "name": "1.1 From question to answer - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p1-p1-1-1-solution.xlsx",
+       "name": "1.1 From question to answer - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Analysis means answering a question with data"
+      ],
+      [
+       0,
+       1,
+       "Vague requests, sharp questions"
+      ],
+      [
+       0,
+       2,
+       "Four parts of a sharp question"
+      ],
+      [
+       1,
+       0,
+       "Each part of the question becomes part of the formula"
+      ],
+      [
+       1,
+       1,
+       "Check before you tell"
+      ],
+      [
+       1,
+       2,
+       "Tell the answer with its limits"
+      ]
+     ],
+     "tasks": [
+      "Meera asks “Is Instagram worth it?”. Which is the best sharp question to answer from this ",
+      "In O2, count the order lines that came through Instagram.",
+      "In O3, add up the Amount of every Delivered order line.",
+      "In O4, add up the Amount of order lines that are Instagram and Delivered.",
+      "In O5, show Instagram’s share of delivered revenue.",
+      "In O6, check your work: show TRUE if delivered (O3) + returned + cancelled revenue equals ",
+      "Which caveat belongs with your answer in O5?"
+     ],
+     "real": false
+    },
+    {
+     "id": "p1-1-2",
+     "num": "1.2",
+     "title": "Understanding a dataset",
+     "summary": "What one row stands for, reading and writing a data dictionary, and profiling an export with a few formulas before you trust it.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Say what one row of a dataset stands for, and why rows aren’t always orders.",
+      "Read and write a data dictionary: field, meaning, type, example.",
+      "Profile an export: rows, distinct keys, date range, blanks and categories.",
+      "List the questions a profile raises before analysis starts."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p1-p1-1-2-notes.docx",
+       "name": "1.2 Understanding a dataset - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p1-p1-1-2-practice.xlsx",
+       "name": "1.2 Understanding a dataset - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p1-p1-1-2-solution.xlsx",
+       "name": "1.2 Understanding a dataset - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Granularity: what one row stands for"
+      ],
+      [
+       0,
+       1,
+       "Keys: the columns that name things"
+      ],
+      [
+       0,
+       2,
+       "A data dictionary says what each column means"
+      ],
+      [
+       1,
+       0,
+       "Profile before you analyse"
+      ],
+      [
+       1,
+       1,
+       "The profiling formulas"
+      ],
+      [
+       1,
+       2,
+       "Look at the values, not just the counts"
+      ]
+     ],
+     "tasks": [
+      "In O2, count the rows of data (order lines).",
+      "In O3, count the distinct orders.",
+      "In O4, count the distinct customers.",
+      "In O5, show the first order date.",
+      "In O6, show the last order date.",
+      "In O7, count the rows with no city.",
+      "In O8, show the average number of rows per order.",
+      "In Q2, list each channel once, A to Z, with one formula."
+     ],
+     "real": false
+    },
+    {
+     "id": "p1-1-3",
+     "num": "1.3",
+     "title": "Working habits",
+     "summary": "Keep the raw data untouched, work on a copy that rebuilds itself, write your steps down, and prove nothing was lost with check totals.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Lay out an analysis workbook as Raw, Work, Checks and Notes sheets.",
+      "Build a working copy with a formula, so the raw data is never edited.",
+      "Write check totals that prove no rows or rupees went missing.",
+      "Keep a step log someone else could follow."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p1-p1-1-3-notes.docx",
+       "name": "1.3 Working habits - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p1-p1-1-3-practice.xlsx",
+       "name": "1.3 Working habits - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p1-p1-1-3-solution.xlsx",
+       "name": "1.3 Working habits - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "a/p1-p1-1-3-real.xlsx",
+       "name": "1.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Never edit the raw data"
+      ],
+      [
+       0,
+       1,
+       "A working copy that rebuilds itself"
+      ],
+      [
+       0,
+       2,
+       "Write your steps down"
+      ],
+      [
+       1,
+       0,
+       "Control totals: nothing lost, nothing added"
+      ],
+      [
+       1,
+       1,
+       "Make the checks shout"
+      ],
+      [
+       1,
+       2,
+       "Check against a number from outside"
+      ]
+     ],
+     "tasks": [
+      "On Work, in A2, copy every order line from Raw except cancelled ones, with one formula.",
+      "On Checks, in B2, count the rows in Raw.",
+      "In Checks!B3, count the rows in Work.",
+      "In Checks!B4, count the Cancelled rows in Raw.",
+      "In Checks!B5, show OK if rows in Raw = rows in Work + cancelled rows, and CHECK if not.",
+      "In Checks!B8, add up the Amount column of Work.",
+      "In Checks!B10, show OK if the amount in Raw (B7) minus Work (B8) minus cancelled (B9) is l",
+      "Which line belongs in the Notes sheet’s step log?"
+     ],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Cleaning data",
+   "summary": "Finding problems fast, cleaning text, fixing numbers and dates that aren’t, standardising categories with a mapping table, and handling duplicates and blanks.",
+   "free": false,
+   "testInfo": "Problem checks, text, numbers and dates, mapping, duplicates and blanks",
+   "lessons": [
+    {
+     "id": "p1-2-1",
+     "num": "2.1",
+     "title": "Finding problems fast",
+     "summary": "The usual problems in an export, seeing them with filter drop-downs and conditional formatting, and counting each kind with a formula before you fix anything.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Name the six usual problems in an export.",
+      "Use filter drop-downs and conditional formatting to see problems at a glance.",
+      "Flag repeated keys with COUNTIF.",
+      "Count each kind of problem with a formula: blanks, text numbers, unknown categories, impossible values and dates."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-2-1-notes.docx",
+       "name": "2.1 Finding problems fast - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-2-1-practice.xlsx",
+       "name": "2.1 Finding problems fast - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-2-1-solution.xlsx",
+       "name": "2.1 Finding problems fast - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The usual suspects"
+      ],
+      [
+       0,
+       1,
+       "Filter drop-downs list every value"
+      ],
+      [
+       0,
+       2,
+       "Conditional formatting makes problems glow"
+      ],
+      [
+       1,
+       0,
+       "A flag column for repeated keys"
+      ],
+      [
+       1,
+       1,
+       "One formula per kind of problem"
+      ],
+      [
+       1,
+       2,
+       "Count first, fix later"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-2-2",
+     "num": "2.2",
+     "title": "Text clean-up",
+     "summary": "Extra spaces, capitals, invisible characters and two facts in one cell: TRIM, CLEAN, PROPER and SUBSTITUTE, splitting with TEXTBEFORE and TEXTAFTER, Text to Columns and Flash Fill.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Clean names and emails with TRIM, PROPER, LOWER and CLEAN.",
+      "Remove the non-breaking space CHAR(160), which TRIM leaves behind.",
+      "Split “City, State” with TEXTBEFORE and TEXTAFTER.",
+      "Choose between formulas, Text to Columns and Flash Fill."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-2-2-notes.docx",
+       "name": "2.2 Text clean-up - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-2-2-practice.xlsx",
+       "name": "2.2 Text clean-up - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-2-2-solution.xlsx",
+       "name": "2.2 Text clean-up - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-2-2-real.xlsx",
+       "name": "2.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why text goes wrong"
+      ],
+      [
+       0,
+       1,
+       "TRIM, PROPER, UPPER and LOWER"
+      ],
+      [
+       0,
+       2,
+       "The space TRIM can’t see"
+      ],
+      [
+       1,
+       0,
+       "Split with TEXTBEFORE and TEXTAFTER"
+      ],
+      [
+       1,
+       1,
+       "Text to Columns: split in place"
+      ],
+      [
+       1,
+       2,
+       "Flash Fill: show it the pattern"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-2-3",
+     "num": "2.3",
+     "title": "Numbers and dates that aren’t",
+     "summary": "Spotting numbers stored as text and turning them into real numbers, and rebuilding text dates safely with DATE, whatever the day–month order.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Spot numbers stored as text: left-aligned, green triangle, ignored by SUM.",
+      "Turn text into numbers with VALUE, NUMBERVALUE and SUBSTITUTE.",
+      "Rebuild dd/mm/yyyy text dates with DATE, RIGHT, MID and LEFT.",
+      "Convert yyyymmdd numbers and ISO dates into real dates."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-2-3-notes.docx",
+       "name": "2.3 Numbers and dates that aren’t - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-2-3-practice.xlsx",
+       "name": "2.3 Numbers and dates that aren’t - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-2-3-solution.xlsx",
+       "name": "2.3 Numbers and dates that aren’t - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "How to spot a number that’s text"
+      ],
+      [
+       0,
+       1,
+       "Turn text into numbers"
+      ],
+      [
+       0,
+       2,
+       "Check every row converted"
+      ],
+      [
+       1,
+       0,
+       "Text dates and the day–month trap"
+      ],
+      [
+       1,
+       1,
+       "Build the date yourself with DATE"
+      ],
+      [
+       1,
+       2,
+       "Other date shapes"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-2-4",
+     "num": "2.4",
+     "title": "Standardising categories",
+     "summary": "One thing spelt many ways: a mapping table of raw values and standard names, XLOOKUP to apply it, and UNMAPPED as a to-do list that keeps the map complete.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Explain why spelling variants break COUNTIFS, SUMIFS and PivotTables.",
+      "Build a mapping table from raw values to standard names.",
+      "Apply it with XLOOKUP, TRIM and an “UNMAPPED” fallback.",
+      "Keep the map complete as new variants arrive."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-2-4-notes.docx",
+       "name": "2.4 Standardising categories - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-2-4-practice.xlsx",
+       "name": "2.4 Standardising categories - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-2-4-solution.xlsx",
+       "name": "2.4 Standardising categories - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Categories drift"
+      ],
+      [
+       0,
+       1,
+       "A mapping table"
+      ],
+      [
+       0,
+       2,
+       "Look up the standard name"
+      ],
+      [
+       1,
+       0,
+       "UNMAPPED is a to-do list"
+      ],
+      [
+       1,
+       1,
+       "Make the map a Table"
+      ],
+      [
+       1,
+       2,
+       "Standardise once, analyse many times"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-2-5",
+     "num": "2.5",
+     "title": "Duplicates and blanks",
+     "summary": "Exact duplicates and repeated keys, keeping the first of each with COUNTIF, Remove Duplicates without regrets, and deciding what each kind of blank means.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Tell exact duplicate rows from repeated keys.",
+      "Build a matching key with LOWER and TRIM, and flag the first time each key appears.",
+      "Remove duplicates safely, with Remove Duplicates or with FILTER.",
+      "Decide whether a blank should be filled, flagged or left out, and fill grouped blanks from the row above."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-2-5-notes.docx",
+       "name": "2.5 Duplicates and blanks - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-2-5-practice.xlsx",
+       "name": "2.5 Duplicates and blanks - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-2-5-solution.xlsx",
+       "name": "2.5 Duplicates and blanks - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-2-5-real.xlsx",
+       "name": "2.5 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Exact duplicates and repeated keys"
+      ],
+      [
+       0,
+       1,
+       "Find the first time each key appears"
+      ],
+      [
+       0,
+       2,
+       "Remove Duplicates, without regrets"
+      ],
+      [
+       1,
+       0,
+       "Not every blank means the same"
+      ],
+      [
+       1,
+       1,
+       "Fill down the blanks of a grouped report"
+      ],
+      [
+       1,
+       2,
+       "Exclude, flag or fill"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Combining and reconciling",
+   "summary": "Lookups on several criteria, reconciling two lists (missing, extra or different), stacking same-shaped files with VSTACK, and one-to-many relationships.",
+   "free": false,
+   "testInfo": "Multi-criteria lookups, reconciliation, stacking and relationships",
+   "lessons": [
+    {
+     "id": "p1-3-1",
+     "num": "3.1",
+     "title": "Lookups on several criteria",
+     "summary": "When one column isn’t enough to find a row: XLOOKUP with two conditions multiplied together, a joined key, INDEX/MATCH for older Excel, and why SUMIFS is a risky lookup.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Recognise when a lookup needs more than one column to find the right row.",
+      "Look up on two criteria with XLOOKUP(1, (…)*(…), …).",
+      "Use a joined key (SKU&\"|\"&Size) and INDEX/MATCH as alternatives.",
+      "Explain why SUMIFS returns 0, not an error, when a row is missing."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-3-1-notes.docx",
+       "name": "3.1 Lookups on several criteria - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-3-1-practice.xlsx",
+       "name": "3.1 Lookups on several criteria - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-3-1-solution.xlsx",
+       "name": "3.1 Lookups on several criteria - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "One SKU, several prices"
+      ],
+      [
+       0,
+       1,
+       "XLOOKUP on two conditions"
+      ],
+      [
+       0,
+       2,
+       "Evaluate it to see why it works"
+      ],
+      [
+       1,
+       0,
+       "A joined key"
+      ],
+      [
+       1,
+       1,
+       "INDEX and MATCH with two conditions"
+      ],
+      [
+       1,
+       2,
+       "SUMIFS as a lookup: handle with care"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-3-2",
+     "num": "3.2",
+     "title": "Reconciliation",
+     "summary": "Comparing two lists that should agree: what’s missing, what’s extra and what’s different, a status column that says which, and a difference that’s fully explained.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Name the three kinds of difference between two lists: missing, extra, different.",
+      "Bring the other list’s value across with XLOOKUP and a “Missing” fallback.",
+      "Write a status column: Matched, Amount differs or Missing.",
+      "List the exceptions with FILTER and prove the total difference is explained."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-3-2-notes.docx",
+       "name": "3.2 Reconciliation - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-3-2-practice.xlsx",
+       "name": "3.2 Reconciliation - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-3-2-solution.xlsx",
+       "name": "3.2 Reconciliation - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-3-2-real.xlsx",
+       "name": "3.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "What reconciliation is"
+      ],
+      [
+       0,
+       1,
+       "Bring the other side across"
+      ],
+      [
+       0,
+       2,
+       "A status column says which box"
+      ],
+      [
+       1,
+       0,
+       "Lines the bank has that you don’t"
+      ],
+      [
+       1,
+       1,
+       "List the exceptions"
+      ],
+      [
+       1,
+       2,
+       "Prove the difference is explained"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-3-3",
+     "num": "3.3",
+     "title": "Stacking with VSTACK",
+     "summary": "Combining files with the same layout into one list: VSTACK, checking nothing was lost, padded ranges that take next month’s rows, and why the columns must line up.",
+     "minutes": 30,
+     "free": false,
+     "objectives": [
+      "Stack same-shaped lists from several sheets into one with VSTACK.",
+      "Check the stack with a row count and a control total.",
+      "Use padded ranges with FILTER so new rows join automatically.",
+      "Spot when two lists can’t be stacked because their columns differ."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-3-3-notes.docx",
+       "name": "3.3 Stacking with VSTACK - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-3-3-practice.xlsx",
+       "name": "3.3 Stacking with VSTACK - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-3-3-solution.xlsx",
+       "name": "3.3 Stacking with VSTACK - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Same layout, many files"
+      ],
+      [
+       0,
+       1,
+       "VSTACK puts lists one under another"
+      ],
+      [
+       0,
+       2,
+       "Check the stack"
+      ],
+      [
+       1,
+       0,
+       "Padded ranges: room for next month’s rows"
+      ],
+      [
+       1,
+       1,
+       "The columns must line up"
+      ],
+      [
+       1,
+       2,
+       "Label where each row came from"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-3-4",
+     "num": "3.4",
+     "title": "Relationships at a glance",
+     "summary": "One customer, many orders: lookup tables and fact tables, keys that must be unique on the “one” side, orphans with no match, and how to summarise across the relationship.",
+     "minutes": 30,
+     "free": false,
+     "objectives": [
+      "Tell a lookup (“one”) table from a fact (“many”) table.",
+      "Check that keys are unique on the “one” side, and find orphans on the “many” side.",
+      "Bring details across a relationship with XLOOKUP, and summarise back with COUNTIF and SUMIFS.",
+      "Explain why a duplicate key double-counts totals."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-3-4-notes.docx",
+       "name": "3.4 Relationships at a glance - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-3-4-practice.xlsx",
+       "name": "3.4 Relationships at a glance - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-3-4-solution.xlsx",
+       "name": "3.4 Relationships at a glance - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Two kinds of table"
+      ],
+      [
+       0,
+       1,
+       "One-to-many"
+      ],
+      [
+       0,
+       2,
+       "Across the relationship, both ways"
+      ],
+      [
+       1,
+       0,
+       "Duplicate keys double-count"
+      ],
+      [
+       1,
+       1,
+       "Orphans: a key with no match"
+      ],
+      [
+       1,
+       2,
+       "Check a relationship before you trust it"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "PivotTables",
+   "summary": "Your first PivotTable, value settings like % of total, running totals and differences, grouping (with financial-year quarters), slicers, timelines and calculated fields, and GETPIVOTDATA, GROUPBY and PIVOTBY.",
+   "free": false,
+   "testInfo": "PivotTable layout, value settings, grouping, slicers, calculated fields, GROUPBY and PIVOTBY",
+   "lessons": [
+    {
+     "id": "p1-4-1",
+     "num": "4.1",
+     "title": "Your first PivotTable",
+     "summary": "What a PivotTable does, the data it needs, inserting one, the four areas (Rows, Columns, Values, Filters), and keeping it up to date.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain what a PivotTable does: SUMIFS for every combination, built by dragging.",
+      "Check a dataset is ready for a PivotTable: one header row, no blank rows, one kind of value per column.",
+      "Insert a PivotTable and place fields in Rows, Columns, Values and Filters.",
+      "Refresh a PivotTable and make its source a Table so new rows are included."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-4-1-notes.docx",
+       "name": "4.1 Your first PivotTable - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-4-1-practice.xlsx",
+       "name": "4.1 Your first PivotTable - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-4-1-solution.xlsx",
+       "name": "4.1 Your first PivotTable - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-4-1-real.xlsx",
+       "name": "4.1 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A summary in seconds"
+      ],
+      [
+       0,
+       1,
+       "Data a PivotTable can use"
+      ],
+      [
+       0,
+       2,
+       "Insert › PivotTable"
+      ],
+      [
+       1,
+       0,
+       "Rows, Columns, Values, Filters"
+      ],
+      [
+       1,
+       1,
+       "Sum or Count? Excel decides from the data"
+      ],
+      [
+       1,
+       2,
+       "Refresh, and let the source grow"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-4-2",
+     "num": "4.2",
+     "title": "Value settings",
+     "summary": "Sum, Count, Average, Max and Min; the same field twice; and Show Values As: % of Grand Total, Running Total In, Difference From and % Difference From.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Choose how a value is summarised: Sum, Count, Average, Max or Min.",
+      "Put the same field in Values twice and rename the headers.",
+      "Show values as % of Grand Total, % of Column Total and Running Total.",
+      "Show change with Difference From and % Difference From (previous)."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-4-2-notes.docx",
+       "name": "4.2 Value settings - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-4-2-practice.xlsx",
+       "name": "4.2 Value settings - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-4-2-solution.xlsx",
+       "name": "4.2 Value settings - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-4-2-real.xlsx",
+       "name": "4.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Five ways to summarise"
+      ],
+      [
+       0,
+       1,
+       "Value Field Settings"
+      ],
+      [
+       0,
+       2,
+       "The same field twice"
+      ],
+      [
+       1,
+       0,
+       "Percentages of a total"
+      ],
+      [
+       1,
+       1,
+       "Running Total In"
+      ],
+      [
+       1,
+       2,
+       "Difference From the previous month"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-4-3",
+     "num": "4.3",
+     "title": "Grouping",
+     "summary": "Grouping dates into months, quarters and years (and why Excel’s quarters aren’t India’s financial quarters), numbers into bands, and text items into your own groups.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Group a date field by months, quarters and years.",
+      "Build a financial-year quarter with a helper column, because Excel’s quarters run January–March.",
+      "Group numbers into bands, and text items into groups.",
+      "Fix “Cannot group that selection”."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-4-3-notes.docx",
+       "name": "4.3 Grouping - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-4-3-practice.xlsx",
+       "name": "4.3 Grouping - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-4-3-solution.xlsx",
+       "name": "4.3 Grouping - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-4-3-real.xlsx",
+       "name": "4.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Dates into months, quarters and years"
+      ],
+      [
+       0,
+       1,
+       "Excel’s quarters aren’t India’s"
+      ],
+      [
+       0,
+       2,
+       "The FY quarter, step by step"
+      ],
+      [
+       1,
+       0,
+       "Numbers into bands"
+      ],
+      [
+       1,
+       1,
+       "Text items into your own groups"
+      ],
+      [
+       1,
+       2,
+       "“Cannot group that selection”"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-4-4",
+     "num": "4.4",
+     "title": "Slicers, timelines and calculated fields",
+     "summary": "Filter buttons anyone can click, a date slider, one slicer driving several PivotTables, and calculated fields, which work on totals: a ratio of sums.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Add slicers and a timeline, and connect one slicer to several PivotTables.",
+      "Explain what a slicer does as a filter condition.",
+      "Add a calculated field such as AvgPrice = Amount/Qty.",
+      "Explain why a calculated field gives a ratio of sums, not an average of ratios."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-4-4-notes.docx",
+       "name": "4.4 Slicers, timelines and calculated fields - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-4-4-practice.xlsx",
+       "name": "4.4 Slicers, timelines and calculated fields - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-4-4-solution.xlsx",
+       "name": "4.4 Slicers, timelines and calculated fields - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-4-4-real.xlsx",
+       "name": "4.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Slicers: filter buttons"
+      ],
+      [
+       0,
+       1,
+       "Timelines: slide through dates"
+      ],
+      [
+       0,
+       2,
+       "One slicer, several PivotTables"
+      ],
+      [
+       1,
+       0,
+       "A field made from other fields"
+      ],
+      [
+       1,
+       1,
+       "It calculates on the totals"
+      ],
+      [
+       1,
+       2,
+       "When to use something else"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-4-5",
+     "num": "4.5",
+     "title": "GETPIVOTDATA, GROUPBY and PIVOTBY",
+     "summary": "Formulas that read a PivotTable by its labels, and the new formula PivotTables: GROUPBY and PIVOTBY, which update instantly with no refresh.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Read a value from a PivotTable with GETPIVOTDATA, and say why it beats a plain cell reference.",
+      "Summarise with GROUPBY: one formula, sorted, filtered, with totals.",
+      "Cross-tabulate with PIVOTBY.",
+      "Choose between a PivotTable and GROUPBY/PIVOTBY."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-4-5-notes.docx",
+       "name": "4.5 GETPIVOTDATA, GROUPBY and PIVOTBY - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-4-5-practice.xlsx",
+       "name": "4.5 GETPIVOTDATA, GROUPBY and PIVOTBY - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-4-5-solution.xlsx",
+       "name": "4.5 GETPIVOTDATA, GROUPBY and PIVOTBY - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-4-5-real.xlsx",
+       "name": "4.5 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Click a PivotTable cell inside a formula"
+      ],
+      [
+       0,
+       1,
+       "Why it beats =B7"
+      ],
+      [
+       0,
+       2,
+       "PivotTable or formulas?"
+      ],
+      [
+       1,
+       0,
+       "GROUPBY: a summary in one formula"
+      ],
+      [
+       1,
+       1,
+       "Sort, filter and share"
+      ],
+      [
+       1,
+       2,
+       "PIVOTBY: rows and columns"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Analysis techniques",
+   "summary": "Describing data with averages, medians and percentiles, distributions and histograms, rankings and Pareto (ABC) segments, and change over time: growth, moving averages and variance against budget.",
+   "free": false,
+   "testInfo": "Averages and spread, distributions, rankings and Pareto, growth and variance",
+   "lessons": [
+    {
+     "id": "p1-5-1",
+     "num": "5.1",
+     "title": "Describing data",
+     "summary": "The three averages and when each misleads, trimming extremes, percentiles and quartiles, the middle half, and a simple rule for spotting outliers.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Choose between the mean, the median and the mode.",
+      "Explain how a few extreme values pull the mean, and use TRIMMEAN.",
+      "Describe spread with percentiles, quartiles and the interquartile range (IQR).",
+      "Flag outliers with the 1.5 × IQR rule, and decide what to do with them."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-5-1-notes.docx",
+       "name": "5.1 Describing data - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-5-1-practice.xlsx",
+       "name": "5.1 Describing data - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-5-1-solution.xlsx",
+       "name": "5.1 Describing data - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Three kinds of average"
+      ],
+      [
+       0,
+       1,
+       "When the mean misleads"
+      ],
+      [
+       0,
+       2,
+       "Trim the extremes"
+      ],
+      [
+       1,
+       0,
+       "Percentiles: where a value stands"
+      ],
+      [
+       1,
+       1,
+       "Quartiles and the middle half"
+      ],
+      [
+       1,
+       2,
+       "Spotting outliers"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-5-2",
+     "num": "5.2",
+     "title": "Distributions",
+     "summary": "The shape of the data: counting values into bins with FREQUENCY and COUNTIFS, percentages and cumulative percentages, skew, and Excel’s histogram chart.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Count values into bins with FREQUENCY and with COUNTIFS.",
+      "Turn counts into percentages and cumulative percentages.",
+      "Read a distribution’s shape: symmetric or skewed, and what SKEW says.",
+      "Make a histogram chart in Excel."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-5-2-notes.docx",
+       "name": "5.2 Distributions - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-5-2-practice.xlsx",
+       "name": "5.2 Distributions - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-5-2-solution.xlsx",
+       "name": "5.2 Distributions - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A histogram shows the shape"
+      ],
+      [
+       0,
+       1,
+       "FREQUENCY counts into bins"
+      ],
+      [
+       0,
+       2,
+       "COUNTIFS for any band"
+      ],
+      [
+       1,
+       0,
+       "Skewed right: a long tail of big values"
+      ],
+      [
+       1,
+       1,
+       "Percent and cumulative percent"
+      ],
+      [
+       1,
+       2,
+       "Excel’s histogram chart"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-5-3",
+     "num": "5.3",
+     "title": "Rankings and segments",
+     "summary": "Ranking with RANK.EQ, LARGE and SMALL, top-N lists that update themselves, and Pareto (ABC) segments: which customers or products bring most of the revenue.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Rank values with RANK.EQ, and pick the Nth largest with LARGE and SMALL.",
+      "Build a top-N list with TAKE and SORTBY.",
+      "Work out a cumulative share of revenue and test the 80/20 idea.",
+      "Classify customers or products into A, B and C segments."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-5-3-notes.docx",
+       "name": "5.3 Rankings and segments - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-5-3-practice.xlsx",
+       "name": "5.3 Rankings and segments - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-5-3-solution.xlsx",
+       "name": "5.3 Rankings and segments - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-5-3-real.xlsx",
+       "name": "5.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "RANK.EQ: who’s first?"
+      ],
+      [
+       0,
+       1,
+       "LARGE, SMALL and the top N"
+      ],
+      [
+       0,
+       2,
+       "Top-N lists that update"
+      ],
+      [
+       1,
+       0,
+       "Is it 80/20?"
+      ],
+      [
+       1,
+       1,
+       "Cumulative share"
+      ],
+      [
+       1,
+       2,
+       "ABC classes"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-5-4",
+     "num": "5.4",
+     "title": "Change over time",
+     "summary": "Month-on-month and year-on-year growth, why festivals moving between months mislead, year to date, moving averages, and variance against budget.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Work out month-on-month (MoM) and year-on-year (YoY) growth.",
+      "Explain how moving festivals distort monthly comparisons, and compare fairly.",
+      "Smooth a trend with a moving average.",
+      "Report variance against budget in rupees and percent, and flag misses."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-5-4-notes.docx",
+       "name": "5.4 Change over time - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-5-4-practice.xlsx",
+       "name": "5.4 Change over time - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-5-4-solution.xlsx",
+       "name": "5.4 Change over time - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "MoM and YoY"
+      ],
+      [
+       0,
+       1,
+       "Festivals move"
+      ],
+      [
+       0,
+       2,
+       "Year to date"
+      ],
+      [
+       1,
+       0,
+       "Moving averages smooth the noise"
+      ],
+      [
+       1,
+       1,
+       "Variance against budget"
+      ],
+      [
+       1,
+       2,
+       "Flag what needs a look"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "What-if and forecasting",
+   "summary": "Goal Seek and Scenario Manager, data tables, Solver basics, and forecasting with FORECAST.LINEAR, a seasonal index, FORECAST.ETS and the Forecast Sheet.",
+   "free": false,
+   "testInfo": "Goal Seek and scenarios, data tables, Solver and forecasting",
+   "lessons": [
+    {
+     "id": "p1-6-1",
+     "num": "6.1",
+     "title": "Goal Seek and Scenario Manager",
+     "summary": "Building a model with inputs and outputs, working backwards to a target with Goal Seek, break-even, and comparing whole sets of inputs with Scenario Manager and a scenario switch.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Lay out a model: inputs in one place, outputs as formulas that point at them.",
+      "Use Goal Seek to find the input that gives a target, and check it with algebra.",
+      "Work out a break-even point.",
+      "Compare worst, base and best cases with Scenario Manager or an XLOOKUP scenario switch."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-6-1-notes.docx",
+       "name": "6.1 Goal Seek and Scenario Manager - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-6-1-practice.xlsx",
+       "name": "6.1 Goal Seek and Scenario Manager - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-6-1-solution.xlsx",
+       "name": "6.1 Goal Seek and Scenario Manager - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-6-1-real.xlsx",
+       "name": "6.1 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A model: inputs in, answers out"
+      ],
+      [
+       0,
+       1,
+       "Goal Seek: work backwards"
+      ],
+      [
+       0,
+       2,
+       "Break-even"
+      ],
+      [
+       1,
+       0,
+       "Worst, base and best"
+      ],
+      [
+       1,
+       1,
+       "Scenario Manager"
+      ],
+      [
+       1,
+       2,
+       "A scenario switch"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-6-2",
+     "num": "6.2",
+     "title": "Data tables",
+     "summary": "Sensitivity: how an answer changes as one or two inputs change. One- and two-variable data tables in Excel, the same grid with mixed references, and reading the grid for break-even points.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Explain sensitivity analysis: which inputs the answer is most sensitive to.",
+      "Build a two-way grid of results with mixed references ($B10 and B$10).",
+      "Make one- and two-variable data tables with Data › What-If Analysis › Data Table.",
+      "Read a grid for break-even points with XLOOKUP and a colour scale."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-6-2-notes.docx",
+       "name": "6.2 Data tables - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-6-2-practice.xlsx",
+       "name": "6.2 Data tables - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-6-2-solution.xlsx",
+       "name": "6.2 Data tables - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-6-2-real.xlsx",
+       "name": "6.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "How sensitive is the answer?"
+      ],
+      [
+       0,
+       1,
+       "The same grid with mixed references"
+      ],
+      [
+       0,
+       2,
+       "Find the edge with XLOOKUP"
+      ],
+      [
+       1,
+       0,
+       "A two-variable data table"
+      ],
+      [
+       1,
+       1,
+       "One variable, many outputs"
+      ],
+      [
+       1,
+       2,
+       "Rules and quirks"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-6-3",
+     "num": "6.3",
+     "title": "Solver basics",
+     "summary": "When Goal Seek isn’t enough: Solver changes several inputs at once to find the best answer within limits. A product-mix problem, constraints, and reading what Solver tells you.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Recognise an optimisation problem: a goal, decisions and limits.",
+      "Lay one out on a sheet with SUMPRODUCT: the objective, the decision cells and the constraints.",
+      "Set up and run Solver: objective, variable cells, constraints and a solving method.",
+      "Read the answer: binding constraints, spare capacity and the value of one more unit (shadow price)."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-6-3-notes.docx",
+       "name": "6.3 Solver basics - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-6-3-practice.xlsx",
+       "name": "6.3 Solver basics - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-6-3-solution.xlsx",
+       "name": "6.3 Solver basics - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-6-3-real.xlsx",
+       "name": "6.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Goal, decisions, limits"
+      ],
+      [
+       0,
+       1,
+       "Lay it out with SUMPRODUCT"
+      ],
+      [
+       0,
+       2,
+       "Setting up Solver"
+      ],
+      [
+       1,
+       0,
+       "Solver’s answer"
+      ],
+      [
+       1,
+       1,
+       "Binding constraints and spare capacity"
+      ],
+      [
+       1,
+       2,
+       "What is one more hour worth?"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-6-4",
+     "num": "6.4",
+     "title": "Forecasting",
+     "summary": "Trend, season and noise; straight-line forecasts with FORECAST.LINEAR and TREND; a seasonal index for a seasonal business; FORECAST.ETS and the Forecast Sheet; and why every forecast is a range.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Split a series into trend, season and noise.",
+      "Make a straight-line forecast with FORECAST.LINEAR, and say when it misleads.",
+      "Build a seasonal index, forecast the trend, and put the season back.",
+      "Use FORECAST.ETS and the Forecast Sheet, and plan with a range, not one number."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-6-4-notes.docx",
+       "name": "6.4 Forecasting - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-6-4-practice.xlsx",
+       "name": "6.4 Forecasting - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-6-4-solution.xlsx",
+       "name": "6.4 Forecasting - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-6-4-real.xlsx",
+       "name": "6.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Trend, season and noise"
+      ],
+      [
+       0,
+       1,
+       "A straight line: FORECAST.LINEAR"
+      ],
+      [
+       0,
+       2,
+       "Seasonal index: take the season out"
+      ],
+      [
+       1,
+       0,
+       "Forecast the trend, put the season back"
+      ],
+      [
+       1,
+       1,
+       "FORECAST.ETS and the Forecast Sheet"
+      ],
+      [
+       1,
+       2,
+       "Every forecast is a range"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Statistics for decisions",
+   "summary": "Correlation and its traps, regression with SLOPE, LINEST and the Analysis ToolPak, comparing groups with T.TEST and confidence intervals, and honest conclusions from a test-and-control campaign.",
+   "free": false,
+   "testInfo": "Correlation, regression, T.TEST and confidence intervals, and difference in differences",
+   "lessons": [
+    {
+     "id": "p1-7-1",
+     "num": "7.1",
+     "title": "Correlation and its traps",
+     "summary": "Scatter plots, the correlation coefficient (CORREL), R squared, and the traps: a third factor behind both, correlation without causation, outliers, and relationships that aren’t straight lines.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Read a scatter plot before you calculate anything.",
+      "Measure a straight-line relationship with CORREL and RSQ, and say what the numbers mean.",
+      "Check whether a third factor (like a festival) drives both.",
+      "Explain why correlation doesn’t prove cause, and what would."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-7-1-notes.docx",
+       "name": "7.1 Correlation and its traps - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-7-1-practice.xlsx",
+       "name": "7.1 Correlation and its traps - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-7-1-solution.xlsx",
+       "name": "7.1 Correlation and its traps - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Look first: a scatter plot"
+      ],
+      [
+       0,
+       1,
+       "CORREL: one number from −1 to +1"
+      ],
+      [
+       0,
+       2,
+       "R squared"
+      ],
+      [
+       1,
+       0,
+       "A third factor"
+      ],
+      [
+       1,
+       1,
+       "Correlation isn’t cause"
+      ],
+      [
+       1,
+       2,
+       "Outliers and curves"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-7-2",
+     "num": "7.2",
+     "title": "Regression",
+     "summary": "Fitting a line: SLOPE, INTERCEPT and FORECAST.LINEAR; several causes at once with LINEST; reading the Analysis ToolPak’s regression output; and what a coefficient does and doesn’t tell you.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Fit a straight line with SLOPE and INTERCEPT, and predict with it.",
+      "Run a multiple regression with LINEST, and read its coefficients in the right order.",
+      "Run Regression in the Analysis ToolPak and read R², coefficients, t Stats and p-values.",
+      "Explain how leaving out a factor (like a festival) distorts a coefficient."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-7-2-notes.docx",
+       "name": "7.2 Regression - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-7-2-practice.xlsx",
+       "name": "7.2 Regression - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-7-2-solution.xlsx",
+       "name": "7.2 Regression - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-7-2-real.xlsx",
+       "name": "7.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The best-fit line"
+      ],
+      [
+       0,
+       1,
+       "Predict from the line"
+      ],
+      [
+       0,
+       2,
+       "A coefficient can mislead"
+      ],
+      [
+       1,
+       0,
+       "LINEST: more than one x"
+      ],
+      [
+       1,
+       1,
+       "Reading LINEST"
+      ],
+      [
+       1,
+       2,
+       "The Analysis ToolPak"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p1-7-3",
+     "num": "7.3",
+     "title": "Comparing groups",
+     "summary": "An A/B test of a new product page: means and spread, the margin of error with CONFIDENCE.T, T.TEST and what a p-value does and doesn’t mean, choosing the right test, and sample size.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Compare two groups by mean and spread.",
+      "Put a 95% range around a mean with CONFIDENCE.T.",
+      "Run T.TEST and read the p-value correctly.",
+      "Choose the test type (paired, equal or unequal variances) and know why sample size matters."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-7-3-notes.docx",
+       "name": "7.3 Comparing groups - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-7-3-practice.xlsx",
+       "name": "7.3 Comparing groups - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-7-3-solution.xlsx",
+       "name": "7.3 Comparing groups - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "An A/B test"
+      ],
+      [
+       0,
+       1,
+       "Margin of error"
+      ],
+      [
+       0,
+       2,
+       "T.TEST and the p-value"
+      ],
+      [
+       1,
+       0,
+       "Which T.TEST type?"
+      ],
+      [
+       1,
+       1,
+       "Sample size"
+      ],
+      [
+       1,
+       2,
+       "What a test can’t tell you"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-7-4",
+     "num": "7.4",
+     "title": "Honest conclusions",
+     "summary": "Did the campaign work? Before-and-after versus a control group, difference in differences, testing the lift, turning it into rupees, statistical versus practical significance, and writing a conclusion that says what the data can’t show.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Explain why a before-and-after comparison misleads, and use a control group instead.",
+      "Work out a lift with difference in differences, and test it with T.TEST.",
+      "Turn a lift into extra revenue and profit, and compare it with the cost.",
+      "Write a conclusion that separates what the data shows from what it can’t."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-7-4-notes.docx",
+       "name": "7.4 Honest conclusions - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-7-4-practice.xlsx",
+       "name": "7.4 Honest conclusions - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-7-4-solution.xlsx",
+       "name": "7.4 Honest conclusions - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-7-4-real.xlsx",
+       "name": "7.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Before and after isn’t enough"
+      ],
+      [
+       0,
+       1,
+       "Difference in differences"
+      ],
+      [
+       0,
+       2,
+       "Could the lift be luck?"
+      ],
+      [
+       1,
+       0,
+       "Significant isn’t the same as worth it"
+      ],
+      [
+       1,
+       1,
+       "What the data can’t show"
+      ],
+      [
+       1,
+       2,
+       "Write the conclusion"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Reusable logic: LET and LAMBDA",
+   "summary": "LET to name the parts of a formula, LAMBDA to make your own functions, the helper functions MAP, REDUCE, SCAN, BYROW, BYCOL and MAKEARRAY, and a tested personal function library.",
+   "free": false,
+   "testInfo": "LET, LAMBDA, the helper functions and a function library",
+   "lessons": [
+    {
+     "id": "p1-8-1",
+     "num": "8.1",
+     "title": "LET: name the parts of a formula",
+     "summary": "Why long formulas repeat themselves, LET’s name-value pairs, how Excel reads a LET, LET with arrays, and debugging a LET one name at a time.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Spot a formula that works the same thing out more than once.",
+      "Rewrite it with LET: name, value, …, then the answer.",
+      "Use LET with FILTER, SORTBY and TAKE to keep spilled formulas readable.",
+      "Debug a LET by returning one of its names."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-8-1-notes.docx",
+       "name": "8.1 LET: name the parts of a formula - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-8-1-practice.xlsx",
+       "name": "8.1 LET: name the parts of a formula - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-8-1-solution.xlsx",
+       "name": "8.1 LET: name the parts of a formula - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The same piece, three times"
+      ],
+      [
+       0,
+       1,
+       "LET: name, value, …, answer"
+      ],
+      [
+       0,
+       2,
+       "How Excel reads a LET"
+      ],
+      [
+       1,
+       0,
+       "Readable spilled formulas"
+      ],
+      [
+       1,
+       1,
+       "Debug one name at a time"
+      ],
+      [
+       1,
+       2,
+       "Good names"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-8-2",
+     "num": "8.2",
+     "title": "LAMBDA: your own functions",
+     "summary": "Turning a formula into a function with LAMBDA, testing it in a cell, saving it in Name Manager, using it like a built-in, and where named LAMBDAs work.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain when a formula deserves to become a function.",
+      "Write a LAMBDA with parameters and a calculation, and test it by calling it in a cell.",
+      "Save a LAMBDA in Name Manager and use it like any Excel function.",
+      "Know where named LAMBDAs live and who can use them."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-8-2-notes.docx",
+       "name": "8.2 LAMBDA: your own functions - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-8-2-practice.xlsx",
+       "name": "8.2 LAMBDA: your own functions - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-8-2-solution.xlsx",
+       "name": "8.2 LAMBDA: your own functions - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "When a formula deserves a name"
+      ],
+      [
+       0,
+       1,
+       "Parameters, then the calculation"
+      ],
+      [
+       0,
+       2,
+       "Test it in a cell first"
+      ],
+      [
+       1,
+       0,
+       "Save it in Name Manager"
+      ],
+      [
+       1,
+       1,
+       "Use it like a built-in"
+      ],
+      [
+       1,
+       2,
+       "Where named LAMBDAs work"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-8-3",
+     "num": "8.3",
+     "title": "MAP, REDUCE and friends",
+     "summary": "The functions that take a LAMBDA: MAP for each value, BYROW and BYCOL for each row or column, REDUCE to boil a list down, SCAN for running results, and MAKEARRAY to build a grid.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Use MAP to apply a calculation to every value of one or more arrays.",
+      "Use BYROW and BYCOL for one result per row or column.",
+      "Use REDUCE for one answer and SCAN for a running answer.",
+      "Build a grid from its row and column numbers with MAKEARRAY."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-8-3-notes.docx",
+       "name": "8.3 MAP, REDUCE and friends - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-8-3-practice.xlsx",
+       "name": "8.3 MAP, REDUCE and friends - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-8-3-solution.xlsx",
+       "name": "8.3 MAP, REDUCE and friends - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Functions that take a LAMBDA"
+      ],
+      [
+       0,
+       1,
+       "BYROW and BYCOL"
+      ],
+      [
+       0,
+       2,
+       "MAP: each value"
+      ],
+      [
+       1,
+       0,
+       "REDUCE: boil it down"
+      ],
+      [
+       1,
+       1,
+       "SCAN: every step"
+      ],
+      [
+       1,
+       2,
+       "MAKEARRAY: build a grid"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p1-8-4",
+     "num": "8.4",
+     "title": "A personal function library",
+     "summary": "Collecting your LAMBDAs into a tested library: what deserves a function, naming and documenting, a test table, building functions on each other, sharing the library, and when not to use LAMBDA.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Choose which calculations belong in a library.",
+      "Name, document and test each function with known answers.",
+      "Build functions from other functions.",
+      "Share a library safely, and know when plain formulas are better."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p1-p1-8-4-notes.docx",
+       "name": "8.4 A personal function library - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p1-p1-8-4-practice.xlsx",
+       "name": "8.4 A personal function library - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p1-p1-8-4-solution.xlsx",
+       "name": "8.4 A personal function library - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p1-p1-8-4-real.xlsx",
+       "name": "8.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "What goes in a library"
+      ],
+      [
+       0,
+       1,
+       "Name it, document it"
+      ],
+      [
+       0,
+       2,
+       "Test every function"
+      ],
+      [
+       1,
+       0,
+       "Functions built from functions"
+      ],
+      [
+       1,
+       1,
+       "Share your library"
+      ],
+      [
+       1,
+       2,
+       "When not to use LAMBDA"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  }
+ ],
+ "upcoming": [],
+ "project": {
+  "title": "A year-end analysis for a D2C brand",
+  "brief": "About 20,000 messy order lines across 12 months, with customer and product tables: clean and combine them, summarise with PivotTables, find what drives revenue, test whether the loyalty programme and the festive campaign made a difference, forecast the next quarter, and answer ten questions on a findings sheet.",
+  "coming": false
+ },
+ "exam": {
+  "questions": 40,
+  "tasks": 6,
+  "minutes": 90,
+  "pass": 75,
+  "attempts": 3,
+  "gapHours": 48,
+  "coming": false
+ },
+ "downloads": [
+  {
+   "label": "Course handbook",
+   "file": "a/p1-handbook.docx",
+   "name": "Sheetah P1 handbook.docx"
+  },
+  {
+   "label": "Cheat sheet",
+   "file": "a/p1-cheatsheet.docx",
+   "name": "Sheetah P1 cheat sheet.docx"
+  }
+ ]
+}

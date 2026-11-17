@@ -1,0 +1,2056 @@
+{
+ "id": "p4",
+ "code": "P4",
+ "title": "Business Operations & Productivity",
+ "level": "Specialist",
+ "hours": 23,
+ "summary": "P4 builds the workbooks that run a business day to day: forms, trackers, rosters and schedules, stock, sales and invoices, attendance and payroll, made so other people can use them without breaking them.",
+ "prereq": "Builds on C1 · Excel Foundations and C2 · Formulas & Functions (lookups, dates, COUNTIFS and SUMIFS). P2’s conditional formatting helps in Modules 2 and 3.",
+ "outcomes": [
+  "Design workbooks other people can fill in without breaking: clear inputs, validation, protection and templates.",
+  "Plan with working calendars, rotating shift rosters, project schedules and Gantt charts.",
+  "Build trackers and logs that flag what’s overdue and summarise status at a glance.",
+  "Run stock: ledgers, reorder points, ABC analysis and stock valuation.",
+  "Handle orders and invoices: price lookups, GST, commission slabs and receivables ageing.",
+  "Keep people records: the employee master, attendance, leave balances and attrition.",
+  "Prepare payroll from attendance: salary structures, example deductions, payslips and the register.",
+  "Share, collect, print and hand over workbooks so they keep working."
+ ],
+ "modules": [
+  {
+   "n": 1,
+   "title": "Workbooks people can’t break",
+   "summary": "Designing for other users, validation that guides (dependent lists and custom rules), protection that works, and templates and logs.",
+   "free": true,
+   "testInfo": "Form design, validation, protection and templates",
+   "lessons": [
+    {
+     "id": "p4-1-1",
+     "num": "1.1",
+     "title": "Designing for other people",
+     "summary": "A workbook other people fill in is a small product. Give it one place to type, labels that say the unit, rules kept in cells, and checks that tell the user what’s missing.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Separate inputs, calculations and outputs, and colour-code them so users know where to type.",
+      "Put units in labels and rules in cells, never inside formulas.",
+      "Flag missing fields with IF and COUNTBLANK, and show a status line.",
+      "Test a form the way a user will, including wrong entries."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p4-p4-1-1-notes.docx",
+       "name": "1.1 Designing for other people - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p4-p4-1-1-practice.xlsx",
+       "name": "1.1 Designing for other people - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p4-p4-1-1-solution.xlsx",
+       "name": "1.1 Designing for other people - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A workbook is a product"
+      ],
+      [
+       0,
+       1,
+       "Inputs, calculations, outputs"
+      ],
+      [
+       0,
+       2,
+       "Labels that remove guesswork"
+      ],
+      [
+       1,
+       0,
+       "Flag what’s missing"
+      ],
+      [
+       1,
+       1,
+       "Rules live in cells"
+      ],
+      [
+       1,
+       2,
+       "Test it like a user"
+      ]
+     ],
+     "tasks": [
+      "In C3:C10, show Required beside any input that is empty, and nothing beside the others.",
+      "In B12, the order value: quantity × unit price.",
+      "In B13, who approves: Director if the order value is above the limit in E4, otherwise Mana",
+      "In B14, the days until needed: from the request date to the needed-by date.",
+      "In B15, the status: Ready to send if none of B3:B10 is empty, otherwise Missing 1 field(s)",
+      "Fill in the missing input: the supplier is Shree Polymers.",
+      "Someone types 1,200 pcs into B8 instead of 1200. What does the order value in B12 show?"
+     ],
+     "real": false
+    },
+    {
+     "id": "p4-1-2",
+     "num": "1.2",
+     "title": "Validation that guides",
+     "summary": "Data validation stops bad entries at the door: drop-down lists from named ranges, dependent lists with INDIRECT, custom rules for duplicates and limits, and messages that tell people what’s allowed.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Make drop-down lists from a named range on a Lists sheet.",
+      "Build a dependent drop-down with INDIRECT, so the item list follows the category.",
+      "Write custom rules (no duplicates, whole numbers in a range, dates in a window) and test them in a helper column first.",
+      "Choose input messages and Stop, Warning or Information alerts, and know what validation can’t catch."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p4-p4-1-2-notes.docx",
+       "name": "1.2 Validation that guides - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p4-p4-1-2-practice.xlsx",
+       "name": "1.2 Validation that guides - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p4-p4-1-2-solution.xlsx",
+       "name": "1.2 Validation that guides - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Stop bad data at the door"
+      ],
+      [
+       0,
+       1,
+       "A list from a named range"
+      ],
+      [
+       0,
+       2,
+       "Dependent drop-downs"
+      ],
+      [
+       1,
+       0,
+       "Custom rules"
+      ],
+      [
+       1,
+       1,
+       "Messages before and after"
+      ],
+      [
+       1,
+       2,
+       "Stop, Warning or Information"
+      ],
+      [
+       1,
+       3,
+       "What validation can’t catch"
+      ]
+     ],
+     "tasks": [
+      "Give B15 a drop-down of the categories, using the name Categories as the Source.",
+      "Pick Gloves in B15.",
+      "Give C15 a drop-down of the items in the category picked in B15.",
+      "Test the no duplicates rule in F4:F13: TRUE when the row’s order number appears only once ",
+      "Test the quantity rule in G4:G13: TRUE when the quantity is a whole number from 1 to MaxQt",
+      "Test the date rule in H4:H13: TRUE when the order date is from DateFrom to DateTo.",
+      "Farah wants orders above 500 to need a second thought, but still be allowed. Which Error A"
+     ],
+     "real": false
+    },
+    {
+     "id": "p4-1-3",
+     "num": "1.3",
+     "title": "Protection that works",
+     "summary": "Lock everything but the inputs, hide formulas you don’t want edited, let people sort and filter, give different people different cells, and know what protection can’t do.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Unlock the input cells and protect the sheet, choosing what people may still do.",
+      "Hide formulas from the formula bar, and protect the workbook’s structure.",
+      "Use Allow Edit Ranges to give different people different cells.",
+      "Avoid the gotchas: Tables on protected sheets, sorting and filtering, and protection that isn’t security."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p4-p4-1-3-notes.docx",
+       "name": "1.3 Protection that works - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p4-p4-1-3-practice.xlsx",
+       "name": "1.3 Protection that works - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p4-p4-1-3-solution.xlsx",
+       "name": "1.3 Protection that works - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "a/p4-p4-1-3-real.xlsx",
+       "name": "1.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Lock everything, open the inputs"
+      ],
+      [
+       0,
+       1,
+       "Hide the working"
+      ],
+      [
+       0,
+       2,
+       "What people may still do"
+      ],
+      [
+       1,
+       0,
+       "Different people, different cells"
+      ],
+      [
+       1,
+       1,
+       "The gotchas"
+      ],
+      [
+       1,
+       2,
+       "The workbook and the file"
+      ]
+     ],
+     "tasks": [
+      "Select the cells Ganesh’s team must be able to type in, ready to unlock them.",
+      "In Format Cells, click the setting that hides a cell’s formula from the formula bar once t",
+      "In Protect Sheet, click the option that lets people filter the protected sheet.",
+      "Put the steps in order to give Farah her own password for the approval limit in E4.",
+      "Ganesh’s request log is an Excel Table on a protected sheet. He types a new request in the",
+      "A price list goes to the wrong customer by email. Which protection would have kept them ou"
+     ],
+     "real": true
+    },
+    {
+     "id": "p4-1-4",
+     "num": "1.4",
+     "title": "Templates and logs",
+     "summary": "A form is filled in many times; a log collects every record in one list. Save forms as templates, keep logs as Tables with one row per record, and summarise them with COUNTIF, SUMIFS and AVERAGE.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Keep a log as a Table: one row per record, no blank rows, summaries off to the side.",
+      "Make IDs with TEXT, freeze them as values, and work out days between dates with IF for blanks.",
+      "Summarise a log with COUNTIF, SUMIFS and AVERAGE.",
+      "Save a form as a template (.xltx) and decide between a template and a shared log."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p4-p4-1-4-notes.docx",
+       "name": "1.4 Templates and logs - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p4-p4-1-4-practice.xlsx",
+       "name": "1.4 Templates and logs - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p4-p4-1-4-solution.xlsx",
+       "name": "1.4 Templates and logs - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A log is a list"
+      ],
+      [
+       0,
+       1,
+       "IDs and dates that don’t change"
+      ],
+      [
+       0,
+       2,
+       "Summarise the log"
+      ],
+      [
+       1,
+       0,
+       "A fresh copy every time"
+      ],
+      [
+       1,
+       1,
+       "What goes in a good template"
+      ],
+      [
+       1,
+       2,
+       "Template or shared log?"
+      ]
+     ],
+     "tasks": [
+      "In A2:A13, make request IDs from the row number: PR-001 in row 2, PR-002 in row 3, and so ",
+      "In H2:H13, the days to decide: Decided on − Raised on, or blank if there’s no decision yet",
+      "In K2, how many requests are Open.",
+      "In K3, the total value of the Approved requests.",
+      "In K4, the average days to decide, for requests that have a decision.",
+      "Put the steps in order to turn the finished purchase request form into a template.",
+      "Why keep the log as an Excel Table?"
+     ],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Calendars, rosters and schedules",
+   "summary": "Working days with WORKDAY.INTL and a holiday list, rotating shift rosters, project schedules with dependencies, and Gantt charts.",
+   "free": false,
+   "testInfo": "Working days, rosters, schedules and Gantt charts",
+   "lessons": [
+    {
+     "id": "p4-2-1",
+     "num": "2.1",
+     "title": "Working calendars",
+     "summary": "Customers count calendar days; factories count working days. WORKDAY.INTL and NETWORKDAYS.INTL skip your weekly off and a named holiday list, so promises and counts match the real calendar.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Add working days to a date with WORKDAY.INTL, skipping the weekly off and a holiday list.",
+      "Choose the weekend argument: 1 for Saturday and Sunday, 11 for Sunday only, or a seven-character pattern.",
+      "Count working days between dates with NETWORKDAYS.INTL.",
+      "Flag late dispatches and work out an on-time rate."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-2-1-notes.docx",
+       "name": "2.1 Working calendars - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-2-1-practice.xlsx",
+       "name": "2.1 Working calendars - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-2-1-solution.xlsx",
+       "name": "2.1 Working calendars - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Calendar days and working days"
+      ],
+      [
+       0,
+       1,
+       "The weekend argument"
+      ],
+      [
+       0,
+       2,
+       "A holiday list with a name"
+      ],
+      [
+       1,
+       0,
+       "Promised dates and late flags"
+      ],
+      [
+       1,
+       1,
+       "Counting working days"
+      ],
+      [
+       1,
+       2,
+       "Counting backwards"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-2-2",
+     "num": "2.2",
+     "title": "Shift rosters",
+     "summary": "A roster is a calendar with a rule. Build the dates once with SEQUENCE, then let MOD rotate three teams through morning, evening and night shifts, with Sundays off and a check that every night is covered.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Build a row of dates with SEQUENCE, with day names (TEXT) and week numbers.",
+      "Rotate teams through shifts with MOD and INDEX, giving each team an offset.",
+      "Mark the weekly off with WEEKDAY.",
+      "Check cover and fairness with COUNTIF."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-2-2-notes.docx",
+       "name": "2.2 Shift rosters - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-2-2-practice.xlsx",
+       "name": "2.2 Shift rosters - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-2-2-solution.xlsx",
+       "name": "2.2 Shift rosters - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A row of dates in one formula"
+      ],
+      [
+       0,
+       1,
+       "Day names and week numbers"
+      ],
+      [
+       1,
+       0,
+       "Rotation with MOD"
+      ],
+      [
+       1,
+       1,
+       "The weekly off and the checks"
+      ],
+      [
+       1,
+       2,
+       "Fair over the cycle"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-2-3",
+     "num": "2.3",
+     "title": "Project schedules",
+     "summary": "A schedule is a list of tasks, each with a duration in working days and the task it waits for. Finish dates come from WORKDAY.INTL, start dates from the task before, so when one task slips every later date moves by itself.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Lay out a schedule: ID, task, working days, the task it follows, start and finish.",
+      "Work out finish dates with WORKDAY.INTL (days − 1), with milestones of 0 days.",
+      "Link each start to the finish of the task before with XLOOKUP, looking only above to avoid circular references.",
+      "See the effect of a slip, and handle tasks that wait for two others."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-2-3-notes.docx",
+       "name": "2.3 Project schedules - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-2-3-practice.xlsx",
+       "name": "2.3 Project schedules - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-2-3-solution.xlsx",
+       "name": "2.3 Project schedules - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p4-p4-2-3-real.xlsx",
+       "name": "2.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A schedule is a list"
+      ],
+      [
+       0,
+       1,
+       "Finish from start"
+      ],
+      [
+       0,
+       2,
+       "Start from the task before"
+      ],
+      [
+       1,
+       0,
+       "When one task slips"
+      ],
+      [
+       1,
+       1,
+       "Waiting for two tasks"
+      ],
+      [
+       1,
+       2,
+       "The critical path"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p4-2-4",
+     "num": "2.4",
+     "title": "Gantt charts",
+     "summary": "A Gantt chart shows a schedule as bars on a calendar. Build it on the sheet with a SEQUENCE date row and one conditional formatting rule, add a status-date line, or draw it as a stacked bar chart for slides.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Lay out a Gantt grid: tasks down, a SEQUENCE row of dates across.",
+      "Draw the bars with a formula rule, =AND(E$4>=$B5,E$4<=$C5), locking the right row and columns.",
+      "Add a status-date line and shade the weekly off, and order the rules.",
+      "Make a Gantt as a stacked bar chart, and choose between the two."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-2-4-notes.docx",
+       "name": "2.4 Gantt charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-2-4-practice.xlsx",
+       "name": "2.4 Gantt charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-2-4-solution.xlsx",
+       "name": "2.4 Gantt charts - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Bars on a calendar"
+      ],
+      [
+       0,
+       1,
+       "The bar rule"
+      ],
+      [
+       0,
+       2,
+       "Status line, weekly off and rule order"
+      ],
+      [
+       1,
+       0,
+       "A stacked bar chart"
+      ],
+      [
+       1,
+       1,
+       "Which Gantt to use"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Trackers",
+   "summary": "Task trackers with due dates and checkboxes, status at a glance with COUNTIFS and RAG colours, and request logs with ageing.",
+   "free": false,
+   "testInfo": "Task trackers, status summaries and request logs",
+   "lessons": [
+    {
+     "id": "p4-3-1",
+     "num": "3.1",
+     "title": "Task trackers",
+     "summary": "A tracker lists what has to be done, by whom and by when, and says by itself what’s late. Checkboxes hold TRUE and FALSE, a status formula reads the dates, and conditional formatting colours the rows that need attention.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Lay out a tracker: task, owner, due date, done, status.",
+      "Use checkboxes (TRUE or FALSE) in formulas.",
+      "Work out a status with nested IF or IFS from an as-of date, and the days late.",
+      "Colour whole rows with a formula rule, and summarise progress."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-3-1-notes.docx",
+       "name": "3.1 Task trackers - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-3-1-practice.xlsx",
+       "name": "3.1 Task trackers - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-3-1-solution.xlsx",
+       "name": "3.1 Task trackers - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Three questions a tracker answers"
+      ],
+      [
+       0,
+       1,
+       "Checkboxes are TRUE and FALSE"
+      ],
+      [
+       0,
+       2,
+       "A status that writes itself"
+      ],
+      [
+       1,
+       0,
+       "Today, or an as-of date?"
+      ],
+      [
+       1,
+       1,
+       "Colour the whole row"
+      ],
+      [
+       1,
+       2,
+       "Progress in numbers"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-3-2",
+     "num": "3.2",
+     "title": "Status at a glance",
+     "summary": "A manager reads a summary, not 12 rows. Count statuses by owner with COUNTIFS, turn the counts into a red, amber or green rating, and keep a live list of what’s late with FILTER.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Build an owner-by-status matrix with one COUNTIFS formula and mixed references.",
+      "Turn counts into a RAG rating with rules written down.",
+      "Show the share done per owner.",
+      "Keep a live list of overdue tasks with FILTER."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-3-2-notes.docx",
+       "name": "3.2 Status at a glance - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-3-2-practice.xlsx",
+       "name": "3.2 Status at a glance - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-3-2-solution.xlsx",
+       "name": "3.2 Status at a glance - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "From rows to a summary"
+      ],
+      [
+       0,
+       1,
+       "One COUNTIFS, mixed references"
+      ],
+      [
+       0,
+       2,
+       "Share done"
+      ],
+      [
+       1,
+       0,
+       "Red, amber, green"
+      ],
+      [
+       1,
+       1,
+       "A live list of what’s late"
+      ],
+      [
+       1,
+       2,
+       "A status page people read"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-3-3",
+     "num": "3.3",
+     "title": "Request logs and ageing",
+     "summary": "A request log records every job that comes in: when it was raised, how urgent it is, and when it was closed. Age, service levels and age bands turn the log into a list of what needs chasing.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Work out the age of open and closed requests from an as-of date.",
+      "Look up a service level (SLA) by priority, and flag requests past it.",
+      "Put open requests into age bands with an approximate XLOOKUP.",
+      "Summarise a log with COUNTIFS and MAXIFS on blank cells."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-3-3-notes.docx",
+       "name": "3.3 Request logs and ageing - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-3-3-practice.xlsx",
+       "name": "3.3 Request logs and ageing - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-3-3-solution.xlsx",
+       "name": "3.3 Request logs and ageing - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p4-p4-3-3-real.xlsx",
+       "name": "3.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A log that ages"
+      ],
+      [
+       0,
+       1,
+       "Service levels by priority"
+      ],
+      [
+       1,
+       0,
+       "Age bands with an approximate lookup"
+      ],
+      [
+       1,
+       1,
+       "Summaries on blanks"
+      ],
+      [
+       1,
+       2,
+       "Logs people keep up"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Stock and inventory",
+   "summary": "Item masters and stock ledgers, reorder points and safety stock, ABC analysis, and valuing and ageing stock.",
+   "free": false,
+   "testInfo": "Stock ledgers, reorder points, ABC analysis and stock valuation",
+   "lessons": [
+    {
+     "id": "p4-4-1",
+     "num": "4.1",
+     "title": "Item masters and stock ledgers",
+     "summary": "Stock is two lists: an item master that says what each item is, and a ledger that records every movement in and out. Balances are worked out from the ledger, never typed.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Keep an item master with a unique code per item, and look items up by code.",
+      "Record every movement in a ledger, with In and Out turned into signed quantities.",
+      "Work out a running balance per item with an expanding SUMIFS.",
+      "Work out stock now from the opening stock and the ledger."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-4-1-notes.docx",
+       "name": "4.1 Item masters and stock ledgers - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-4-1-practice.xlsx",
+       "name": "4.1 Item masters and stock ledgers - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-4-1-solution.xlsx",
+       "name": "4.1 Item masters and stock ledgers - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p4-p4-4-1-real.xlsx",
+       "name": "4.1 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The item master"
+      ],
+      [
+       0,
+       1,
+       "The ledger: every movement"
+      ],
+      [
+       0,
+       2,
+       "Signed quantities"
+      ],
+      [
+       1,
+       0,
+       "A running balance per item"
+      ],
+      [
+       1,
+       1,
+       "Nitrile gloves through May"
+      ],
+      [
+       1,
+       2,
+       "Stock now, for every item"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p4-4-2",
+     "num": "4.2",
+     "title": "Reorder points and safety stock",
+     "summary": "Order too late and the shelves run empty; order too early and cash sits in the store. The reorder point says when to order: enough stock to last the supplier’s lead time, plus a safety buffer.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Work out safety stock from average daily use and safety days.",
+      "Work out the reorder point: use during the lead time plus safety stock.",
+      "Flag items to order, and show days of cover.",
+      "Round an order up to whole packs with CEILING.MATH."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-4-2-notes.docx",
+       "name": "4.2 Reorder points and safety stock - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-4-2-practice.xlsx",
+       "name": "4.2 Reorder points and safety stock - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-4-2-solution.xlsx",
+       "name": "4.2 Reorder points and safety stock - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The reorder point"
+      ],
+      [
+       0,
+       1,
+       "Safety stock"
+      ],
+      [
+       0,
+       2,
+       "The flag"
+      ],
+      [
+       1,
+       0,
+       "Days of cover"
+      ],
+      [
+       1,
+       1,
+       "Order in whole packs"
+      ],
+      [
+       1,
+       2,
+       "Keep it honest"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-4-3",
+     "num": "4.3",
+     "title": "ABC analysis",
+     "summary": "A few items carry most of the value. ABC analysis sorts items by the value they use a year, adds up their shares, and labels them A, B or C, so you watch the A items closely and keep the C items simple.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Work out each item’s value used a year, and sort the items largest first.",
+      "Work out each item’s share and the running (cumulative) share.",
+      "Label items A, B or C from cumulative-share rules kept in cells.",
+      "Summarise the share of items and of value in each class."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-4-3-notes.docx",
+       "name": "4.3 ABC analysis - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-4-3-practice.xlsx",
+       "name": "4.3 ABC analysis - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-4-3-solution.xlsx",
+       "name": "4.3 ABC analysis - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A few items carry most of the value"
+      ],
+      [
+       0,
+       1,
+       "Share and running share"
+      ],
+      [
+       1,
+       0,
+       "A, B or C"
+      ],
+      [
+       1,
+       1,
+       "What each class gets"
+      ],
+      [
+       1,
+       2,
+       "Summarise the classes"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-4-4",
+     "num": "4.4",
+     "title": "Valuing and ageing stock",
+     "summary": "Stock is money on shelves. Value it at a weighted average cost, see how long each item has sat without moving, and set aside a provision for stock that may never sell.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Work out a weighted average cost per item from its receipts with SUMIFS.",
+      "Value the stock on hand.",
+      "Age stock by days since it last moved, and band it with an approximate lookup.",
+      "Work out a provision for slow and non-moving stock, and total value by band."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-4-4-notes.docx",
+       "name": "4.4 Valuing and ageing stock - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-4-4-practice.xlsx",
+       "name": "4.4 Valuing and ageing stock - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-4-4-solution.xlsx",
+       "name": "4.4 Valuing and ageing stock - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Weighted average cost"
+      ],
+      [
+       0,
+       1,
+       "Cost formulas and the rules"
+      ],
+      [
+       1,
+       0,
+       "Days since it last moved"
+      ],
+      [
+       1,
+       1,
+       "Provisions for slow stock"
+      ],
+      [
+       1,
+       2,
+       "Value by band"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Sales and invoicing",
+   "summary": "Order registers and price lookups, GST invoices, commission slabs and targets, and receivables ageing.",
+   "free": false,
+   "testInfo": "Price lookups, GST invoices, commission and receivables",
+   "lessons": [
+    {
+     "id": "p4-5-1",
+     "num": "5.1",
+     "title": "Order registers and price lookups",
+     "summary": "An order register lists every order line. Prices, customer types and discounts come from lookup tables, so nobody types a price, and a price change is one cell on the price list.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Keep a price list and a customer list, and look values up by code and name.",
+      "Look up a price in a two-way table: the item’s row and the customer type’s column.",
+      "Apply a volume discount from quantity breaks with an approximate XLOOKUP.",
+      "Total sales by customer type with SUMIFS."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-5-1-notes.docx",
+       "name": "5.1 Order registers and price lookups - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-5-1-practice.xlsx",
+       "name": "5.1 Order registers and price lookups - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-5-1-solution.xlsx",
+       "name": "5.1 Order registers and price lookups - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Three lists and a register"
+      ],
+      [
+       0,
+       1,
+       "A two-way price lookup"
+      ],
+      [
+       1,
+       0,
+       "Quantity breaks"
+      ],
+      [
+       1,
+       1,
+       "Sales by customer type"
+      ],
+      [
+       1,
+       2,
+       "Registers that stay clean"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-5-2",
+     "num": "5.2",
+     "title": "GST invoices",
+     "summary": "A tax invoice lists each item’s taxable value and the GST on it. Within your own state the tax splits into CGST and SGST; to another state it’s IGST. Lookups bring in the rates, and one IF decides which tax applies.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Lay out a tax invoice: invoice number, date, customer, place of supply, lines and totals.",
+      "Look up each line’s GST rate and work out the taxable value.",
+      "Split GST into CGST and SGST for an intra-state sale, or IGST for an inter-state one, with IF.",
+      "Total the invoice and round it to the rupee."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-5-2-notes.docx",
+       "name": "5.2 GST invoices - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-5-2-practice.xlsx",
+       "name": "5.2 GST invoices - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-5-2-solution.xlsx",
+       "name": "5.2 GST invoices - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The parts of a tax invoice"
+      ],
+      [
+       0,
+       1,
+       "CGST + SGST, or IGST"
+      ],
+      [
+       1,
+       0,
+       "Lines that work themselves out"
+      ],
+      [
+       1,
+       1,
+       "Totals and rounding"
+      ],
+      [
+       1,
+       2,
+       "Invoices that stay put"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-5-3",
+     "num": "5.3",
+     "title": "Commission slabs and targets",
+     "summary": "Sales teams are paid on results. Measure each rep against target, pick a commission rate from achievement bands, compare it with a tiered scheme like income-tax slabs, and cap the payout.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Work out achievement against target as a percentage.",
+      "Pick a commission rate from achievement bands with an approximate XLOOKUP.",
+      "Work out a tiered (slab) commission with SUMPRODUCT and an extra-rate column.",
+      "Cap a payout with MIN, and count reps at target."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-5-3-notes.docx",
+       "name": "5.3 Commission slabs and targets - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-5-3-practice.xlsx",
+       "name": "5.3 Commission slabs and targets - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-5-3-solution.xlsx",
+       "name": "5.3 Commission slabs and targets - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Achievement against target"
+      ],
+      [
+       0,
+       1,
+       "A rate from achievement bands"
+      ],
+      [
+       1,
+       0,
+       "Tiered slabs, like income tax"
+      ],
+      [
+       1,
+       1,
+       "Slabs in one formula"
+      ],
+      [
+       1,
+       2,
+       "Caps and checks"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-5-4",
+     "num": "5.4",
+     "title": "Receivables ageing",
+     "summary": "Sales aren’t cash until customers pay. An ageing report works out each invoice’s due date and balance, how many days it’s overdue, and which bucket it falls in, so the oldest money gets chased first.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Work out due dates from credit terms, and balances from receipts.",
+      "Work out days overdue against an as-of date, zero for invoices not yet due.",
+      "Put invoices into ageing buckets (not due, 1–30, 31–60, 61–90, 90+).",
+      "Total balances by bucket and work out the share overdue more than 60 days."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-5-4-notes.docx",
+       "name": "5.4 Receivables ageing - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-5-4-practice.xlsx",
+       "name": "5.4 Receivables ageing - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-5-4-solution.xlsx",
+       "name": "5.4 Receivables ageing - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p4-p4-5-4-real.xlsx",
+       "name": "5.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Money customers owe you"
+      ],
+      [
+       0,
+       1,
+       "Days overdue"
+      ],
+      [
+       1,
+       0,
+       "Ageing buckets"
+      ],
+      [
+       1,
+       1,
+       "The ageing summary"
+      ],
+      [
+       1,
+       2,
+       "Keep it true"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "People: attendance and leave",
+   "summary": "The employee master, attendance registers, leave balances, and headcount and attrition.",
+   "free": false,
+   "testInfo": "Employee records, attendance, leave and attrition",
+   "lessons": [
+    {
+     "id": "p4-6-1",
+     "num": "6.1",
+     "title": "The employee master",
+     "summary": "Every people workbook starts with one list: an ID, name, department and joining date for each employee. Service, probation dates, status and email addresses are worked out from it, and every other sheet looks people up by ID.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Keep an employee master with a unique ID per person, looked up everywhere else.",
+      "Work out years of service and “3 y 4 m” with DATEDIF.",
+      "Work out probation end dates with EDATE and a status from the as-of date.",
+      "Build email addresses with text functions, and count people by department."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-6-1-notes.docx",
+       "name": "6.1 The employee master - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-6-1-practice.xlsx",
+       "name": "6.1 The employee master - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-6-1-solution.xlsx",
+       "name": "6.1 The employee master - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The employee master"
+      ],
+      [
+       0,
+       1,
+       "Service with DATEDIF"
+      ],
+      [
+       1,
+       0,
+       "Probation and status"
+      ],
+      [
+       1,
+       1,
+       "Email addresses from names"
+      ],
+      [
+       1,
+       2,
+       "Headcount by department"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-6-2",
+     "num": "6.2",
+     "title": "Attendance registers",
+     "summary": "An attendance register is a grid: people down, days across, one code per cell. COUNTIF turns the codes into days present, on leave and absent, and absent days decide the paid days that payroll uses.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Lay out a monthly attendance grid with codes from a drop-down list.",
+      "Show day names with TEXT, and grey out weekly offs and holidays.",
+      "Count present, leave and absent days with COUNTIF, counting half days as 0.5.",
+      "Work out paid days for payroll, and highlight absences with conditional formatting."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-6-2-notes.docx",
+       "name": "6.2 Attendance registers - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-6-2-practice.xlsx",
+       "name": "6.2 Attendance registers - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-6-2-solution.xlsx",
+       "name": "6.2 Attendance registers - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p4-p4-6-2-real.xlsx",
+       "name": "6.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "People down, days across"
+      ],
+      [
+       0,
+       1,
+       "Day names and greyed-out days"
+      ],
+      [
+       1,
+       0,
+       "Present, leave and absent"
+      ],
+      [
+       1,
+       1,
+       "Paid days"
+      ],
+      [
+       1,
+       2,
+       "Absences at a glance"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p4-6-3",
+     "num": "6.3",
+     "title": "Leave balances",
+     "summary": "Leave is a running account: brought forward, plus credits, minus what’s taken. Count each application in working days, add them up per person and type with SUMIFS, and flag anyone who has taken more than they have.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Count the working days in a leave application with NETWORKDAYS.INTL and the holiday list.",
+      "Total leave taken per person and type with SUMIFS on another sheet.",
+      "Work out balances: brought forward + credited − taken.",
+      "Flag over-drawn balances with IF and OR."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-6-3-notes.docx",
+       "name": "6.3 Leave balances - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-6-3-practice.xlsx",
+       "name": "6.3 Leave balances - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-6-3-solution.xlsx",
+       "name": "6.3 Leave balances - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Leave is an account"
+      ],
+      [
+       0,
+       1,
+       "Days in an application"
+      ],
+      [
+       0,
+       2,
+       "Taken, per person and type"
+      ],
+      [
+       1,
+       0,
+       "Balances"
+      ],
+      [
+       1,
+       1,
+       "Flag what needs a decision"
+      ],
+      [
+       1,
+       2,
+       "Keep it trustworthy"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-6-4",
+     "num": "6.4",
+     "title": "Headcount and attrition",
+     "summary": "How many people work here, who joined, who left, and how fast people leave. With joining and leaving dates on one list, COUNTIFS gives the headcount on any date, the joiners and leavers each month, and the attrition rate.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Count headcount on a date with COUNTIFS on joining and leaving dates.",
+      "Count joiners and leavers in each month between two month ends.",
+      "Work out average headcount and the monthly attrition rate.",
+      "Work out attrition for the year, and check that the numbers add up."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-6-4-notes.docx",
+       "name": "6.4 Headcount and attrition - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-6-4-practice.xlsx",
+       "name": "6.4 Headcount and attrition - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-6-4-solution.xlsx",
+       "name": "6.4 Headcount and attrition - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Who was here on a date?"
+      ],
+      [
+       0,
+       1,
+       "Joiners and leavers in a month"
+      ],
+      [
+       1,
+       0,
+       "Attrition rate"
+      ],
+      [
+       1,
+       1,
+       "Attrition for the year"
+      ],
+      [
+       1,
+       2,
+       "Use it with care"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Payroll",
+   "summary": "Salary structures, deductions with example rates, and payslips and the payroll register.",
+   "free": false,
+   "testInfo": "Salary structures, deductions, payslips and the register",
+   "lessons": [
+    {
+     "id": "p4-7-1",
+     "num": "7.1",
+     "title": "Salary structures",
+     "summary": "A monthly salary is split into parts: basic, house rent allowance, conveyance and a special allowance that makes up the rest. Rules in cells turn each gross salary into its parts, and the employer’s PF turns it into the cost to the company.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Split a monthly gross salary into basic, HRA, conveyance and a balancing special allowance.",
+      "Keep the structure’s rules in cells, and round each part to the rupee.",
+      "Work out the employer’s PF with a wage ceiling, using MIN.",
+      "Work out cost to company (CTC) for the year."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-7-1-notes.docx",
+       "name": "7.1 Salary structures - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-7-1-practice.xlsx",
+       "name": "7.1 Salary structures - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-7-1-solution.xlsx",
+       "name": "7.1 Salary structures - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A salary structure"
+      ],
+      [
+       0,
+       1,
+       "Rules in cells, rounded"
+      ],
+      [
+       0,
+       2,
+       "The balancing figure"
+      ],
+      [
+       1,
+       0,
+       "Employer PF and the ceiling"
+      ],
+      [
+       1,
+       1,
+       "Cost to company"
+      ],
+      [
+       1,
+       2,
+       "Wage rules to check"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-7-2",
+     "num": "7.2",
+     "title": "Deductions",
+     "summary": "From gross to take-home: pay for the days worked, then deduct the employee’s PF, ESI and professional tax. Every rate, limit and slab sits in a cell, because they change; this lesson’s are examples.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Pro-rate pay for paid days from the attendance register.",
+      "Work out the employee’s PF with a ceiling, and ESI only for those under the gross limit, rounded up.",
+      "Look up professional tax from a slab table.",
+      "Work out total deductions and net pay."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-7-2-notes.docx",
+       "name": "7.2 Deductions - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-7-2-practice.xlsx",
+       "name": "7.2 Deductions - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-7-2-solution.xlsx",
+       "name": "7.2 Deductions - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p4-p4-7-2-real.xlsx",
+       "name": "7.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "From attendance to earned pay"
+      ],
+      [
+       0,
+       1,
+       "Statutory deductions (examples)"
+      ],
+      [
+       1,
+       0,
+       "PF and ESI"
+      ],
+      [
+       1,
+       1,
+       "Professional tax by slab"
+      ],
+      [
+       1,
+       2,
+       "Net pay"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p4-7-3",
+     "num": "7.3",
+     "title": "Payslips and the register",
+     "summary": "The payroll register is the month’s record: one row per person, totals that tie. A payslip is a view of one row: pick an Emp ID, and lookups fill in the rest. Then the money moves only when the totals check out.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Keep a payroll register with totals and a zero-check.",
+      "Build a payslip that fills itself from the register by Emp ID.",
+      "Use one two-way XLOOKUP for every payslip line, matching row labels to register headings.",
+      "Put the month-end payroll steps in order."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-7-3-notes.docx",
+       "name": "7.3 Payslips and the register - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-7-3-practice.xlsx",
+       "name": "7.3 Payslips and the register - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-7-3-solution.xlsx",
+       "name": "7.3 Payslips and the register - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The month’s record"
+      ],
+      [
+       0,
+       1,
+       "Checks before money moves"
+      ],
+      [
+       1,
+       0,
+       "One payslip, every employee"
+      ],
+      [
+       1,
+       1,
+       "One formula for every line"
+      ],
+      [
+       1,
+       2,
+       "Month-end payroll, in order"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Sharing and running a workbook",
+   "summary": "Co-authoring and comments, collecting data with Forms and imports, printing forms and payslips, and handing a workbook over.",
+   "free": false,
+   "testInfo": "Sharing, collecting data, printing and handing over",
+   "lessons": [
+    {
+     "id": "p4-8-1",
+     "num": "8.1",
+     "title": "Co-authoring and comments",
+     "summary": "A workbook kept on OneDrive or SharePoint can be edited by several people at once. Share it with the right access, talk in comments and @mentions instead of email, and use version history when something goes wrong.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Share a workbook from OneDrive or SharePoint with edit or view access, instead of emailing copies.",
+      "Know what co-authoring needs: a cloud file, AutoSave, and a current version of Excel.",
+      "Use threaded comments and @mentions; know how they differ from notes.",
+      "Restore an earlier version with version history."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-8-1-notes.docx",
+       "name": "8.1 Co-authoring and comments - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-8-1-practice.xlsx",
+       "name": "8.1 Co-authoring and comments - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-8-1-solution.xlsx",
+       "name": "8.1 Co-authoring and comments - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Stop emailing copies"
+      ],
+      [
+       0,
+       1,
+       "Share with the right access"
+      ],
+      [
+       0,
+       2,
+       "Working well together"
+      ],
+      [
+       1,
+       0,
+       "Comments and notes"
+      ],
+      [
+       1,
+       1,
+       "@mention to ask or assign"
+      ],
+      [
+       1,
+       2,
+       "Version history"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-8-2",
+     "num": "8.2",
+     "title": "Collecting data with Forms and imports",
+     "summary": "Data that people type into a form, or that arrives as a file, needs tidying before it’s used. Microsoft Forms keeps entries consistent; imports bring files in; TRIM, PROPER, VALUE and DATE clean what arrives, and a duplicate check catches double entries.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Collect entries with a Microsoft Form whose responses land in Excel, using choices and required questions.",
+      "Import a file with Data › Get Data, and refresh it next time.",
+      "Clean names, text numbers and text dates with TRIM, PROPER, VALUE and DATE.",
+      "Flag duplicate entries with COUNTIFS on a growing range, and summarise without them."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-8-2-notes.docx",
+       "name": "8.2 Collecting data with Forms and imports - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-8-2-practice.xlsx",
+       "name": "8.2 Collecting data with Forms and imports - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-8-2-solution.xlsx",
+       "name": "8.2 Collecting data with Forms and imports - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A form instead of a free-for-all"
+      ],
+      [
+       0,
+       1,
+       "Imports you can refresh"
+      ],
+      [
+       1,
+       0,
+       "Names and numbers"
+      ],
+      [
+       1,
+       1,
+       "Dates that arrive as text"
+      ],
+      [
+       1,
+       2,
+       "Duplicates and summaries"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-8-3",
+     "num": "8.3",
+     "title": "Printing forms and payslips",
+     "summary": "Some workbooks end on paper or as a PDF: payslips, invoices, the stores count sheet. Set the print area, fit the page, repeat headings on every page, add a footer, and save PDFs with names that say what they are.",
+     "minutes": 30,
+     "free": false,
+     "objectives": [
+      "Set a print area and fit a form to one page.",
+      "Repeat heading rows on every printed page with Print Titles.",
+      "Add headers and footers with page numbers and the file name.",
+      "Save a payslip as a PDF, with a file name built by a formula."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-8-3-notes.docx",
+       "name": "8.3 Printing forms and payslips - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-8-3-practice.xlsx",
+       "name": "8.3 Printing forms and payslips - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-8-3-solution.xlsx",
+       "name": "8.3 Printing forms and payslips - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Print only what matters"
+      ],
+      [
+       0,
+       1,
+       "Headings on every page"
+      ],
+      [
+       0,
+       2,
+       "Headers and footers"
+      ],
+      [
+       1,
+       0,
+       "One payslip, many PDFs"
+      ],
+      [
+       1,
+       1,
+       "Check before you print"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p4-8-4",
+     "num": "8.4",
+     "title": "Handing a workbook over",
+     "summary": "A workbook is finished when someone else can run it without you. Give it a Read me sheet, checks that say whether it’s healthy, clean names and structure, and inspect it before it leaves the building.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Write a Read me sheet: purpose, owner, monthly steps, inputs and version.",
+      "Build checks that run themselves: count errors with SUMPRODUCT(--ISERROR()), blanks with COUNTBLANK, and an overall status with AND.",
+      "Fix what the checks find.",
+      "Inspect the document and check accessibility before sharing outside."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p4-p4-8-4-notes.docx",
+       "name": "8.4 Handing a workbook over - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p4-p4-8-4-practice.xlsx",
+       "name": "8.4 Handing a workbook over - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p4-p4-8-4-solution.xlsx",
+       "name": "8.4 Handing a workbook over - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A Read me sheet"
+      ],
+      [
+       0,
+       1,
+       "Structure a stranger can follow"
+      ],
+      [
+       1,
+       0,
+       "Checks that run themselves"
+      ],
+      [
+       1,
+       1,
+       "Fix what the checks find"
+      ],
+      [
+       1,
+       2,
+       "Before it leaves the building"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  }
+ ],
+ "upcoming": [],
+ "project": {
+  "title": "An operations workbook for Rakshak Safety Gear",
+  "brief": "A month of orders, stock movements and attendance for a safety-gear maker: build a protected workbook with a stock ledger and reorder alerts, an invoice register with GST and ageing, and attendance feeding payroll, ready for the team to use.",
+  "coming": false
+ },
+ "exam": {
+  "questions": 40,
+  "tasks": 6,
+  "minutes": 90,
+  "pass": 75,
+  "attempts": 3,
+  "gapHours": 48,
+  "coming": false
+ },
+ "downloads": [
+  {
+   "label": "Course handbook",
+   "file": "a/p4-handbook.docx",
+   "name": "Sheetah P4 handbook.docx"
+  },
+  {
+   "label": "Cheat sheet",
+   "file": "a/p4-cheatsheet.docx",
+   "name": "Sheetah P4 cheat sheet.docx"
+  }
+ ]
+}

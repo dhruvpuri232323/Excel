@@ -709,50 +709,1347 @@
      "real": false
     }
    ]
-  }
- ],
- "upcoming": [
+  },
   {
    "n": 4,
    "title": "Dates and times",
-   "summary": "Date serials, EDATE and EOMONTH, working days with holidays, DATEDIF, time sums and the April–March financial year.",
-   "lessons": 4
+   "summary": "Date serials and date maths, EDATE and EOMONTH, working days with holidays, DATEDIF and YEARFRAC, time sums, and India’s April–March financial year.",
+   "free": false,
+   "testInfo": "Dates, working days and time",
+   "lessons": [
+    {
+     "id": "c2-4-1",
+     "num": "4.1",
+     "title": "Dates are numbers",
+     "summary": "Every date is a day number and every time a fraction of a day: build dates with DATE, read them with YEAR, MONTH and DAY, use TODAY, and do date maths.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain that a date is a day number (a serial) and a time is part of a day.",
+      "Do date maths: days between two dates, and a date some days later.",
+      "Build dates with DATE, and take them apart with YEAR, MONTH and DAY.",
+      "Use TODAY and NOW, and fix dates that arrived as text."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-4-1-notes.docx",
+       "name": "4.1 Dates are numbers - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-4-1-practice.xlsx",
+       "name": "4.1 Dates are numbers - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-4-1-solution.xlsx",
+       "name": "4.1 Dates are numbers - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Every date is a day number"
+      ],
+      [
+       0,
+       1,
+       "Date maths with + and −"
+      ],
+      [
+       1,
+       0,
+       "DATE builds; YEAR, MONTH and DAY take apart"
+      ],
+      [
+       1,
+       1,
+       "TODAY and NOW"
+      ],
+      [
+       1,
+       2,
+       "Dates that aren’t dates"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-4-2",
+     "num": "4.2",
+     "title": "Months, month ends and weekdays",
+     "summary": "Move by whole months with EDATE, find month ends with EOMONTH, and name days and weeks with WEEKDAY, TEXT and WEEKNUM.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Move a date by whole months with EDATE.",
+      "Find the last (and first) day of a month with EOMONTH.",
+      "Find the weekday with WEEKDAY or TEXT, and test for weekends.",
+      "Make week numbers and month labels for reports."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-4-2-notes.docx",
+       "name": "4.2 Months, month ends and weekdays - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-4-2-practice.xlsx",
+       "name": "4.2 Months, month ends and weekdays - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-4-2-solution.xlsx",
+       "name": "4.2 Months, month ends and weekdays - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "EDATE: the same day, n months later"
+      ],
+      [
+       0,
+       1,
+       "EOMONTH: the last day of a month"
+      ],
+      [
+       1,
+       0,
+       "WEEKDAY and the day’s name"
+      ],
+      [
+       1,
+       1,
+       "Week numbers and month labels"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-4-3",
+     "num": "4.3",
+     "title": "Working days and holidays",
+     "summary": "Count working days with NETWORKDAYS, find a date n working days away with WORKDAY, leave out holidays, and handle six-day weeks with the .INTL versions.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Count the working days between two dates with NETWORKDAYS.",
+      "Find a date some working days away with WORKDAY.",
+      "Leave out holidays kept in a list of real dates.",
+      "Use NETWORKDAYS.INTL and WORKDAY.INTL for Sunday-only and other weekends."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-4-3-notes.docx",
+       "name": "4.3 Working days and holidays - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-4-3-practice.xlsx",
+       "name": "4.3 Working days and holidays - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-4-3-solution.xlsx",
+       "name": "4.3 Working days and holidays - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "NETWORKDAYS counts Monday to Friday"
+      ],
+      [
+       0,
+       1,
+       "WORKDAY: n working days later"
+      ],
+      [
+       1,
+       0,
+       "The .INTL versions: your weekend"
+      ],
+      [
+       1,
+       1,
+       "A holiday list that works"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-4-4",
+     "num": "4.4",
+     "title": "Ages, tenure, time and the financial year",
+     "summary": "Completed years and months with DATEDIF, fractions of a year with YEARFRAC, hours worked across midnight, and India’s April–March financial year and quarters.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Count completed years, months and days between dates with DATEDIF.",
+      "Get years as a decimal with YEARFRAC for ages and pro-rata amounts.",
+      "Add and subtract times, including night shifts, and total hours past 24.",
+      "Label any date with its Indian financial year (April–March) and quarter."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-4-4-notes.docx",
+       "name": "4.4 Ages, tenure, time and the financial year - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-4-4-practice.xlsx",
+       "name": "4.4 Ages, tenure, time and the financial year - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-4-4-solution.xlsx",
+       "name": "4.4 Ages, tenure, time and the financial year - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c2-c2-4-4-real.xlsx",
+       "name": "4.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "DATEDIF: completed years, months and days"
+      ],
+      [
+       0,
+       1,
+       "YEARFRAC: years with decimals"
+      ],
+      [
+       1,
+       0,
+       "Hours worked, and night shifts"
+      ],
+      [
+       1,
+       1,
+       "India’s financial year: April to March"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
   },
   {
    "n": 5,
    "title": "Maths and rounding",
-   "summary": "ROUND and friends, MROUND and CEILING for packs and prices, percentages and growth, and random numbers for practice data.",
-   "lessons": 3
+   "summary": "ROUND and its family for money, packs and price points, INT and MOD, growth and CAGR, percentages, markup, margin and GST, and random numbers for practice and fair draws.",
+   "free": false,
+   "testInfo": "Rounding, percentages and GST",
+   "lessons": [
+    {
+     "id": "c2-5-1",
+     "num": "5.1",
+     "title": "Rounding for money, packs and prices",
+     "summary": "ROUND, ROUNDUP and ROUNDDOWN to any number of places; MROUND, CEILING.MATH and FLOOR.MATH to any step; and why formatting a number isn’t the same as rounding it.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Round to decimals, whole numbers, tens or thousands with ROUND, ROUNDUP and ROUNDDOWN.",
+      "Round to a step, like ₹5, a box of 12 or a ₹9 price point, with MROUND and CEILING.MATH.",
+      "Tell formatting (how a number looks) from rounding (what it is).",
+      "Split an amount so the parts add up exactly."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-5-1-notes.docx",
+       "name": "5.1 Rounding for money, packs and prices - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-5-1-practice.xlsx",
+       "name": "5.1 Rounding for money, packs and prices - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-5-1-solution.xlsx",
+       "name": "5.1 Rounding for money, packs and prices - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "ROUND, ROUNDUP and ROUNDDOWN"
+      ],
+      [
+       0,
+       1,
+       "Round to a step: MROUND, CEILING.MATH and FLOOR.MATH"
+      ],
+      [
+       1,
+       0,
+       "Formatting hides decimals; ROUND removes them"
+      ],
+      [
+       1,
+       1,
+       "Which rounding when"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-5-2",
+     "num": "5.2",
+     "title": "Remainders, powers and percentages",
+     "summary": "INT and MOD for whole parts and leftovers, ABS and POWER for gaps and growth, and percentages done right: share of total, change, markup, margin and GST.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Split a number into whole parts and a remainder with INT and MOD.",
+      "Use ABS for gaps and POWER for compound growth and CAGR.",
+      "Work out share of total and percent change.",
+      "Tell markup from margin, and add or take out GST correctly."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-5-2-notes.docx",
+       "name": "5.2 Remainders, powers and percentages - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-5-2-practice.xlsx",
+       "name": "5.2 Remainders, powers and percentages - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-5-2-solution.xlsx",
+       "name": "5.2 Remainders, powers and percentages - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "INT and MOD: how many, and what’s left"
+      ],
+      [
+       0,
+       1,
+       "ABS and POWER: gaps and growth"
+      ],
+      [
+       1,
+       0,
+       "Share of total, and change"
+      ],
+      [
+       1,
+       1,
+       "Markup, margin and GST"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-5-3",
+     "num": "5.3",
+     "title": "Random numbers for practice and fair draws",
+     "summary": "RAND, RANDBETWEEN and RANDARRAY for practice data and draws, freezing random results with Paste Values, and fair picks and shuffles with INDEX, SORTBY and TAKE.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Make random fractions and whole numbers with RAND and RANDBETWEEN.",
+      "Fill a whole block with RANDARRAY.",
+      "Freeze random results so they stop changing.",
+      "Pick a fair winner, or shuffle a list, with INDEX, SORTBY and TAKE."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-5-3-notes.docx",
+       "name": "5.3 Random numbers for practice and fair draws - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-5-3-practice.xlsx",
+       "name": "5.3 Random numbers for practice and fair draws - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-5-3-solution.xlsx",
+       "name": "5.3 Random numbers for practice and fair draws - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "RAND and RANDBETWEEN"
+      ],
+      [
+       0,
+       1,
+       "RANDARRAY: a whole block at once"
+      ],
+      [
+       1,
+       0,
+       "Freeze them with Paste Values"
+      ],
+      [
+       1,
+       1,
+       "Fair picks and shuffles"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
   },
   {
    "n": 6,
    "title": "Conditional sums and counts",
-   "summary": "COUNTIFS, SUMIFS, AVERAGEIFS, MAXIFS and MINIFS, criteria from cells and dates, and SUMPRODUCT, SUBTOTAL and AGGREGATE.",
-   "lessons": 4
+   "summary": "COUNTIF, SUMIF and AVERAGEIF, the IFS family with many conditions, wildcards, blanks, dates and OR in criteria, and SUMPRODUCT, SUBTOTAL and AGGREGATE.",
+   "free": false,
+   "testInfo": "Conditional sums, counts and SUMPRODUCT",
+   "lessons": [
+    {
+     "id": "c2-6-1",
+     "num": "6.1",
+     "title": "COUNTIF, SUMIF and AVERAGEIF",
+     "summary": "Count, add and average only the rows that meet one condition: text, numbers or comparisons, with the condition typed in or taken from a cell.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Count matching rows with COUNTIF.",
+      "Add and average matching rows with SUMIF and AVERAGEIF.",
+      "Write conditions with comparisons like \">10000\" and \"<>North\".",
+      "Take the condition from a cell, and build a summary table that fills down."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-6-1-notes.docx",
+       "name": "6.1 COUNTIF, SUMIF and AVERAGEIF - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-6-1-practice.xlsx",
+       "name": "6.1 COUNTIF, SUMIF and AVERAGEIF - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-6-1-solution.xlsx",
+       "name": "6.1 COUNTIF, SUMIF and AVERAGEIF - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "COUNTIF counts the rows that match"
+      ],
+      [
+       0,
+       1,
+       "SUMIF and AVERAGEIF: add or average the matches"
+      ],
+      [
+       1,
+       0,
+       "Comparisons in criteria"
+      ],
+      [
+       1,
+       1,
+       "A summary table that fills down"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-6-2",
+     "num": "6.2",
+     "title": "Many conditions: SUMIFS and friends",
+     "summary": "COUNTIFS, SUMIFS, AVERAGEIFS, MAXIFS and MINIFS test as many columns as you like, and one formula with mixed references fills a whole two-way summary.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Add, count and average rows that meet several conditions at once.",
+      "Find the biggest and smallest matching value with MAXIFS and MINIFS.",
+      "Remember the argument order: what to work on comes first.",
+      "Fill a region × product summary from one formula with mixed references."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-6-2-notes.docx",
+       "name": "6.2 Many conditions: SUMIFS and friends - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-6-2-practice.xlsx",
+       "name": "6.2 Many conditions: SUMIFS and friends - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-6-2-solution.xlsx",
+       "name": "6.2 Many conditions: SUMIFS and friends - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/c2-c2-6-2-real.xlsx",
+       "name": "6.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "SUMIFS: what to add comes first"
+      ],
+      [
+       0,
+       1,
+       "AVERAGEIFS, MAXIFS and MINIFS"
+      ],
+      [
+       1,
+       0,
+       "One formula fills a whole grid"
+      ],
+      [
+       1,
+       1,
+       "Check the grid adds up"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "c2-6-3",
+     "num": "6.3",
+     "title": "Criteria in depth: wildcards, blanks, dates and OR",
+     "summary": "Match parts of text with * and ?, count blanks and non-blanks, total between two dates, and count “this or that” with an array of conditions.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Match text that starts, ends or contains something with * and ?.",
+      "Count and add rows with empty or filled cells.",
+      "Total the rows between two dates, with the dates taken from cells.",
+      "Count or add rows that match one value or another."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-6-3-notes.docx",
+       "name": "6.3 Criteria in depth: wildcards, blanks, dates and OR - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-6-3-practice.xlsx",
+       "name": "6.3 Criteria in depth: wildcards, blanks, dates and OR - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-6-3-solution.xlsx",
+       "name": "6.3 Criteria in depth: wildcards, blanks, dates and OR - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Wildcards:  and ?"
+      ],
+      [
+       0,
+       1,
+       "Blanks and not-blanks"
+      ],
+      [
+       1,
+       0,
+       "Between two dates"
+      ],
+      [
+       1,
+       1,
+       "This OR that"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-6-4",
+     "num": "6.4",
+     "title": "SUMPRODUCT, SUBTOTAL and AGGREGATE",
+     "summary": "SUMPRODUCT for weighted totals and conditions SUMIFS can’t handle, SUBTOTAL for totals that respect filters and skip other subtotals, and AGGREGATE for totals that ignore errors.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Multiply columns row by row and add the results with SUMPRODUCT.",
+      "Put conditions inside SUMPRODUCT, including functions like MONTH and OR across columns.",
+      "Use SUBTOTAL for totals that respect filters and skip other subtotals.",
+      "Use AGGREGATE to total, or find the largest, while ignoring errors."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-6-4-notes.docx",
+       "name": "6.4 SUMPRODUCT, SUBTOTAL and AGGREGATE - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-6-4-practice.xlsx",
+       "name": "6.4 SUMPRODUCT, SUBTOTAL and AGGREGATE - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-6-4-solution.xlsx",
+       "name": "6.4 SUMPRODUCT, SUBTOTAL and AGGREGATE - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "SUMPRODUCT multiplies, then adds"
+      ],
+      [
+       0,
+       1,
+       "Conditions inside SUMPRODUCT"
+      ],
+      [
+       1,
+       0,
+       "SUBTOTAL respects filters and skips subtotals"
+      ],
+      [
+       1,
+       1,
+       "AGGREGATE ignores errors too"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
   },
   {
    "n": 7,
    "title": "Lookups",
-   "summary": "VLOOKUP and HLOOKUP, INDEX with MATCH, XLOOKUP and XMATCH, lookups across sheets, and tax slabs with approximate match.",
-   "lessons": 5
+   "summary": "VLOOKUP and HLOOKUP, INDEX with MATCH, XLOOKUP and XMATCH, lookups across sheets and why they fail, and approximate match for bands and India’s income-tax slabs.",
+   "free": false,
+   "testInfo": "VLOOKUP, INDEX/MATCH, XLOOKUP and slabs",
+   "lessons": [
+    {
+     "id": "c2-7-1",
+     "num": "7.1",
+     "title": "VLOOKUP: find a row, bring back a column",
+     "summary": "VLOOKUP finds a code in the first column of a table and returns a value from the same row: exact match with FALSE, a friendly message with IFNA, and HLOOKUP for tables that run sideways.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write VLOOKUP with an exact match to fetch a value from a table.",
+      "Count the column number from the table’s first column, and lock the table with $.",
+      "Show a message instead of #N/A with IFNA.",
+      "Use HLOOKUP for a table laid out across rows."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-7-1-notes.docx",
+       "name": "7.1 VLOOKUP: find a row, bring back a column - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-7-1-practice.xlsx",
+       "name": "7.1 VLOOKUP: find a row, bring back a column - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-7-1-solution.xlsx",
+       "name": "7.1 VLOOKUP: find a row, bring back a column - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Find the code, read across"
+      ],
+      [
+       0,
+       1,
+       "One row, read across"
+      ],
+      [
+       1,
+       0,
+       "#N/A and IFNA"
+      ],
+      [
+       1,
+       1,
+       "HLOOKUP: the same idea, sideways"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-7-2",
+     "num": "7.2",
+     "title": "INDEX and MATCH",
+     "summary": "MATCH finds a position, INDEX fetches what’s at a position. Together they look up in any direction, survive inserted columns, and do two-way lookups in a grid.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Find a value’s position with MATCH and an exact match (0).",
+      "Fetch a value by position with INDEX.",
+      "Combine them to look up to the left of the key column.",
+      "Look up a value in a grid by both its row and its column."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-7-2-notes.docx",
+       "name": "7.2 INDEX and MATCH - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-7-2-practice.xlsx",
+       "name": "7.2 INDEX and MATCH - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-7-2-solution.xlsx",
+       "name": "7.2 INDEX and MATCH - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "MATCH finds a position"
+      ],
+      [
+       0,
+       1,
+       "INDEX fetches, MATCH points"
+      ],
+      [
+       1,
+       0,
+       "Row and column at once"
+      ],
+      [
+       1,
+       1,
+       "VLOOKUP or INDEX/MATCH?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-7-3",
+     "num": "7.3",
+     "title": "XLOOKUP and XMATCH",
+     "summary": "XLOOKUP looks up in any direction with no column numbers: exact match by default, its own not-found message, whole rows back at once, and a search from the bottom for the latest entry. XMATCH is the modern MATCH.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write XLOOKUP with a lookup array and a return array.",
+      "Give XLOOKUP a not-found message.",
+      "Bring back several columns at once, and find the latest entry by searching from the bottom.",
+      "Find positions with XMATCH, including wildcard matches."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-7-3-notes.docx",
+       "name": "7.3 XLOOKUP and XMATCH - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-7-3-practice.xlsx",
+       "name": "7.3 XLOOKUP and XMATCH - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-7-3-solution.xlsx",
+       "name": "7.3 XLOOKUP and XMATCH - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Three ranges, no column numbers"
+      ],
+      [
+       0,
+       1,
+       "Whole rows, and the latest entry"
+      ],
+      [
+       1,
+       0,
+       "Match mode and search mode"
+      ],
+      [
+       1,
+       1,
+       "XMATCH: MATCH, but exact by default"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-7-4",
+     "num": "7.4",
+     "title": "Lookups across sheets, and why lookups fail",
+     "summary": "Look up from another sheet, match on two conditions, and fix the usual reasons a lookup gives #N/A: numbers stored as text, stray spaces and spelling differences.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write a lookup that reads from another sheet, with locked ranges.",
+      "Look up a value that depends on two conditions.",
+      "Recognise numbers stored as text and stray spaces, and fix them inside the formula.",
+      "Check lookups so a missing match doesn’t go unnoticed."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-7-4-notes.docx",
+       "name": "7.4 Lookups across sheets, and why lookups fail - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-7-4-practice.xlsx",
+       "name": "7.4 Lookups across sheets, and why lookups fail - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-7-4-solution.xlsx",
+       "name": "7.4 Lookups across sheets, and why lookups fail - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Point at another sheet"
+      ],
+      [
+       0,
+       1,
+       "Two conditions"
+      ],
+      [
+       1,
+       0,
+       "Same-looking values that don’t match"
+      ],
+      [
+       1,
+       1,
+       "Lookups you can trust"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-7-5",
+     "num": "7.5",
+     "title": "Approximate match: slabs, bands and tax",
+     "summary": "Look up the band a number falls in: grades, commission and India’s income-tax slabs. Approximate match with XLOOKUP or VLOOKUP TRUE, and tax worked out slab by slab.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Lay out a band table with the lower limit of each band.",
+      "Find the band with XLOOKUP match mode -1, or VLOOKUP with TRUE on a sorted table.",
+      "Work out slab-based tax: the tax below the slab plus the rate on the part above.",
+      "Apply a simple rule on top, like the rebate for income up to ₹12 lakh."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-7-5-notes.docx",
+       "name": "7.5 Approximate match: slabs, bands and tax - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-7-5-practice.xlsx",
+       "name": "7.5 Approximate match: slabs, bands and tax - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-7-5-solution.xlsx",
+       "name": "7.5 Approximate match: slabs, bands and tax - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Look up the band, not the exact number"
+      ],
+      [
+       0,
+       1,
+       "The sort-order trap"
+      ],
+      [
+       1,
+       0,
+       "The new-regime slabs for FY 2026-27"
+      ],
+      [
+       1,
+       1,
+       "Tax = tax below the slab + rate × the part above"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
   },
   {
    "n": 8,
    "title": "Dynamic arrays",
-   "summary": "Spilling, the # reference and #SPILL!, FILTER, SORT, SORTBY and UNIQUE, SEQUENCE and the stacking functions, and a self-updating top 10.",
-   "lessons": 4
+   "summary": "Spilling and the # reference, FILTER, SORT and SORTBY, UNIQUE and SEQUENCE, the stacking functions, and a self-updating top 10 that handles ties.",
+   "free": false,
+   "testInfo": "Spills, FILTER, SORT, UNIQUE and top-n lists",
+   "lessons": [
+    {
+     "id": "c2-8-1",
+     "num": "8.1",
+     "title": "Spilling and the # sign",
+     "summary": "In Microsoft 365 one formula can return many answers that spill into the cells below. Point at a whole spill with #, and fix #SPILL! when something is in the way.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Write one formula that works on whole ranges and spills its answers.",
+      "Refer to a whole spilled range with the # sign.",
+      "Recognise and fix #SPILL!.",
+      "Know what @ and {=…} mean in older workbooks."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-8-1-notes.docx",
+       "name": "8.1 Spilling and the # sign - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-8-1-practice.xlsx",
+       "name": "8.1 Spilling and the # sign - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-8-1-solution.xlsx",
+       "name": "8.1 Spilling and the # sign - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Maths on whole ranges spills"
+      ],
+      [
+       0,
+       1,
+       "The # sign points at the whole spill"
+      ],
+      [
+       1,
+       0,
+       "#SPILL!: something’s in the way"
+      ],
+      [
+       1,
+       1,
+       "@ and {=…} in older workbooks"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-8-2",
+     "num": "8.2",
+     "title": "FILTER, SORT and SORTBY",
+     "summary": "Pull out just the rows you want with FILTER, with several conditions and a message when nothing matches, then order them with SORT and SORTBY. Results update the moment the data changes.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Return the rows that meet a condition with FILTER.",
+      "Combine conditions with * (and) and + (or), and give FILTER a message for no matches.",
+      "Sort a range or a result with SORT, by any column, either way.",
+      "Sort by a column you don’t show, with SORTBY."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-8-2-notes.docx",
+       "name": "8.2 FILTER, SORT and SORTBY - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-8-2-practice.xlsx",
+       "name": "8.2 FILTER, SORT and SORTBY - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-8-2-solution.xlsx",
+       "name": "8.2 FILTER, SORT and SORTBY - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Keep the rows that pass the test"
+      ],
+      [
+       0,
+       1,
+       "Two conditions:  and +"
+      ],
+      [
+       1,
+       0,
+       "SORT and SORTBY"
+      ],
+      [
+       1,
+       1,
+       "Nest them: filter, then sort"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-8-3",
+     "num": "8.3",
+     "title": "UNIQUE, SEQUENCE and stacking",
+     "summary": "UNIQUE turns a column into a clean list, and a summary built on it grows by itself. SEQUENCE makes numbers and dates on demand, and VSTACK, HSTACK, TAKE, DROP and CHOOSECOLS reshape results.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "List the distinct values in a column with UNIQUE, sorted.",
+      "Build a summary next to a UNIQUE list with COUNTIF and SUMIF on the # range.",
+      "Make number and date series with SEQUENCE.",
+      "Combine and trim arrays with VSTACK, HSTACK, TAKE, DROP and CHOOSECOLS."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-8-3-notes.docx",
+       "name": "8.3 UNIQUE, SEQUENCE and stacking - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-8-3-practice.xlsx",
+       "name": "8.3 UNIQUE, SEQUENCE and stacking - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-8-3-solution.xlsx",
+       "name": "8.3 UNIQUE, SEQUENCE and stacking - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A summary that builds itself"
+      ],
+      [
+       0,
+       1,
+       "UNIQUE’s options"
+      ],
+      [
+       1,
+       0,
+       "SEQUENCE makes series"
+      ],
+      [
+       1,
+       1,
+       "Stack, trim and pick"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-8-4",
+     "num": "8.4",
+     "title": "A self-updating top 10",
+     "summary": "Put it together: rank a list, take the top rows with TAKE and SORT, keep ties with FILTER and LARGE, rank within a group, and build a leaderboard that rewrites itself when the data changes.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Rank values with RANK.EQ and know how ties are numbered.",
+      "Show the top n rows with TAKE around SORT or SORTBY.",
+      "Keep everyone tied at the cut-off with FILTER and LARGE.",
+      "Build a group leaderboard with UNIQUE, AVERAGEIF and SORTBY."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-8-4-notes.docx",
+       "name": "8.4 A self-updating top 10 - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-8-4-practice.xlsx",
+       "name": "8.4 A self-updating top 10 - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-8-4-solution.xlsx",
+       "name": "8.4 A self-updating top 10 - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Sort, then take"
+      ],
+      [
+       0,
+       1,
+       "RANK.EQ and ties"
+      ],
+      [
+       1,
+       0,
+       "When two people tie for the last place"
+      ],
+      [
+       1,
+       1,
+       "Leaderboards for groups"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
   },
   {
    "n": 9,
    "title": "Auditing and readable formulas",
-   "summary": "Tracing precedents and dependents, Error Checking and the Watch Window, circular and volatile formulas, and LET and names.",
-   "lessons": 3
+   "summary": "Tracing precedents and dependents, Evaluate Formula, Error Checking, circular references and #REF!, volatile functions and the Watch Window, and names and LET for formulas people can read.",
+   "free": false,
+   "testInfo": "Auditing, errors, names and LET",
+   "lessons": [
+    {
+     "id": "c2-9-1",
+     "num": "9.1",
+     "title": "Tracing formulas: where numbers come from",
+     "summary": "Follow a formula back to its inputs and forward to what depends on it, see every formula at once, step through one with Evaluate, and find the planted mistakes in a projection.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Trace a formula’s precedents and a cell’s dependents.",
+      "Show every formula at once to spot typed-in numbers and broken patterns.",
+      "Step through a formula with Evaluate Formula and F9.",
+      "Find and fix a hard-coded number, a wrong reference and a total that misses a row."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-9-1-notes.docx",
+       "name": "9.1 Tracing formulas: where numbers come from - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-9-1-practice.xlsx",
+       "name": "9.1 Tracing formulas: where numbers come from - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-9-1-solution.xlsx",
+       "name": "9.1 Tracing formulas: where numbers come from - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Precedents and dependents"
+      ],
+      [
+       0,
+       1,
+       "Show formulas: patterns jump out"
+      ],
+      [
+       1,
+       0,
+       "Evaluate Formula and F9"
+      ],
+      [
+       1,
+       1,
+       "Five-minute check of any sheet"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-9-2",
+     "num": "9.2",
+     "title": "Error checking, circular references and volatile functions",
+     "summary": "Read Excel’s green triangles, fix a total that includes itself, repair a #REF! and a broken pattern, know which functions recalculate all the time, and keep an eye on key cells with the Watch Window.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Use Error Checking’s green triangles: inconsistent formulas and numbers stored as text.",
+      "Find and fix a circular reference.",
+      "Repair a #REF! left by a deleted cell.",
+      "Know which functions are volatile, and use the Watch Window."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-9-2-notes.docx",
+       "name": "9.2 Error checking, circular references and volatile functions - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-9-2-practice.xlsx",
+       "name": "9.2 Error checking, circular references and volatile functions - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-9-2-solution.xlsx",
+       "name": "9.2 Error checking, circular references and volatile functions - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Green triangles"
+      ],
+      [
+       0,
+       1,
+       "Circular references"
+      ],
+      [
+       1,
+       0,
+       "#REF! after deleting"
+      ],
+      [
+       1,
+       1,
+       "Volatile functions and the Watch Window"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "c2-9-3",
+     "num": "9.3",
+     "title": "Readable formulas: names and LET",
+     "summary": "Give cells and ranges names so formulas read like sentences, name the steps inside a long formula with LET, and lay out long formulas so the next person (or you, next month) can follow them.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Name a cell or range with the Name Box, and manage names in the Name Manager.",
+      "Use names in formulas instead of locked addresses.",
+      "Name the steps of a long formula with LET, so each is worked out once.",
+      "Lay out and document long formulas so others can read them."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/c2-c2-9-3-notes.docx",
+       "name": "9.3 Readable formulas: names and LET - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/c2-c2-9-3-practice.xlsx",
+       "name": "9.3 Readable formulas: names and LET - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/c2-c2-9-3-solution.xlsx",
+       "name": "9.3 Readable formulas: names and LET - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Name the cells that matter"
+      ],
+      [
+       0,
+       1,
+       "Names for ranges and constants"
+      ],
+      [
+       1,
+       0,
+       "LET names the steps"
+      ],
+      [
+       1,
+       1,
+       "Lay it out so people can read it"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
   }
  ],
+ "upcoming": [],
  "project": {
   "title": "A college results and scholarship system",
-  "brief": "Totals, grades and ranks for 200 students in six subjects, attendance rules with a cut-off date, scholarships from a slab table, and a self-updating top 10, with no errors and no hard-coded numbers.",
-  "coming": true
+  "brief": "Totals, grades and ranks for 200 students in six subjects, attendance and fee cut-off rules, scholarships from a slab table, a department summary and a self-updating top 10, with no errors and no hard-coded numbers.",
+  "coming": false
  },
  "exam": {
   "questions": 40,
@@ -761,7 +2058,7 @@
   "pass": 75,
   "attempts": 3,
   "gapHours": 48,
-  "coming": true
+  "coming": false
  },
  "downloads": [
   {

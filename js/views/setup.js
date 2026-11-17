@@ -9,8 +9,8 @@ import { runTest, questionsFrom, shuffleOpts } from './tests.js';
 import { shuffle, dateField, readDate } from '../ui.js';
 import { buildPlan, setBaseline, iso } from '../plan.js';
 import { today } from '../store.js';
-const CNAMES = { c1: 'Excel Foundations', c2: 'Formulas & Functions' };
-function givenCourses() { const c = Object.keys(CNAMES).filter(k => session.has(k)).map(k => `<b>${CNAMES[k]}</b>`); return c.length ? c.join(' and ') : '<b>Excel Foundations</b>'; }
+const CNAMES = { c1: 'Excel Foundations', c2: 'Formulas & Functions', p1: 'Excel for Data Analysis', p2: 'Data Visualisation & Dashboards' };
+function givenCourses() { const c = Object.keys(CNAMES).filter(k => session.has(k)).map(k => `<b>${CNAMES[k]}</b>`); return !c.length ? '<b>Excel Foundations</b>' : c.length === 1 ? c[0] : c.slice(0, -1).join(', ') + ' and ' + c[c.length - 1]; }
 
 const STEPS = ['welcome', 'look', 'name', 'why', 'level', 'tone', 'rhythm', 'computer', 'plan'];
 export const WHY = [['job', 'A job or interviews'], ['college', 'College or exams'], ['business', 'My own business'], ['work', 'Getting faster at work'], ['curious', 'Just curious']];

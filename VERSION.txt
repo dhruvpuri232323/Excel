@@ -1,3 +1,8 @@
-Sheetah site update v5 (7 Nov 2026)
-C1 complete + C2 Modules 1-3. Demo welcome names both courses.
-Copy everything in this folder into the TOP of your repository folder, next to index.html.
+Sheetah site update v38 (18 Nov 2026)
+P6 · Automation: Macros, VBA & Office Scripts is now complete: the course project and the final exam are out.
+- Course project, a one-click monthly report for Nilgiri Tea Traders: learners build a macro workbook that combines the branch files in a folder, checks every row, builds a summary, saves it as a PDF and prepares the email, all from one button. They upload the .xlsm; Sheetah reads the macros out of the file and runs them on its own copy of the branch files: October's, November's (which learners never see), twice in a row, and with an empty folder. 24 checks, pass mark 70%.
+- Final exam: 90 minutes, 40 questions and 6 practical tasks (VBA and Office Scripts labs), drawn from a bank of 218 questions and 57 tasks, with about a fifth revisiting C1 and C2.
+Also: Range("A1,A3:D3") with several areas now works in VBA labs, and a cell formatted as Text keeps what is typed as text.
+Nothing to change on the Admin page: students who already have P6 get the project and exam.
+Upload as README section 0 says, but only two drags are needed this time: (1) everything except content; (2) inside content, the p6 folder together with catalog.json and library.json. The other course folders have not changed.
+data/students.json is NOT in this zip and does not need to change.

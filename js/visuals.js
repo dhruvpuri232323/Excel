@@ -2,6 +2,7 @@
 // the idea instead of describing it: nested boxes, a cell address map, a static mini sheet with highlights,
 // icon cards, a flow of steps, big numbers, an analogy, before/after sheets and a map of the Excel window.
 import { esc, md } from './ui.js';
+import { chartSVG } from './charts.js';
 
 const colName = n => { let s = ''; n++; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; };
 const colNum = s => [...s].reduce((a, ch) => a * 26 + ch.charCodeAt(0) - 64, 0) - 1;
@@ -45,6 +46,24 @@ const R = {
   icons(v) { return `<div class="d-icons cols${v.cols || Math.min(4, v.items.length)}">${v.items.map(([i, t, s]) => `<div class="ic"><span class="ic-i">${esc(i)}</span><b>${md(t)}</b>${s ? `<small>${md(s)}</small>` : ''}</div>`).join('')}</div>`; },
   // what happens, step by step, with arrows
   flow(v) { return `<div class="d-flow">${v.items.map(([i, t, s], k) => `${k ? '<span class="fl-arrow" aria-hidden="true"></span>' : ''}<div class="fl"><span class="fl-i">${esc(i)}</span><b>${md(t)}</b>${s ? `<small>${md(s)}</small>` : ''}</div>`).join('')}</div>`; },
+  // a simple bar chart: [label, value, note, tone]; fmt 'pct' | 'inr' | 'num'
+  bars(v) { const max = Math.max(...v.items.map(i => Math.abs(i[1])), 1e-9); const f = x => v.fmt === 'pct' ? (x * 100).toFixed(v.dp ?? 0) + '%' : v.fmt === 'inr' ? '₹' + Math.round(x).toLocaleString('en-IN') : (+x).toLocaleString('en-IN', { maximumFractionDigits: v.dp ?? 2 });
+    return `<div class="d-bars">${v.title ? `<div class="db-t">${md(v.title)}</div>` : ''}${v.items.map(([l, x, note, tone]) => `<div class="db-r ${tone || ''}"><span class="db-l">${esc(l)}</span><span class="db-b"><i style="width:${Math.max(1, Math.abs(x) / max * 100).toFixed(1)}%"></i></span><span class="db-v">${esc(f(x))}${note ? ` <small>${md(note)}</small>` : ''}</span></div>`).join('')}</div>`; }, // the slide shows the caption under every visual
+  // a scatter chart: points [x, y, label, tone], optional best-fit line
+  scatter(v) { const P = v.points, W = 520, Hh = 280, L = 66, B = 34, T = 12, R = 14; const xs = P.map(p => p[0]), ys = P.map(p => p[1]);
+    const nice = (lo, hi) => { const raw = (hi - lo) / 4 || 1, m = Math.pow(10, Math.floor(Math.log10(raw))), st = [1, 2, 2.5, 5, 10].map(k => k * m).find(k => k >= raw); return { lo: Math.floor(lo / st) * st, hi: Math.ceil(hi / st) * st, st }; };
+    const nx = nice(v.xmin ?? Math.min(...xs), v.xmax ?? Math.max(...xs)), ny = nice(v.ymin ?? Math.min(0, ...ys), v.ymax ?? Math.max(...ys));
+    const x0 = nx.lo, x1 = nx.hi, y0 = ny.lo, y1 = ny.hi;
+    const X = x => L + (x - x0) / ((x1 - x0) || 1) * (W - L - R), Y = y => Hh - B - (y - y0) / ((y1 - y0) || 1) * (Hh - B - T); const f = (n, k) => k === 'pct' ? Math.round(n * 100) + '%' : k === 'inr' ? '₹' + Math.round(n).toLocaleString('en-IN') : (+n).toLocaleString('en-IN', { maximumFractionDigits: 1 });
+    let line = ''; if (v.line !== false && P.length > 1) { const n = P.length, mx = xs.reduce((a, b) => a + b) / n, my = ys.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0; P.forEach(([x, y]) => { sxy += (x - mx) * (y - my); sxx += (x - mx) ** 2; }); const b = sxx ? sxy / sxx : 0, a = my - b * mx; const xa = Math.min(...xs), xb = Math.max(...xs); line = `<line x1="${X(xa)}" y1="${Y(a + b * xa)}" x2="${X(xb)}" y2="${Y(a + b * xb)}" class="sc-line"/>`; }
+    const tk = (n, fn) => { const o = []; for (let t = n.lo; t <= n.hi + n.st / 2; t += n.st) o.push(fn(t)); return o.join(''); };
+    const ticks = tk(ny, t => `<line x1="${L}" y1="${Y(t)}" x2="${W - R}" y2="${Y(t)}" class="sc-grid"/><text x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${esc(f(t, v.fmty))}</text>`) + tk(nx, t => `<text x="${X(t)}" y="${Hh - B + 16}" text-anchor="middle">${esc(f(t, v.fmtx))}</text>`);
+    return `<figure class="d-scatter"><svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${esc((v.ylabel || '') + ' against ' + (v.xlabel || ''))}">${ticks}<line x1="${L}" y1="${Hh - B}" x2="${W - R}" y2="${Hh - B}" class="sc-axis"/><line x1="${L}" y1="${T}" x2="${L}" y2="${Hh - B}" class="sc-axis"/>${line}
+      ${P.map(([x, y, lab, tone]) => { const right = X(x) > W * 0.78; return `<circle cx="${X(x).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="${tone ? 6 : 4.5}" class="sc-pt ${tone || ''}"/>${lab ? `<text x="${(X(x) + (right ? -9 : 8)).toFixed(1)}" y="${(Y(y) + (right ? 4 : -6)).toFixed(1)}" text-anchor="${right ? 'end' : 'start'}" class="sc-lab">${esc(lab)}</text>` : ''}`; }).join('')}
+      <text x="${(L + W - R) / 2}" y="${Hh - 4}" text-anchor="middle" class="sc-ax">${esc(v.xlabel || '')}</text><text x="12" y="${(T + Hh - B) / 2}" text-anchor="middle" transform="rotate(-90 12 ${(T + Hh - B) / 2})" class="sc-ax">${esc(v.ylabel || '')}</text></svg></figure>`; },
+  // a chart drawn from its data (P2), and a before-and-after pair of charts
+  chart(v) { return `<figure class="d-chart">${chartSVG(v.spec)}</figure>`; },
+  chartpair(v) { const [l1, l2] = v.labels || ['Before', 'After']; return `<div class="d-chpair"><div><span class="ba-l">${esc(l1)}</span>${chartSVG({ width: 440, height: 290, ...v.before })}</div>${v.action ? `<div class="ba-mid"><span class="ba-act">${md(v.action)}</span><span class="ba-arrow" aria-hidden="true"></span></div>` : ''}<div><span class="ba-l">${esc(l2)}</span>${chartSVG({ width: 440, height: 290, ...v.after })}</div></div>`; },
   // big numbers that make a point
   bignum(v) { return `<div class="d-big">${v.items.map(([n, l, s]) => `<div class="bn"><b>${esc(n)}</b><span>${md(l)}</span>${s ? `<small>${md(s)}</small>` : ''}</div>`).join('')}</div>`; },
   // something familiar on the left, the Excel idea on the right

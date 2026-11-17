@@ -1,0 +1,2210 @@
+{
+ "id": "p2",
+ "code": "P2",
+ "title": "Data Visualisation & Dashboards",
+ "level": "Specialist",
+ "hours": 23,
+ "summary": "P2 teaches you to choose the right chart, design it so the point is obvious, and build interactive dashboards that answer a manager’s questions at a glance.",
+ "prereq": "Builds on C1 · Excel Foundations and C2 · Formulas & Functions. P1’s PivotTables module helps with Module 6.",
+ "outcomes": [
+  "Pick the right chart for a comparison, trend, composition, distribution or relationship.",
+  "Remove clutter and use colour and labels so the point lands at a glance.",
+  "Build combo, waterfall, histogram, Pareto, box-and-whisker, funnel, treemap and map charts.",
+  "Make charts interactive with drop-downs, form controls and dynamic ranges.",
+  "Show patterns inside cells with conditional formatting, sparklines and icons.",
+  "Connect PivotCharts, slicers and timelines.",
+  "Plan, design and build a one-page dashboard.",
+  "Present findings with clear titles, accessible design and safe sharing."
+ ],
+ "modules": [
+  {
+   "n": 1,
+   "title": "Seeing data clearly",
+   "summary": "What a chart is for, choosing a chart by the purpose of the question, and removing clutter with colour, labels and titles that state the finding.",
+   "free": true,
+   "testInfo": "Chart purpose, choosing a chart, clutter and colour",
+   "lessons": [
+    {
+     "id": "p2-1-1",
+     "num": "1.1",
+     "title": "What a chart is for",
+     "summary": "A chart answers one question for one audience with one message. Decide those first, write the message as the title, and know when a table does the job better.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Say the question a chart answers, who it is for and the one message it carries.",
+      "Tell a chart made to explore data from one made to explain it.",
+      "Write a title that states the finding, not the topic.",
+      "Decide when a table serves the reader better than a chart."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p2-p2-1-1-notes.docx",
+       "name": "1.1 What a chart is for - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p2-p2-1-1-practice.xlsx",
+       "name": "1.1 What a chart is for - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p2-p2-1-1-solution.xlsx",
+       "name": "1.1 What a chart is for - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A table makes you read; a chart makes you see"
+      ],
+      [
+       0,
+       1,
+       "Question, audience, one message"
+      ],
+      [
+       0,
+       2,
+       "Exploring and explaining"
+      ],
+      [
+       1,
+       0,
+       "The title says the finding"
+      ],
+      [
+       1,
+       1,
+       "When a table beats a chart"
+      ],
+      [
+       1,
+       2,
+       "The five-second test"
+      ]
+     ],
+     "tasks": [
+      "Before charting, decide the message. Which sentence answers Ravi’s question best?",
+      "In F2, work out South’s share of total revenue: South’s revenue divided by the total. (It’",
+      "Chart revenue by region for Ravi. Choose the data (A1:B6: headings and the five regions, n",
+      "The finance team needs each region’s exact revenue, to one decimal, for the board pack’s a",
+      "You made twelve quick charts to understand the regional data. What do you send Ravi?"
+     ],
+     "real": false
+    },
+    {
+     "id": "p2-1-2",
+     "num": "1.2",
+     "title": "Choosing by purpose",
+     "summary": "Five kinds of question, five chart families: bars to compare, lines for trends, pies and stacked bars for parts of a whole, histograms for spread and scatter charts for relationships.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Sort a question into comparison, trend, composition, distribution or relationship.",
+      "Pick the chart family that fits each purpose.",
+      "Insert each kind of chart in Excel and change a chart’s type.",
+      "Spot a chart whose type fights its question."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p2-p2-1-2-notes.docx",
+       "name": "1.2 Choosing by purpose - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p2-p2-1-2-practice.xlsx",
+       "name": "1.2 Choosing by purpose - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p2-p2-1-2-solution.xlsx",
+       "name": "1.2 Choosing by purpose - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Five kinds of question"
+      ],
+      [
+       0,
+       1,
+       "Comparison: bars"
+      ],
+      [
+       0,
+       2,
+       "Trend: lines"
+      ],
+      [
+       1,
+       0,
+       "Composition: parts of a whole"
+      ],
+      [
+       1,
+       1,
+       "Distribution: how values spread"
+      ],
+      [
+       1,
+       2,
+       "Relationship: scatter"
+      ]
+     ],
+     "tasks": [
+      "“Which product category sells most?” Chart A1:B7 with the type that fits a comparison.",
+      "“How did revenue move through the year?” Chart the months in D1:E13.",
+      "“What share of revenue comes from each store format?” Chart G1:H4.",
+      "“Do bigger stores sell more?” Chart store size against revenue: just the two columns of nu",
+      "“Are most of our stores small, with a few big ones?” Which chart answers it?",
+      "“Do stores with more staff sell more per day?” Which purpose and chart?"
+     ],
+     "real": false
+    },
+    {
+     "id": "p2-1-3",
+     "num": "1.3",
+     "title": "Clutter, colour and accessibility",
+     "summary": "Delete everything that doesn’t help the message, label directly, use one accent colour against grey, choose colours everyone can tell apart, and add alt text.",
+     "minutes": 45,
+     "free": true,
+     "objectives": [
+      "Remove chart junk: legends for one series, heavy gridlines, borders, 3-D and spare decimals.",
+      "Label series and values directly instead of making readers match colours to a legend.",
+      "Use one accent colour for the point and grey for the rest.",
+      "Choose colour-blind-safe colours and write alt text."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p2-p2-1-3-notes.docx",
+       "name": "1.3 Clutter, colour and accessibility - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p2-p2-1-3-practice.xlsx",
+       "name": "1.3 Clutter, colour and accessibility - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p2-p2-1-3-solution.xlsx",
+       "name": "1.3 Clutter, colour and accessibility - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "a/p2-p2-1-3-real.xlsx",
+       "name": "1.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Chart junk"
+      ],
+      [
+       0,
+       1,
+       "What to delete"
+      ],
+      [
+       0,
+       2,
+       "Label directly"
+      ],
+      [
+       1,
+       0,
+       "One accent colour, the rest grey"
+      ],
+      [
+       1,
+       1,
+       "Colours everyone can tell apart"
+      ],
+      [
+       1,
+       2,
+       "Titles, alt text and contrast"
+      ]
+     ],
+     "tasks": [
+      "Six categories as a pie, with a legend. Redraw it so the categories are easy to compare: a",
+      "Twelve months as columns with a legend, gridlines and Chart Title. Fix it: the right type ",
+      "Growth by region, every column the same blue, titled “Growth by region”. Highlight East, t",
+      "This year against last year, with a legend at the right. Label each line at its end and re",
+      "You need two colours that almost everyone can tell apart. Which pair?",
+      "Which is the best alt text for the East chart?"
+     ],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Core charts done right",
+   "summary": "Column and bar charts that are sorted, labelled and start at zero; line and area charts; the few places pie charts work; scatter and combo charts with an honest secondary axis.",
+   "free": false,
+   "testInfo": "Bars, lines, pies, scatter and combo charts",
+   "lessons": [
+    {
+     "id": "p2-2-1",
+     "num": "2.1",
+     "title": "Column and bar charts",
+     "summary": "Bars compare amounts. Choose columns or bars, sort them biggest first, start the axis at zero, label them, and know when to put two series side by side.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Choose between a column chart and a bar chart.",
+      "Sort bars so the biggest comes first, and fix Excel’s upside-down bar order.",
+      "Start the value axis at zero, and explain why a cut axis misleads.",
+      "Compare two series with clustered columns, and know when stacking helps."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-2-1-notes.docx",
+       "name": "2.1 Column and bar charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-2-1-practice.xlsx",
+       "name": "2.1 Column and bar charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-2-1-solution.xlsx",
+       "name": "2.1 Column and bar charts - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-2-1-real.xlsx",
+       "name": "2.1 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Columns or bars?"
+      ],
+      [
+       0,
+       1,
+       "Sort biggest first"
+      ],
+      [
+       0,
+       2,
+       "Bars start at zero"
+      ],
+      [
+       1,
+       0,
+       "Label the bars, drop the clutter"
+      ],
+      [
+       1,
+       1,
+       "Excel draws bar charts bottom-up"
+      ],
+      [
+       1,
+       2,
+       "Two series: side by side or stacked?"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p2-2-2",
+     "num": "2.2",
+     "title": "Line and area charts",
+     "summary": "Lines show change over time. Compare this year with last, decide where the axis starts, stop before the chart turns into spaghetti, and know what area charts are good for.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Chart a trend over time as a line, with periods in order.",
+      "Compare two years with a highlighted line and a grey one, labelled at their ends.",
+      "Decide where a line chart’s axis should start.",
+      "Tame many lines by highlighting one, and choose an area chart only when the total matters."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-2-2-notes.docx",
+       "name": "2.2 Line and area charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-2-2-practice.xlsx",
+       "name": "2.2 Line and area charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-2-2-solution.xlsx",
+       "name": "2.2 Line and area charts - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A line joins the months"
+      ],
+      [
+       0,
+       1,
+       "This year against last year"
+      ],
+      [
+       0,
+       2,
+       "Where a line’s axis starts"
+      ],
+      [
+       1,
+       0,
+       "Spaghetti"
+      ],
+      [
+       1,
+       1,
+       "Highlight one line, grey the rest"
+      ],
+      [
+       1,
+       2,
+       "Area charts: a total and its parts"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-2-3",
+     "num": "2.3",
+     "title": "Pie and doughnut charts",
+     "summary": "A pie answers one question: how big is this share of the whole? Learn the narrow cases where pies work, how to make one readable, and what to use instead.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Say when a pie or doughnut chart works: a few parts of one whole.",
+      "Format a pie: biggest slice from 12 o’clock, labels with names and percentages, no legend.",
+      "Choose a bar chart when slices are many or similar.",
+      "Compare several mixes with a 100% stacked bar instead of several pies."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-2-3-notes.docx",
+       "name": "2.3 Pie and doughnut charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-2-3-practice.xlsx",
+       "name": "2.3 Pie and doughnut charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-2-3-solution.xlsx",
+       "name": "2.3 Pie and doughnut charts - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "One question: how big a share?"
+      ],
+      [
+       0,
+       1,
+       "Where pies fail"
+      ],
+      [
+       0,
+       2,
+       "Rules for a pie that works"
+      ],
+      [
+       1,
+       0,
+       "A doughnut with the total in the middle"
+      ],
+      [
+       1,
+       1,
+       "Comparing mixes: 100% stacked bars"
+      ],
+      [
+       1,
+       2,
+       "Several pies side by side"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-2-4",
+     "num": "2.4",
+     "title": "Scatter and combo charts",
+     "summary": "Scatter charts show whether two measures move together. Combo charts put two measures with different scales on one chart, and the secondary axis must be used honestly.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Chart two measures against each other as a scatter, with a trendline.",
+      "Read a scatter’s direction, strength and outliers, and measure strength with CORREL.",
+      "Build a combo chart with a second measure on a secondary axis.",
+      "Use the secondary axis honestly, or choose two charts instead."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-2-4-notes.docx",
+       "name": "2.4 Scatter and combo charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-2-4-practice.xlsx",
+       "name": "2.4 Scatter and combo charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-2-4-solution.xlsx",
+       "name": "2.4 Scatter and combo charts - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-2-4-real.xlsx",
+       "name": "2.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Does a bigger store sell more?"
+      ],
+      [
+       0,
+       1,
+       "Read the scatter: direction, strength, outliers"
+      ],
+      [
+       0,
+       2,
+       "Together is not because"
+      ],
+      [
+       1,
+       0,
+       "Two measures, two scales"
+      ],
+      [
+       1,
+       1,
+       "Use the second axis honestly"
+      ],
+      [
+       1,
+       2,
+       "Or use two charts"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Advanced chart types",
+   "summary": "Histograms, Pareto and box plots, waterfall charts, funnels and treemaps, map and stock charts, and charts built by hand: Gantt, variance and bullet charts.",
+   "free": false,
+   "testInfo": "Distributions, waterfalls, funnels, hierarchies, maps and hand-built charts",
+   "lessons": [
+    {
+     "id": "p2-3-1",
+     "num": "3.1",
+     "title": "Histograms, Pareto and box plots",
+     "summary": "How values spread: histograms with sensible bins, Pareto charts that show the vital few, and box plots that compare groups in one glance.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Make a histogram and choose its bin width, underflow and overflow bins.",
+      "Read a histogram’s peak, spread and tail.",
+      "Make a Pareto chart and find the few causes behind most of a problem.",
+      "Read and compare box-and-whisker plots: median, quartiles, whiskers and outliers."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-3-1-notes.docx",
+       "name": "3.1 Histograms, Pareto and box plots - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-3-1-practice.xlsx",
+       "name": "3.1 Histograms, Pareto and box plots - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-3-1-solution.xlsx",
+       "name": "3.1 Histograms, Pareto and box plots - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A histogram counts values in ranges"
+      ],
+      [
+       0,
+       1,
+       "The bin width changes the story"
+      ],
+      [
+       0,
+       2,
+       "Underflow and overflow bins"
+      ],
+      [
+       1,
+       0,
+       "Pareto: the vital few"
+      ],
+      [
+       1,
+       1,
+       "Box and whisker: five numbers in one shape"
+      ],
+      [
+       1,
+       2,
+       "Compare groups with box plots"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-3-2",
+     "num": "3.2",
+     "title": "Waterfall charts",
+     "summary": "A waterfall shows how you get from one number to another: revenue down to profit, or last year up to this year. Set the totals, colour the rises and falls, and keep it short.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Make a waterfall chart from a list of starting value, changes and totals.",
+      "Set the right points as totals, so they stand on the axis.",
+      "Build a year-on-year bridge that shows what drove the change.",
+      "Know the old stacked-column method, for Excel 2013 and earlier."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-3-2-notes.docx",
+       "name": "3.2 Waterfall charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-3-2-practice.xlsx",
+       "name": "3.2 Waterfall charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-3-2-solution.xlsx",
+       "name": "3.2 Waterfall charts - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "How revenue becomes profit"
+      ],
+      [
+       0,
+       1,
+       "Totals stand on the axis"
+      ],
+      [
+       0,
+       2,
+       "Increase, decrease, total"
+      ],
+      [
+       1,
+       0,
+       "Last year to this year"
+      ],
+      [
+       1,
+       1,
+       "Keep it readable"
+      ],
+      [
+       1,
+       2,
+       "Before Excel 2016: the stacked-column trick"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-3-3",
+     "num": "3.3",
+     "title": "Funnel, treemap and sunburst",
+     "summary": "Funnels show where people drop out of a process; treemaps and sunbursts show how a whole splits into categories and sub-categories.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Make a funnel chart of stages, and find the biggest drop.",
+      "Work out each stage’s share of the first stage.",
+      "Make a treemap of categories and sub-categories, and read it.",
+      "Know when a sunburst helps, and when a bar chart is clearer."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-3-3-notes.docx",
+       "name": "3.3 Funnel, treemap and sunburst - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-3-3-practice.xlsx",
+       "name": "3.3 Funnel, treemap and sunburst - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-3-3-solution.xlsx",
+       "name": "3.3 Funnel, treemap and sunburst - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Where do people drop out?"
+      ],
+      [
+       0,
+       1,
+       "Read the drop, not just the bars"
+      ],
+      [
+       0,
+       2,
+       "When a funnel misleads"
+      ],
+      [
+       1,
+       0,
+       "Treemap: rectangles inside rectangles"
+      ],
+      [
+       1,
+       1,
+       "Sunburst: rings for levels"
+      ],
+      [
+       1,
+       2,
+       "Treemap, sunburst or bar?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-3-4",
+     "num": "3.4",
+     "title": "Map and stock charts",
+     "summary": "Filled maps shade regions by value when geography is the point; stock charts show a price’s open, high, low and close. Both need their data laid out exactly as Excel expects.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Lay out data for a filled map: place names Excel recognises, with the country.",
+      "Decide when a map helps, and when a sorted bar chart is clearer.",
+      "Arrange price data in the order a stock chart needs: date, open, high, low, close.",
+      "Read a candlestick: hollow for up days, filled for down days."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-3-4-notes.docx",
+       "name": "3.4 Map and stock charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-3-4-practice.xlsx",
+       "name": "3.4 Map and stock charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-3-4-solution.xlsx",
+       "name": "3.4 Map and stock charts - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Shade regions by value"
+      ],
+      [
+       0,
+       1,
+       "Names Excel can find"
+      ],
+      [
+       0,
+       2,
+       "Map or bar?"
+      ],
+      [
+       1,
+       0,
+       "Open, high, low, close"
+      ],
+      [
+       1,
+       1,
+       "The columns must be in order"
+      ],
+      [
+       1,
+       2,
+       "Use stock charts for any range"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-3-5",
+     "num": "3.5",
+     "title": "Built by hand: Gantt, variance and bullet charts",
+     "summary": "Some charts Excel doesn’t have: you build them from ordinary ones. A Gantt chart from stacked bars, a variance chart that colours misses, and a bullet chart that shows a result against its target.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Build a Gantt chart from a stacked bar chart with an invisible first series.",
+      "Set a date axis to start on the project’s first day.",
+      "Show variance against target with Invert if negative.",
+      "Read a bullet chart, and know how one is built."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-3-5-notes.docx",
+       "name": "3.5 Built by hand: Gantt, variance and bullet charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-3-5-practice.xlsx",
+       "name": "3.5 Built by hand: Gantt, variance and bullet charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-3-5-solution.xlsx",
+       "name": "3.5 Built by hand: Gantt, variance and bullet charts - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-3-5-real.xlsx",
+       "name": "3.5 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A Gantt chart from stacked bars"
+      ],
+      [
+       0,
+       1,
+       "Start the axis on day one"
+      ],
+      [
+       0,
+       2,
+       "Variance: colour the misses"
+      ],
+      [
+       1,
+       0,
+       "Bullet chart: result, target and bands"
+      ],
+      [
+       1,
+       1,
+       "How a bullet chart is built"
+      ],
+      [
+       1,
+       2,
+       "When to build by hand"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Dynamic, interactive charts",
+   "summary": "Charts that grow with Tables and dynamic arrays, drop-down-driven charts, form controls, and titles and highlights that follow the selection.",
+   "free": false,
+   "testInfo": "Tables and spill ranges as chart sources, drop-downs, form controls, linked titles and highlights",
+   "lessons": [
+    {
+     "id": "p2-4-1",
+     "num": "4.1",
+     "title": "Charts that grow: Tables and dynamic arrays",
+     "summary": "Charts that pick up new data by themselves: make the source an Excel Table, or a dynamic-array formula, and the chart follows.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Turn a range into an Excel Table and give it a name.",
+      "Make a chart from a Table, so new rows join the chart.",
+      "Read and write structured references like Quarterly[Revenue].",
+      "Chart a dynamic-array result, like a top-N list, so the chart grows and shrinks with it."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-4-1-notes.docx",
+       "name": "4.1 Charts that grow: Tables and dynamic arrays - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-4-1-practice.xlsx",
+       "name": "4.1 Charts that grow: Tables and dynamic arrays - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-4-1-solution.xlsx",
+       "name": "4.1 Charts that grow: Tables and dynamic arrays - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A chart on a plain range stays the same size"
+      ],
+      [
+       0,
+       1,
+       "Format as a Table: Ctrl+T"
+      ],
+      [
+       0,
+       2,
+       "Structured references"
+      ],
+      [
+       1,
+       0,
+       "A top-N list in one formula"
+      ],
+      [
+       1,
+       1,
+       "Chart the spill range"
+      ],
+      [
+       1,
+       2,
+       "Tables or dynamic arrays?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-4-2",
+     "num": "4.2",
+     "title": "Drop-down-driven charts",
+     "summary": "One chart for many views: a drop-down list picks the region, a formula pulls its numbers into a helper range, and the chart draws the helper range.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Add a drop-down list with Data Validation, from cells or typed items.",
+      "Pull the picked item’s data into a helper range with XLOOKUP (or INDEX and MATCH).",
+      "Chart the helper range, so one chart shows whichever item is picked.",
+      "Keep the scale honest when readers flick between items."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-4-2-notes.docx",
+       "name": "4.2 Drop-down-driven charts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-4-2-practice.xlsx",
+       "name": "4.2 Drop-down-driven charts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-4-2-solution.xlsx",
+       "name": "4.2 Drop-down-driven charts - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Five charts, or one with a picker"
+      ],
+      [
+       0,
+       1,
+       "A drop-down list with Data Validation"
+      ],
+      [
+       0,
+       2,
+       "Make the picker easy to find"
+      ],
+      [
+       1,
+       0,
+       "XLOOKUP pulls the picked column"
+      ],
+      [
+       1,
+       1,
+       "Chart the helper, not the data"
+      ],
+      [
+       1,
+       2,
+       "Compare the pick with the rest"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-4-3",
+     "num": "4.3",
+     "title": "Form controls",
+     "summary": "Combo boxes, scroll bars, option buttons and check boxes on the sheet: each writes a number (or TRUE/FALSE) to a cell, and formulas turn that into the chart’s data.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Show the Developer tab and insert form controls.",
+      "Link a control to a cell and read what it writes there.",
+      "Turn a control’s number into data with INDEX, CHOOSECOLS and TAKE.",
+      "Show or hide a series with a check box and NA()."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-4-3-notes.docx",
+       "name": "4.3 Form controls - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-4-3-practice.xlsx",
+       "name": "4.3 Form controls - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-4-3-solution.xlsx",
+       "name": "4.3 Form controls - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The Developer tab and its controls"
+      ],
+      [
+       0,
+       1,
+       "Every control writes to its cell link"
+      ],
+      [
+       0,
+       2,
+       "From the control’s number to the data"
+      ],
+      [
+       1,
+       0,
+       "Pick a category and a window"
+      ],
+      [
+       1,
+       1,
+       "A check box shows or hides a series"
+      ],
+      [
+       1,
+       2,
+       "Drop-down list or form control?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-4-4",
+     "num": "4.4",
+     "title": "Dynamic titles and highlights",
+     "summary": "Titles that rewrite themselves and highlights that move: link the title to a cell built by a formula, and colour the picked bar with a helper series.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Link a chart title to a cell.",
+      "Build the title’s text with & and TEXT, so it states the finding for whatever is picked.",
+      "Highlight the picked (or the largest) item with helper series and NA().",
+      "Put it together: a drop-down that moves the highlight and rewrites the title."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-4-4-notes.docx",
+       "name": "4.4 Dynamic titles and highlights - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-4-4-practice.xlsx",
+       "name": "4.4 Dynamic titles and highlights - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-4-4-solution.xlsx",
+       "name": "4.4 Dynamic titles and highlights - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-4-4-real.xlsx",
+       "name": "4.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Link the title to a cell"
+      ],
+      [
+       0,
+       1,
+       "Build the sentence with a formula"
+      ],
+      [
+       0,
+       2,
+       "Notes and labels from cells too"
+      ],
+      [
+       1,
+       0,
+       "Highlight the pick with two series"
+      ],
+      [
+       1,
+       1,
+       "Highlight the largest by itself"
+      ],
+      [
+       1,
+       2,
+       "Putting it together"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Visuals inside cells",
+   "summary": "Data bars, colour scales and icon sets, rules written as formulas, sparklines, and number formats, REPT bars and the IMAGE function.",
+   "free": false,
+   "testInfo": "Conditional formatting, formula rules, sparklines, custom number formats and REPT",
+   "lessons": [
+    {
+     "id": "p2-5-1",
+     "num": "5.1",
+     "title": "Data bars, colour scales and icon sets",
+     "summary": "Three ways to make a column of numbers readable at a glance, each for a different question, and the traps in how Excel sets their scales.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Add data bars, a colour scale and an icon set with Conditional Formatting.",
+      "Choose between them: size, pattern or status.",
+      "Explain how Excel sets the scale of each, and when that misleads.",
+      "Apply each rule to exactly the cells that should be compared with each other."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-5-1-notes.docx",
+       "name": "5.1 Data bars, colour scales and icon sets - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-5-1-practice.xlsx",
+       "name": "5.1 Data bars, colour scales and icon sets - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-5-1-solution.xlsx",
+       "name": "5.1 Data bars, colour scales and icon sets - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A table that reads like a chart"
+      ],
+      [
+       0,
+       1,
+       "Data bars: how big?"
+      ],
+      [
+       0,
+       2,
+       "Colour scales: where are the highs and lows?"
+      ],
+      [
+       1,
+       0,
+       "Icon sets: good, middling, bad"
+      ],
+      [
+       1,
+       1,
+       "The selection sets the scale"
+      ],
+      [
+       1,
+       2,
+       "Keep it honest and quiet"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-5-2",
+     "num": "5.2",
+     "title": "Rules written as formulas",
+     "summary": "Highlight cells by a test: the built-in rules, and your own formulas for whole rows, a moving target, or a pick from a drop-down.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Use Highlight Cells and Top/Bottom rules.",
+      "Write a formula rule and get its $ signs right.",
+      "Highlight whole rows from a test on one column.",
+      "Drive a rule from an input cell, so the highlight follows a pick."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-5-2-notes.docx",
+       "name": "5.2 Rules written as formulas - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-5-2-practice.xlsx",
+       "name": "5.2 Rules written as formulas - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-5-2-solution.xlsx",
+       "name": "5.2 Rules written as formulas - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Highlight Cells Rules"
+      ],
+      [
+       0,
+       1,
+       "Top/Bottom Rules"
+      ],
+      [
+       0,
+       2,
+       "When the built-in rules run out"
+      ],
+      [
+       1,
+       0,
+       "Write it for the first cell"
+      ],
+      [
+       1,
+       1,
+       "Highlight whole rows"
+      ],
+      [
+       1,
+       2,
+       "Rules that follow an input"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-5-3",
+     "num": "5.3",
+     "title": "Sparklines",
+     "summary": "A whole trend in one cell: line, column and win/loss sparklines, the points worth marking, and the axis setting that decides whether rows can be compared.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Insert line, column and win/loss sparklines beside a table.",
+      "Mark the high, low and negative points.",
+      "Decide between each sparkline having its own axis and all sharing one.",
+      "Say when a sparkline is enough and when you need a chart."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-5-3-notes.docx",
+       "name": "5.3 Sparklines - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-5-3-practice.xlsx",
+       "name": "5.3 Sparklines - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-5-3-solution.xlsx",
+       "name": "5.3 Sparklines - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "What a sparkline is"
+      ],
+      [
+       0,
+       1,
+       "Insert › Sparklines"
+      ],
+      [
+       0,
+       2,
+       "Three types"
+      ],
+      [
+       1,
+       0,
+       "Mark the points that matter"
+      ],
+      [
+       1,
+       1,
+       "One axis each, or one for all?"
+      ],
+      [
+       1,
+       2,
+       "Sparkline or chart?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-5-4",
+     "num": "5.4",
+     "title": "Number formats, REPT bars and IMAGE",
+     "summary": "Symbols and colour from a number format, bars built from text, and pictures in cells: visuals that need no chart and no rule.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write a custom number format with sections, colours and symbols.",
+      "Scale large numbers to thousands or millions with a format.",
+      "Build an in-cell bar with REPT.",
+      "Know what the IMAGE function does and when it’s available."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-5-4-notes.docx",
+       "name": "5.4 Number formats, REPT bars and IMAGE - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-5-4-practice.xlsx",
+       "name": "5.4 Number formats, REPT bars and IMAGE - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-5-4-solution.xlsx",
+       "name": "5.4 Number formats, REPT bars and IMAGE - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-5-4-real.xlsx",
+       "name": "5.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A format has up to four sections"
+      ],
+      [
+       0,
+       1,
+       "Symbols in a format"
+      ],
+      [
+       0,
+       2,
+       "Thousands and millions with a comma"
+      ],
+      [
+       1,
+       0,
+       "REPT: a bar made of text"
+      ],
+      [
+       1,
+       1,
+       "Why bother, when there are data bars?"
+      ],
+      [
+       1,
+       2,
+       "IMAGE: a picture in a cell"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "PivotCharts, slicers and timelines",
+   "summary": "PivotCharts, slicers and timelines that control several PivotTables at once, and laying slicers out neatly.",
+   "free": false,
+   "testInfo": "PivotCharts, slicers, timelines, Report Connections and slicer layout",
+   "lessons": [
+    {
+     "id": "p2-6-1",
+     "num": "6.1",
+     "title": "PivotCharts",
+     "summary": "A chart that sits on a PivotTable: it summarises thousands of rows by itself, and re-draws when you filter, swap or refresh the PivotTable.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Create a PivotChart from a PivotTable or straight from data.",
+      "Explain how a PivotChart and its PivotTable stay linked.",
+      "Tidy a PivotChart: hide field buttons, sort, and give it a finding as a title.",
+      "Know what a PivotChart can’t do, and the workaround."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-6-1-notes.docx",
+       "name": "6.1 PivotCharts - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-6-1-practice.xlsx",
+       "name": "6.1 PivotCharts - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-6-1-solution.xlsx",
+       "name": "6.1 PivotCharts - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-6-1-real.xlsx",
+       "name": "6.1 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "From rows to a chart in two steps"
+      ],
+      [
+       0,
+       1,
+       "The two are one"
+      ],
+      [
+       0,
+       2,
+       "What SUMIFS would do"
+      ],
+      [
+       1,
+       0,
+       "Hide the field buttons"
+      ],
+      [
+       1,
+       1,
+       "What a PivotChart can’t do"
+      ],
+      [
+       1,
+       2,
+       "One PivotTable per chart"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p2-6-2",
+     "num": "6.2",
+     "title": "Slicers and timelines",
+     "summary": "Filter buttons that anyone can click, and a slider for dates. What a slicer really does: it adds one condition to every number.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Add a slicer to a PivotTable or a Table, and pick one or several items.",
+      "Add a timeline for a date field.",
+      "Explain a slicer as one more condition on each total.",
+      "Read which filters are on from the slicers themselves."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-6-2-notes.docx",
+       "name": "6.2 Slicers and timelines - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-6-2-practice.xlsx",
+       "name": "6.2 Slicers and timelines - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-6-2-solution.xlsx",
+       "name": "6.2 Slicers and timelines - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-6-2-real.xlsx",
+       "name": "6.2 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Filter buttons anyone can use"
+      ],
+      [
+       0,
+       1,
+       "A slicer is one more condition"
+      ],
+      [
+       0,
+       2,
+       "Slicers show what’s filtered"
+      ],
+      [
+       1,
+       0,
+       "A timeline is a slicer for dates"
+      ],
+      [
+       1,
+       1,
+       "What a timeline needs"
+      ],
+      [
+       1,
+       2,
+       "Slicer or timeline, or a drop-down?"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p2-6-3",
+     "num": "6.3",
+     "title": "One slicer, many PivotTables",
+     "summary": "Connect one slicer to every PivotTable on the page, lay slicers out as a tidy control strip, and show the selection’s headline numbers.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Connect a slicer to several PivotTables with Report Connections.",
+      "Explain why PivotTables must share a source to share a slicer.",
+      "Lay slicers out: columns, size, alignment and style.",
+      "Combine two slicers and handle selections with no data."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-6-3-notes.docx",
+       "name": "6.3 One slicer, many PivotTables - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-6-3-practice.xlsx",
+       "name": "6.3 One slicer, many PivotTables - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-6-3-solution.xlsx",
+       "name": "6.3 One slicer, many PivotTables - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-6-3-real.xlsx",
+       "name": "6.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Report Connections"
+      ],
+      [
+       0,
+       1,
+       "Same source, same cache"
+      ],
+      [
+       0,
+       2,
+       "Two slicers, two conditions"
+      ],
+      [
+       1,
+       0,
+       "A control strip, not scattered panels"
+      ],
+      [
+       1,
+       1,
+       "Style and settings"
+      ],
+      [
+       1,
+       2,
+       "Say what’s selected"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Designing and building a dashboard",
+   "summary": "Planning from the reader’s questions, layout, a calculation layer, wiring the controls, and making it fast, tidy and printable.",
+   "free": false,
+   "testInfo": "Planning, layout, the calculation layer, interactivity, and performance and polish",
+   "lessons": [
+    {
+     "id": "p2-7-1",
+     "num": "7.1",
+     "title": "Plan before you build",
+     "summary": "A dashboard answers a few questions for one audience on one page. Decide the questions, the numbers and the sketch before opening Excel.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Say what a dashboard is, and what it isn’t.",
+      "Start from the reader: who they are and the questions they ask.",
+      "Choose a few KPIs, each with a comparison.",
+      "Sketch the page before building it."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-7-1-notes.docx",
+       "name": "7.1 Plan before you build - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-7-1-practice.xlsx",
+       "name": "7.1 Plan before you build - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-7-1-solution.xlsx",
+       "name": "7.1 Plan before you build - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "One page, a few questions"
+      ],
+      [
+       0,
+       1,
+       "Start with the reader"
+      ],
+      [
+       0,
+       2,
+       "From questions to KPIs"
+      ],
+      [
+       1,
+       0,
+       "Sketch it on paper"
+      ],
+      [
+       1,
+       1,
+       "What goes where: the reading path"
+      ],
+      [
+       1,
+       2,
+       "Plan the workbook too"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-7-2",
+     "num": "7.2",
+     "title": "Laying out the page",
+     "summary": "A grid, alignment and white space: how to place KPI cards, charts and controls so the page reads in the right order and looks calm.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Use the cell grid as a layout grid, and switch off gridlines and headings.",
+      "Build a KPI card: label, big number, comparison.",
+      "Align and size charts so related things line up.",
+      "Use white space and one accent colour instead of boxes and borders."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-7-2-notes.docx",
+       "name": "7.2 Laying out the page - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-7-2-practice.xlsx",
+       "name": "7.2 Laying out the page - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-7-2-solution.xlsx",
+       "name": "7.2 Laying out the page - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Turn the sheet into a canvas"
+      ],
+      [
+       0,
+       1,
+       "Alignment does the work of borders"
+      ],
+      [
+       0,
+       2,
+       "White space and one accent"
+      ],
+      [
+       1,
+       0,
+       "A KPI card is three cells"
+      ],
+      [
+       1,
+       1,
+       "Zones in reading order"
+      ],
+      [
+       1,
+       2,
+       "Size for where it’s read"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-7-3",
+     "num": "7.3",
+     "title": "A calculation layer",
+     "summary": "Between the data and the page sits a sheet of formulas: KPIs, helper ranges and rankings that all read the same selectors. Build it once, and the dashboard runs itself.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Separate Data, Calc and Dashboard, and say what belongs on each.",
+      "Write KPI formulas that follow a selector, including an ‘All’ choice.",
+      "Build top-N and bottom-N lists with FILTER, SORT and TAKE.",
+      "Add check cells that prove the numbers still add up."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-7-3-notes.docx",
+       "name": "7.3 A calculation layer - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-7-3-practice.xlsx",
+       "name": "7.3 A calculation layer - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-7-3-solution.xlsx",
+       "name": "7.3 A calculation layer - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Data, Calc, Dashboard"
+      ],
+      [
+       0,
+       1,
+       "One selector, read by everything"
+      ],
+      [
+       0,
+       2,
+       "Handling ‘All’"
+      ],
+      [
+       1,
+       0,
+       "Top 5 with FILTER, SORT and TAKE"
+      ],
+      [
+       1,
+       1,
+       "Check cells"
+      ],
+      [
+       1,
+       2,
+       "No typed numbers"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-7-4",
+     "num": "7.4",
+     "title": "Wiring the controls",
+     "summary": "Make the page respond: slicers and drop-downs feed the selectors, KPIs, charts and titles all follow, and the reader can always see what is selected.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Choose a control for each question: slicer, timeline, drop-down or form control.",
+      "Connect every item on the page to the same selection.",
+      "Write a title that states the selection and its headline number.",
+      "Test every state, including empty ones."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-7-4-notes.docx",
+       "name": "7.4 Wiring the controls - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-7-4-practice.xlsx",
+       "name": "7.4 Wiring the controls - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-7-4-solution.xlsx",
+       "name": "7.4 Wiring the controls - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Pick the control for the job"
+      ],
+      [
+       0,
+       1,
+       "Everything must follow"
+      ],
+      [
+       0,
+       2,
+       "Say what’s selected"
+      ],
+      [
+       1,
+       0,
+       "Click everything"
+      ],
+      [
+       1,
+       1,
+       "Empty and awkward states"
+      ],
+      [
+       1,
+       2,
+       "Keep the controls honest"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-7-5",
+     "num": "7.5",
+     "title": "Fast, tidy and printable",
+     "summary": "The last tenth: formulas that don’t slow the file, sheets that hide the machinery, and a page that prints on one sheet of paper.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Spot what makes a dashboard slow: volatile functions and whole-column references.",
+      "Replace OFFSET and INDIRECT with non-volatile formulas.",
+      "Tidy the workbook: hide Calc, freeze, name things, set the opening view.",
+      "Set the page up to print or export on one page."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-7-5-notes.docx",
+       "name": "7.5 Fast, tidy and printable - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-7-5-practice.xlsx",
+       "name": "7.5 Fast, tidy and printable - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-7-5-solution.xlsx",
+       "name": "7.5 Fast, tidy and printable - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-7-5-real.xlsx",
+       "name": "7.5 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Volatile functions recalculate every time"
+      ],
+      [
+       0,
+       1,
+       "Other things that slow a file"
+      ],
+      [
+       0,
+       2,
+       "Manual calculation is a last resort"
+      ],
+      [
+       1,
+       0,
+       "Hide the machinery"
+      ],
+      [
+       1,
+       1,
+       "One page on paper"
+      ],
+      [
+       1,
+       2,
+       "The polish checklist"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Presenting and sharing",
+   "summary": "Titles and notes that say the finding, getting charts into PowerPoint and PDF, and accessible, safe sharing.",
+   "free": false,
+   "testInfo": "Finding titles and notes, PowerPoint and PDF, alt text, protection and safe sharing",
+   "lessons": [
+    {
+     "id": "p2-8-1",
+     "num": "8.1",
+     "title": "Titles and notes that say the finding",
+     "summary": "Turn a chart into a message: a title that states the finding, a subtitle with the facts, and a note on the one point that matters.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Rewrite topic titles as finding titles.",
+      "Put the details (units, period, source) in a subtitle.",
+      "Annotate the one point that matters, with a note built from the data.",
+      "Order several charts so they tell one story."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-8-1-notes.docx",
+       "name": "8.1 Titles and notes that say the finding - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-8-1-practice.xlsx",
+       "name": "8.1 Titles and notes that say the finding - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-8-1-solution.xlsx",
+       "name": "8.1 Titles and notes that say the finding - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Topic titles and finding titles"
+      ],
+      [
+       0,
+       1,
+       "Details go in the subtitle"
+      ],
+      [
+       0,
+       2,
+       "Titles that stay true"
+      ],
+      [
+       1,
+       0,
+       "Annotate one point"
+      ],
+      [
+       1,
+       1,
+       "Notes that update"
+      ],
+      [
+       1,
+       2,
+       "Several charts, one story"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-8-2",
+     "num": "8.2",
+     "title": "Into PowerPoint and PDF",
+     "summary": "Most dashboards are read outside Excel: in a slide deck or a PDF. Choose how a chart travels, set the PDF up properly, and name files so they sort.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Choose between embedding, linking and pasting a picture when a chart goes into PowerPoint.",
+      "Know what an embedded chart carries with it.",
+      "Export a dashboard to a one-page PDF and check it.",
+      "Build file names and source lines from dates with TEXT."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-8-2-notes.docx",
+       "name": "8.2 Into PowerPoint and PDF - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-8-2-practice.xlsx",
+       "name": "8.2 Into PowerPoint and PDF - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-8-2-solution.xlsx",
+       "name": "8.2 Into PowerPoint and PDF - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Five ways to paste a chart"
+      ],
+      [
+       0,
+       1,
+       "An embedded chart carries the workbook"
+      ],
+      [
+       0,
+       2,
+       "Linked charts: refresh and repair"
+      ],
+      [
+       1,
+       0,
+       "Export to PDF"
+      ],
+      [
+       1,
+       1,
+       "Check the PDF, not the sheet"
+      ],
+      [
+       1,
+       2,
+       "Name it so it sorts"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p2-8-3",
+     "num": "8.3",
+     "title": "Accessible and safe sharing",
+     "summary": "Share dashboards everyone can read, including screen-reader users and colour-blind readers, and nobody can break or mine for data they shouldn’t see.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write useful alt text and run Check Accessibility.",
+      "Make meaning survive without colour.",
+      "Protect a dashboard while leaving its controls usable.",
+      "Remove or mask personal and hidden data before sharing."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p2-p2-8-3-notes.docx",
+       "name": "8.3 Accessible and safe sharing - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p2-p2-8-3-practice.xlsx",
+       "name": "8.3 Accessible and safe sharing - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p2-p2-8-3-solution.xlsx",
+       "name": "8.3 Accessible and safe sharing - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p2-p2-8-3-real.xlsx",
+       "name": "8.3 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Alt text that says the finding"
+      ],
+      [
+       0,
+       1,
+       "Don’t rely on colour"
+      ],
+      [
+       0,
+       2,
+       "Check Accessibility"
+      ],
+      [
+       1,
+       0,
+       "Protect, but leave the controls working"
+      ],
+      [
+       1,
+       1,
+       "Hidden isn’t secret"
+      ],
+      [
+       1,
+       2,
+       "Share the least that answers the question"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  }
+ ],
+ "upcoming": [],
+ "project": {
+  "title": "An executive dashboard for a retail chain",
+  "brief": "Twelve months of sales for 50 stores: build a one-page dashboard with KPI cards for revenue, margin and growth, a trend, a regional view, the top and bottom stores, and slicers to filter it all, plus a print-ready PDF version.",
+  "coming": false
+ },
+ "exam": {
+  "questions": 40,
+  "tasks": 6,
+  "minutes": 90,
+  "pass": 75,
+  "attempts": 3,
+  "gapHours": 48,
+  "coming": false
+ },
+ "downloads": [
+  {
+   "label": "Course handbook",
+   "file": "a/p2-handbook.docx",
+   "name": "Sheetah P2 handbook.docx"
+  },
+  {
+   "label": "Cheat sheet",
+   "file": "a/p2-cheatsheet.docx",
+   "name": "Sheetah P2 cheat sheet.docx"
+  }
+ ]
+}

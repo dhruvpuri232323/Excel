@@ -6,19 +6,28 @@ import { esc, md, $, $$, mascot, toast, confetti, bar, shuffle, modal, lineChart
 import { Grid } from '../grid.js';
 import { Workbook } from '../engine.js';
 import { checkTask } from '../checker.js';
+import { PQLab } from '../pqlab.js';
+import { pqForTask } from '../pqcheck.js';
+import { ModelLab } from '../modellab.js';
+import { modelForTask } from '../modelcheck.js';
+import { VbaLab } from '../vbalab.js';
+import { OsLab } from '../oslab.js';
+import { vbaForTask } from '../vbacheck.js';
+import { BUILDER_DEFAULTS } from '../charts.js';
+import { builderHTML, wireBuilder } from '../chartbuilder.js';
 import { readXlsx, grade } from '../xlsxcheck.js';
-import { lessonList, isDone, moduleInfo, canTakeTest, canOpenLesson, hasKey, who, testsFor, projectOpen, examReqs, lastModule, lessonLabel, TEST_MINUTES, fmtMin } from '../access.js';
+import { lessonList, isDone, moduleInfo, canTakeTest, canOpenLesson, hasKey, who, testsFor, projectOpen, examReqs, lastModule, lessonLabel, TEST_MINUTES, fmtMin, comingSoon } from '../access.js';
 import { resultsHTML, hydrate } from './lesson.js';
 import { site, loadSite } from '../site.js';
 import { askTeacher } from '../help.js';
 
 export async function questionsFrom(c, lessons) { const out = []; for (const l of lessons) { try { const L = await loadLesson(c, l.id); (L.quiz || []).forEach(q => out.push({ ...q, from: L.num, lesson: l.id, lessonTitle: L.title })); } catch (e) { } } return out; }
-export async function labTasksFrom(c, lessons) { const out = []; for (const l of lessons) { try { const L = await loadLesson(c, l.id); for (const t of (L.lab && L.lab.tasks) || []) if (t.standalone) out.push({ sheet: L.lab.sheet, editable: L.lab.editable, inputs: L.lab.inputs, task: t, from: L.num, lesson: l.id, lessonTitle: L.title, height: 300 }); } catch (e) { } } return out; }
+export async function labTasksFrom(c, lessons) { const out = []; for (const l of lessons) { try { const L = await loadLesson(c, l.id); for (const t of (L.lab && L.lab.tasks) || []) if (t.standalone) out.push({ sheet: L.lab.sheet, editable: L.lab.editable, inputs: L.lab.inputs, pq: L.lab.pq, model: L.lab.model, vba: L.lab.vba, os: L.lab.os, task: t, from: L.num, lesson: l.id, lessonTitle: L.title, height: 300 }); } catch (e) { } } return out; }
 export const shuffleOpts = q => { if (!q.options) return q; const idx = shuffle(q.options.map((_, i) => i)); return { ...q, options: idx.map(i => q.options[i]), answer: idx.indexOf(q.answer) }; };
 
 // A timed test: questions, then practical tasks on a live grid. Each task counts as two questions. Tests open in focus mode.
 export function runTest(main, { title, subtitle, questions, tasks = [], minutes, pass, onFinish, kind, after, record = true, course = 'c1' }) {
-  const answers = {}, flags = new Set(); let i = 0; const n = questions.length + tasks.length; const ends = Date.now() + minutes * 60000; const grids = {}; let timer; let finished = false;
+  const answers = {}, flags = new Set(), cfgs = {}, redraws = {}; let i = 0; const n = questions.length + tasks.length; const ends = Date.now() + minutes * 60000; const grids = {}; let timer; let finished = false;
   const pages = [...questions.map((q, k) => ({ q, k })), ...tasks.map((t, k) => ({ t, k }))];
   setFocus(true);
   const leave = e => { if (!finished) { e.preventDefault(); e.returnValue = ''; } }; addEventListener('beforeunload', leave);
@@ -31,9 +40,15 @@ export function runTest(main, { title, subtitle, questions, tasks = [], minutes,
     const tp = $('#tp');
     if (p.q) { const q = p.q; tp.innerHTML = `<p class="eyebrow">Question ${i + 1} of ${questions.length}</p><h2>${md(q.q)}</h2>${q.code ? `<p><code class="big">${esc(q.code)}</code></p>` : ''}${q.grid ? `<div class="mini-grid" data-grid='${esc(JSON.stringify(q.grid))}'></div>` : ''}${q.answers ? `<input class="ans big-input" value="${esc(answers[i] ?? '')}" placeholder="Type your answer" spellcheck="false">` : `<div class="opts">${q.options.map((o, k) => `<button class="opt ${answers[i] === k ? 'sel' : ''}" data-o="${k}">${md(o)}</button>`).join('')}</div>`}`;
       hydrate(tp, course); $$('.opt', tp).forEach(b => b.onclick = () => { answers[i] = +b.dataset.o; $$('.opt', tp).forEach(x => x.classList.toggle('sel', x === b)); markNav(); }); const inp = $('.ans', tp); if (inp) inp.oninput = () => { answers[i] = inp.value; markNav(); };
-    } else { const t = p.t; tp.innerHTML = `<p class="eyebrow">Practical task ${p.k + 1} of ${tasks.length}${t.lessonTitle ? ' · from ' + esc(t.lessonTitle) : ''}</p><h2>${md(t.task.prompt)}</h2><div class="tg"></div><p class="muted small">Your work here is kept as you move between questions. It’s checked when you submit.</p>`;
-      if (!grids[i]) { const host = document.createElement('div'); grids[i] = new Grid(host, new Workbook(t.sheet), { height: t.height || 300, editable: t.editable, highlight: t.editable, allowSort: true, allowStructure: t.task.kind === 'noBlankRows', onChange: () => { answers[i] = true; markNav(); } }); }
-      $('.tg', tp).appendChild(grids[i].host); grids[i].render(); }
+    } else { const t = p.t; tp.innerHTML = `<p class="eyebrow">Practical task ${p.k + 1} of ${tasks.length}${t.lessonTitle ? ' · ' + (/^from /i.test(t.lessonTitle) ? '' : 'from ') + esc(t.lessonTitle) : ''}</p><h2>${md(t.task.prompt)}</h2><div class="tg"></div>${t.task.kind === 'chart' ? builderHTML(t.task) : ''}<p class="muted small">Your work here is kept as you move between questions. It’s checked when you submit.</p>`;
+      const ii = i;
+      if (!grids[i] && t.model) { const host = document.createElement('div'); grids[i] = new ModelLab(host, { model: { ...modelForTask(t.model, t.task), height: 460 } }, null, () => { answers[ii] = true; markNav(); }); }
+      if (!grids[i] && t.os) { const host = document.createElement('div'); grids[i] = new OsLab(host, { sheet: t.sheet, os: { ...t.os, height: 480 } }, null, () => { answers[ii] = true; markNav(); }); grids[i].render = () => {}; }
+      if (!grids[i] && t.vba) { const host = document.createElement('div'); grids[i] = new VbaLab(host, { sheet: t.sheet, vba: { ...vbaForTask(t.vba, t.task), height: 480 } }, null, () => { answers[ii] = true; markNav(); }); grids[i].render = () => {}; }
+      if (!grids[i] && t.pq) { const host = document.createElement('div'); const P = pqForTask(t.pq, t.task); grids[i] = new PQLab(host, { sheet: t.sheet, pq: { ...P, height: 480 } }, null, () => { answers[ii] = true; markNav(); }); grids[i].render = () => {}; }
+      if (!grids[i]) { const host = document.createElement('div'); grids[i] = new Grid(host, new Workbook(t.sheet), { height: t.height || 300, editable: t.editable, highlight: t.editable, allowSort: true, allowStructure: t.task.kind === 'noBlankRows', onChange: () => { if (t.task.kind !== 'chart') answers[ii] = true; markNav(); if (redraws[ii]) redraws[ii](); } }); }
+      $('.tg', tp).appendChild(grids[i].host); grids[i].render();
+      if (t.task.kind === 'chart') { const cfg = cfgs[i] || (cfgs[i] = Object.assign({}, BUILDER_DEFAULTS, t.task.start || {})); redraws[ii] = wireBuilder($('.cb', tp), t.task, cfg, () => grids[ii].wb, () => grids[ii].selection().range, c => { answers[ii] = c.range ? true : undefined; markNav(); }); redraws[ii](); } }
     $$('.qn').forEach(b => b.onclick = () => { i = +b.dataset.k; draw(); }); $('#pv').onclick = () => { i--; draw(); }; const nx = $('#nx'); if (nx) nx.onclick = () => { i++; draw(); };
     $('#fl').onclick = () => { flags.has(i) ? flags.delete(i) : flags.add(i); draw(); }; const sb = $('#sub'); if (sb) sb.onclick = async () => { const blank = pages.filter((pp, k) => !answered(k)).length; if (blank && !await confirmBox(`${blank} question${blank === 1 ? ' is' : 's are'} unanswered. Submit anyway?`, 'Submit', 'Keep going')) return; finish(); };
     tick();
@@ -46,7 +61,7 @@ export function runTest(main, { title, subtitle, questions, tasks = [], minutes,
     let qRight = 0, tRight = 0; const review = []; const byLesson = {};
     const tally = (lid, ok, w = 1) => { if (!lid) return; const b = byLesson[lid] || (byLesson[lid] = [0, 0]); b[1] += w; if (ok) b[0] += w; };
     questions.forEach((q, k) => { const a = answers[k]; const ok = q.answers ? !!(a && q.answers.some(x => x.replace(/\s/g, '').toUpperCase() === String(a).replace(/\s/g, '').toUpperCase())) : a === q.answer; if (ok) qRight++; tally(q.lesson, ok); review.push({ q, ok, given: q.answers ? a : (a !== undefined ? q.options[a] : '(blank)') }); if (!ok && record && kind !== 'placement') store.logError({ course, lesson: q.lesson, lessonNum: q.from, task: 'test', kind, prompt: q.q, yours: review.at(-1).given || '(blank)', right: q.answers ? q.answers[0] : q.options[q.answer], why: q.explain }); });
-    tasks.forEach((t, k) => { const g = grids[questions.length + k]; const res = g ? checkTask(t.task, { wb: g.wb, grid: g, inputs: t.inputs }) : { ok: false, msg: 'Not attempted.' }; if (res.ok) tRight++; tally(t.lesson, res.ok, 2); review.push({ task: t.task, ok: res.ok, msg: res.msg, lesson: t.lesson }); });
+    tasks.forEach((t, k) => { const g = grids[questions.length + k]; const res = g ? checkTask(t.task, { wb: g.wb, grid: g.pqState || g.ctxModel ? null : g.isVba || g.isOs ? g.grid : g, pq: g.pqState ? g.pqState() : undefined, model: g.ctxModel ? g.ctxModel() : undefined, vba: g.isVba ? g.ctx() : undefined, os: g.isOs ? g.ctx() : undefined, inputs: t.inputs, answer: cfgs[questions.length + k] }) : { ok: false, msg: 'Not attempted.' }; if (res.ok) tRight++; tally(t.lesson, res.ok, 2); review.push({ task: t.task, ok: res.ok, msg: res.msg, lesson: t.lesson }); });
     const total = questions.length + tasks.length * 2; const score = qRight + tRight * 2; const pct = total ? Math.round(score / total * 100) : 0; const passed = pct >= pass;
     const revisit = Object.entries(byLesson).filter(([, [r, nn]]) => r < nn).sort((a, b) => (a[1][0] / a[1][1]) - (b[1][0] / b[1][1])).slice(0, 3).map(([l]) => l);
     const result = { kind, at: new Date().toISOString(), pct, qRight, nq: questions.length, tRight, nt: tasks.length, passed, minutes: Math.round((minutes * 60000 - Math.max(0, ends - Date.now())) / 60000), byLesson, revisit };
@@ -123,18 +138,19 @@ register('tests', async main => {
 register('project', async (main, courseId) => {
   const c = await getCourse(courseId); COURSE = c;
   if (!hasKey(c)) { main.innerHTML = lockedPanel(); return; }
+  if (!projectOpen(c) && comingSoon(c)) { main.innerHTML = lockedPanel('test', `<h2>The course project is on its way</h2><p>${esc(c.title)} is being released in parts: ${c.modules.length} of ${c.modules.length + (c.upcoming || []).length} modules are out now. The course project and the final exam arrive with the last module, and everything you do until then counts towards them.</p><div class="row"><a class="btn" href="#/course/${c.id}">See the map</a></div>`); return; }
   if (!projectOpen(c)) { const lm = lastModule(c); main.innerHTML = lockedPanel('test', `<h2>The project opens after the Module ${lm.n} test</h2><p>Pass the Module ${lm.n} test (${esc(lm.title)}) and the course project opens. It’s a real workbook you build in Excel and upload: about 3 hours, pass mark 70%.</p><div class="row"><a class="btn" href="#/course/${c.id}">See the map</a></div>`); return; }
   const P = await getSecure(c.id, 'project'); const ps = store.d.projects[c.id] || (store.d.projects[c.id] = { tries: [] });
   const left = 2 - ps.tries.length;
-  main.innerHTML = `${crumbs([[c.title, '#/course/' + c.id], ['Course project']])}<section class="card"><div class="row between"><div><p class="eyebrow">Course project · about 3 hours · pass mark 70% ${qhelp('project')}</p><h1>${esc(P.title)}</h1></div>${mascot('focus')}</div><p class="lead">${md(P.brief)}</p>
+  main.innerHTML = `${crumbs([[c.title, '#/course/' + c.id], ['Course project']])}<section class="card"><div class="row between"><div><p class="eyebrow">Course project · about ${P.hours || 3} hours · pass mark 70% ${qhelp('project')}</p><h1>${esc(P.title)}</h1></div>${mascot('focus')}</div><p class="lead">${md(P.brief)}</p>
    <h2>What to build</h2><ol class="steps">${P.steps.map(s => `<li>${md(s)}</li>`).join('')}</ol>
    <h2>How it’s checked</h2><ul class="ticks">${P.rubricText.map(s => `<li>${md(s)}</li>`).join('')}</ul>
    <div class="row">${P.downloads.map(d => `<button class="btn ghost" data-file="${d.file}" data-name="${esc(d.name)}">⬇ ${esc(d.label)}</button>`).join('')}</div>
    <h2>Submit</h2><p>${left > 0 ? `You have <b>${left}</b> submission${left === 1 ? '' : 's'} left. Your best score counts.` : 'You have used both submissions.'}${ps.best !== undefined ? ` Best so far: <b>${ps.best}%</b>${ps.best >= 70 ? ' · passed ✓' : ''}.` : ''}</p>
-   ${left > 0 || who() === 'admin' ? `<label class="btn">⬆ Upload my workbook (.xlsx)<input type="file" accept=".xlsx,.xlsm,.xls,.csv,.ods,.numbers" hidden id="up"></label> <a class="small" href="#/help/upload">Problems uploading?</a>` : ''}<div class="results">${ps.last ? resultsHTML(ps.last) : ''}</div>
+   ${left > 0 || who() === 'admin' ? `<label class="btn">⬆ Upload my workbook (${esc(P.upload || '.xlsx')})<input type="file" accept=".xlsx,.xlsm,.xlsb,.xls,.csv,.ods,.numbers" hidden id="up"></label> <a class="small" href="#/help/upload">Problems uploading?</a>` : ''}<div class="results">${ps.last ? resultsHTML(ps.last) : ''}</div>
    ${ps.tries.length ? `<h3>Your submissions</h3><ul>${ps.tries.map(t => `<li>${fmtDate(t.at)}: <b>${t.pct}%</b></li>`).join('')}</ul>` : ''}</section>`;
   $$('[data-file]').forEach(b => b.onclick = async () => { const url = await assetURL(c.id, b.dataset.file); const a = document.createElement('a'); a.href = url; a.download = b.dataset.name; a.click(); });
-  const up = $('#up'); if (up) up.onchange = async e => { const f = e.target.files[0]; if (!f) return; const x = await readXlsx(f); if (x.error) { $('.results').innerHTML = `<p class="no">${esc(x.error)}</p>`; e.target.value = ''; return; } if (!await confirmBox(`Submit “${esc(f.name)}” as submission ${ps.tries.length + 1} of 2?`, 'Submit')) return; $('.results').innerHTML = '<p>Checking…</p>'; const res = grade(x, P.checks); ps.tries.push({ at: new Date().toISOString(), pct: res.pct }); ps.last = res; ps.best = Math.max(ps.best ?? 0, res.pct); store.save(); if (res.pct >= 70) confetti(); go('#/project/' + c.id); };
+  const up = $('#up'); if (up) up.onchange = async e => { const f = e.target.files[0]; if (!f) return; $('.results').innerHTML = '<p class="muted">Reading your workbook… a big file can take 10 seconds or so.</p>'; await new Promise(r => setTimeout(r, 30)); const x = await readXlsx(f); if (x.error) { $('.results').innerHTML = `<p class="no">${esc(x.error)}</p>`; e.target.value = ''; return; } if (!await confirmBox(`Submit “${esc(f.name)}” as submission ${ps.tries.length + 1} of 2?`, 'Submit')) { $('.results').innerHTML = ''; e.target.value = ''; return; } $('.results').innerHTML = `<p>Checking…${P.upload === '.xlsm' ? ' Sheetah is running your macros on its copy of the files: this can take half a minute.' : ''}</p>`; await new Promise(r => setTimeout(r, 30)); const res = grade(x, P.checks); ps.tries.push({ at: new Date().toISOString(), pct: res.pct }); ps.last = res; ps.best = Math.max(ps.best ?? 0, res.pct); store.save(); if (res.pct >= 70) confetti(); go('#/project/' + c.id); };
 });
 
 // ---------- final exam ----------
@@ -144,14 +160,14 @@ register('exam', async (main, courseId) => {
   const R = examReqs(c); const last = att.at(-1); const wait = last && !last.passed ? Math.max(0, Date.parse(last.at) + E.gapHours * 3600e3 - Date.now()) : 0;
   const ready = R.all && !passed && att.length < E.attempts && !wait;
   main.innerHTML = `${crumbs([[c.title, '#/course/' + c.id], ['Final exam']])}<section class="card"><div class="row between"><div><p class="eyebrow">Final exam ${qhelp('exam')}</p><h1>${esc(c.title)}: final exam</h1></div>${mascot('focus')}</div>
-   <p class="lead">${E.minutes} minutes · ${E.questions} questions and ${E.tasks} practical tasks · pass mark ${E.pass}% · up to ${E.attempts} attempts, ${E.gapHours} hours apart, each with new questions and data.</p>
+   <p class="lead">${E.minutes} minutes · ${E.questions} questions and ${E.tasks} practical tasks · pass mark ${E.pass}% · up to ${E.attempts} attempts, ${E.gapHours} hours apart, each with new questions and data.</p>${comingSoon(c) ? `<p class="warnbox small">The final exam arrives with the last part of this course. Until then you can see what it needs below.</p>` : ''}
    <ul class="reqs"><li class="${R.lessonsOk ? 'ok' : ''}">${R.lessonsOk ? '✓' : '○'} Every lesson done (or its module tested out)</li><li class="${R.modsOk ? 'ok' : ''}">${R.modsOk ? '✓' : '○'} Every module test passed</li><li class="${R.projOk ? 'ok' : ''}">${R.projOk ? '✓' : '○'} Course project passed${R.proj && R.proj.best !== undefined ? ` (best ${R.proj.best}%)` : ''}</li></ul>
    ${att.length ? `<p>Attempts: ${att.map(a => `${fmtDate(a.at)} <b>${a.pct}%</b>`).join(' · ')}</p>` : ''}${wait ? `<p>Your next attempt opens in ${Math.ceil(wait / 3600e3)} hours.</p>` : ''}${passed ? '<p><b>You passed.</b> Your certificate is on the Certificates page.</p>' : ''}
    <p class="muted small">Before you start: use a laptop, close other tabs and keep 90 minutes free. The exam opens in focus mode and follows an honour code: work alone, with no help from others.</p>
    <div class="row"><button class="btn big" id="go" ${ready ? '' : 'disabled'}>Start the exam</button>${who() === 'admin' ? '<button class="btn ghost" id="prev">Admin preview (doesn’t count)</button>' : ''}<a class="btn ghost" href="#/course/${c.id}">Back</a></div></section>`;
   const start = async preview => {
     if (!preview && !await confirmBox(`Start the exam now? The ${E.minutes}-minute timer can’t be paused.`, 'Start')) return;
-    const bank = await getSecure(c.id, 'exam'); const qs = shuffle(bank.questions).slice(0, E.questions).map(shuffleOpts); const ts = shuffle(bank.tasks).slice(0, E.tasks);
+    const bank = await getSecure(c.id, 'exam'); const rv = bank.questions.filter(x => x.revisit), mainQ = bank.questions.filter(x => !x.revisit); const nRv = Math.min(rv.length, Math.round(E.questions * (bank.revisitShare || 0))); const qs = shuffle([...shuffle(rv).slice(0, nRv), ...shuffle(mainQ).slice(0, E.questions - nRv)]).map(shuffleOpts); /* about a fifth revisit earlier courses when the bank says so */ const ts = shuffle(bank.tasks).slice(0, E.tasks);
     runTest(main, { title: `${c.title} final exam`, subtitle: preview ? 'Admin preview · not recorded' : `Attempt ${att.length + 1} of ${E.attempts}`, questions: qs, tasks: ts, minutes: E.minutes, pass: E.pass, kind: 'exam', course: c.id, record: !preview,
       onFinish: r => { if (preview) return; att.push(r); if (r.passed) award(c, r.pct); },
       after: r => { main.innerHTML = resultPage(`${c.title} final exam`, r, r.review, E.pass, att.at(-2), r.passed && !preview ? `<p class="ok">Your certificate is ready. <a class="btn sm" href="#/certificates">See it</a></p>` : '') + `<div class="row"><a class="btn" href="#/course/${c.id}">Back to the map</a></div>`; if (r.passed) confetti(); } });

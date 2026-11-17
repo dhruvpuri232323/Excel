@@ -5,7 +5,7 @@ import { getJSON } from '../content.js';
 import { esc, md, $, $$, mascot, toast, download, shuffle, crumbs } from '../ui.js';
 import { toggleSaved, isSaved } from './extras.js';
 import { t } from '../i18n.js';
-const COURSE_NAMES = { C1: 'Excel Foundations', C2: 'Formulas & Functions' };
+const COURSE_NAMES = { C1: 'Excel Foundations', C2: 'Formulas & Functions', P1: 'Excel for Data Analysis', P2: 'Data Visualisation & Dashboards', P3: 'Finance & Financial Modelling', P4: 'Business Operations & Productivity', P5: 'Power Query, Data Model & Power Pivot' };
 import { Grid } from '../grid.js';
 import { Workbook } from '../engine.js';
 import { readXlsx, toWorkbook } from '../xlsxcheck.js';

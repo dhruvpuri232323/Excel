@@ -1,0 +1,2239 @@
+{
+ "id": "p5",
+ "code": "P5",
+ "title": "Power Query, Data Model & Power Pivot",
+ "level": "Specialist",
+ "hours": 24,
+ "summary": "P5 automates the monthly report: Power Query gets and cleans data from files and folders in steps that refresh in one click, and the Data Model with DAX measures turns several tables into one fast, reliable report.",
+ "prereq": "Builds on C1 · Excel Foundations and C2 · Formulas & Functions, and P1’s PivotTables. No coding background is needed: M and DAX are explained from the start.",
+ "outcomes": [
+  "Import data from tables, CSV files, workbooks and folders with Power Query, and refresh it in one click.",
+  "Clean and shape data with Applied Steps: types and locales, text, rows, columns and errors.",
+  "Add columns with custom and conditional formulas in M, and work with dates, text and numbers.",
+  "Reshape data: unpivot, pivot, group, and fix messy headers.",
+  "Combine data: append, merge with the right join, and combine every file in a folder.",
+  "Read and write M, use parameters and custom functions, and build queries that don’t break.",
+  "Build a Data Model with relationships and a date table, and report from several tables at once.",
+  "Write DAX measures with CALCULATE, iterators and time intelligence, and present them with PivotTables and CUBE functions."
+ ],
+ "modules": [
+  {
+   "n": 1,
+   "title": "Getting and shaping data",
+   "summary": "Why Power Query, getting data in from tables, CSV files and workbooks, shaping columns and data types, and cleaning text and rows.",
+   "free": true,
+   "testInfo": "Getting data in, steps, types and locales, and cleaning",
+   "lessons": [
+    {
+     "id": "p5-1-1",
+     "num": "1.1",
+     "title": "Why Power Query",
+     "summary": "Power Query gets data, cleans it in recorded steps and loads the result, without touching the source. Next month you click Refresh and every step runs again on the new data.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Explain what Power Query does: get, transform, load, then refresh.",
+      "Open the Power Query Editor from a Table and find the ribbon, preview, formula bar and Applied Steps.",
+      "Remove a column and filter rows, and see each click become a step.",
+      "Close & Load the result, and refresh it when the source changes."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p5-p5-1-1-notes.docx",
+       "name": "1.1 Why Power Query - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p5-p5-1-1-practice.xlsx",
+       "name": "1.1 Why Power Query - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p5-p5-1-1-solution.xlsx",
+       "name": "1.1 Why Power Query - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Every month, the same forty minutes"
+      ],
+      [
+       0,
+       1,
+       "Get, transform, load"
+      ],
+      [
+       0,
+       2,
+       "Steps are a recipe"
+      ],
+      [
+       1,
+       0,
+       "Open the editor from a Table"
+      ],
+      [
+       1,
+       1,
+       "Click, and a step appears"
+      ],
+      [
+       1,
+       2,
+       "Close & Load, then Refresh"
+      ]
+     ],
+     "tasks": [
+      "Remove the Notes column.",
+      "Remove the Cancelled invoices: keep every other status.",
+      "Date came in as Date/Time. Make it a Date.",
+      "Close & Load the query to a table on a new sheet.",
+      "June’s rows are added to the Sales Table on Raw. How do you update the clean table?",
+      "After your three steps, what has happened to the Sales Table on the Raw sheet?"
+     ],
+     "real": false
+    },
+    {
+     "id": "p5-1-2",
+     "num": "1.2",
+     "title": "Getting data in",
+     "summary": "Data › Get Data reads Tables, CSV files, other workbooks and whole folders. For a CSV, Excel writes three steps for you: Source, Promoted Headers and Changed Type. Check the types it guessed, and read dates with the locale they were written in.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Import a Table, a CSV file and a sheet from another workbook.",
+      "Recognise the Source, Promoted Headers and Changed Type steps.",
+      "Fix a type that Changed Type guessed wrong, by replacing its conversion.",
+      "Read dates and numbers written in another locale with Change Type › Using Locale."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p5-p5-1-2-notes.docx",
+       "name": "1.2 Getting data in - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p5-p5-1-2-practice.xlsx",
+       "name": "1.2 Getting data in - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p5-p5-1-2-solution.xlsx",
+       "name": "1.2 Getting data in - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Get Data"
+      ],
+      [
+       0,
+       1,
+       "Load, or Transform Data?"
+      ],
+      [
+       0,
+       2,
+       "Three steps Excel writes for a CSV"
+      ],
+      [
+       1,
+       0,
+       "Fix a wrong guess at its source"
+      ],
+      [
+       1,
+       1,
+       "Dates have an accent"
+      ],
+      [
+       1,
+       2,
+       "Power Query’s data types"
+      ]
+     ],
+     "tasks": [
+      "Import sales-may-2026.csv: Data › From Text/CSV, pick the file, then Transform Data.",
+      "Changed Type made Item Code a Whole Number, so 0101 shows as 101. Make it Text so the code",
+      "Inv Date is US-style (month/day/year). Make it a Date, read with the locale English (Unite",
+      "This query feeds another report, not a sheet. Use Close & Load To… and choose Only Create ",
+      "The preview of a CSV that needs cleaning. Which button?",
+      "Put the steps Excel writes for a CSV import in order."
+     ],
+     "real": false
+    },
+    {
+     "id": "p5-1-3",
+     "num": "1.3",
+     "title": "Shaping columns",
+     "summary": "Keep the columns the report needs, give each one a clear name and the right data type, and use Column quality to find the values that won’t convert. Naming what you keep is safer than naming what you drop.",
+     "minutes": 35,
+     "free": true,
+     "objectives": [
+      "Choose the columns to keep with Remove Other Columns or Choose Columns, and explain why it’s safer than Remove Columns.",
+      "Rename and reorder columns.",
+      "Pick the right number type: Whole, Decimal, Fixed decimal or Percentage.",
+      "Find and handle errors from a type change with Column quality and Replace Errors."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p5-p5-1-3-notes.docx",
+       "name": "1.3 Shaping columns - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p5-p5-1-3-practice.xlsx",
+       "name": "1.3 Shaping columns - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p5-p5-1-3-solution.xlsx",
+       "name": "1.3 Shaping columns - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Remove, or keep?"
+      ],
+      [
+       0,
+       1,
+       "Names people understand"
+      ],
+      [
+       1,
+       0,
+       "Four kinds of number"
+      ],
+      [
+       1,
+       1,
+       "Column quality"
+      ],
+      [
+       1,
+       2,
+       "Replace or remove errors"
+      ]
+     ],
+     "tasks": [
+      "Keep only Item Code, Item Name, Category, MRP, Dealer Price and GST %, in a way that keeps",
+      "Make MRP and Dealer Price Fixed decimal number.",
+      "One MRP is now an Error. Replace the error with null.",
+      "Rename Dealer Price to Dealer and GST % to GST rate.",
+      "Move Category to the start.",
+      "Column quality under GST rate says Valid 100%. What does that tell you?"
+     ],
+     "real": false
+    },
+    {
+     "id": "p5-1-4",
+     "num": "1.4",
+     "title": "Cleaning text and rows",
+     "summary": "Exports are reports, not tables: title rows on top, a total at the bottom, group labels written once, untidy names and repeated lines. Power Query fixes each with one step, and the fix runs again every month.",
+     "minutes": 40,
+     "free": true,
+     "objectives": [
+      "Remove report rows above the data and promote the headings.",
+      "Fill a group label down, after turning empty text into null.",
+      "Trim, clean and capitalise text, and know that Trim keeps inner double spaces.",
+      "Remove total rows and duplicates, and replace values."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "a/p5-p5-1-4-notes.docx",
+       "name": "1.4 Cleaning text and rows - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "a/p5-p5-1-4-practice.xlsx",
+       "name": "1.4 Cleaning text and rows - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "a/p5-p5-1-4-solution.xlsx",
+       "name": "1.4 Cleaning text and rows - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "a/p5-p5-1-4-real.xlsx",
+       "name": "1.4 real Excel task.xlsx"
+      },
+      {
+       "label": "branch-report-june.csv",
+       "file": "a/p5-p5-1-4-branch-report-june.csv",
+       "name": "branch-report-june.csv"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Reports aren’t tables"
+      ],
+      [
+       0,
+       1,
+       "Fill Down"
+      ],
+      [
+       0,
+       2,
+       "Duplicates"
+      ],
+      [
+       1,
+       0,
+       "Trim, Clean, Capitalize"
+      ],
+      [
+       1,
+       1,
+       "Replace Values"
+      ]
+     ],
+     "tasks": [
+      "Remove the top 3 rows, then use the first row as headers.",
+      "Give every row its Branch: turn the empty Branch cells into null, then Fill Down.",
+      "Remove the Grand Total row.",
+      "Clean Customer: Trim, then Capitalize Each Word.",
+      "INV-2109 is in the report twice. Remove duplicates by Invoice.",
+      "“Patel  Light House” still has a double space. In Customer, replace two spaces with one.",
+      "Why did Trim leave the double space in “Patel  Light House”?"
+     ],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Adding columns",
+   "summary": "Custom columns and M basics, conditional logic, dates and times, and text and number tools.",
+   "free": false,
+   "testInfo": "Custom columns, conditions, dates, text and rounding",
+   "lessons": [
+    {
+     "id": "p5-2-1",
+     "num": "2.1",
+     "title": "Custom columns",
+     "summary": "Add Column › Custom Column works out a new value for every row from the other columns, in M. Square brackets name a column, & joins text, and every new column needs a data type.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Tell Add Column from Transform: a new column, or a column changed in place.",
+      "Write a custom column with [Column] references and arithmetic.",
+      "Join text with &, turning numbers into text with Text.From.",
+      "Give a new column a data type, and read the errors a formula can give."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-2-1-notes.docx",
+       "name": "2.1 Custom columns - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-2-1-practice.xlsx",
+       "name": "2.1 Custom columns - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-2-1-solution.xlsx",
+       "name": "2.1 Custom columns - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Add, or transform?"
+      ],
+      [
+       0,
+       1,
+       "Custom Column"
+      ],
+      [
+       0,
+       2,
+       "What Power Query writes"
+      ],
+      [
+       1,
+       0,
+       "Joining text"
+      ],
+      [
+       1,
+       1,
+       "Give new columns a type"
+      ],
+      [
+       1,
+       2,
+       "M is case-sensitive"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-2-2",
+     "num": "2.2",
+     "title": "Conditional logic",
+     "summary": "A conditional column sorts each row into a band or a status. The Conditional Column box writes if … then … else for you; in a custom column you can write it yourself, with and, or, ?? for missing values and try … otherwise for errors.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Add a conditional column with the Conditional Column box.",
+      "Write if … then … else if … else in a custom column, with and and or.",
+      "Replace missing values in a formula with ??.",
+      "Catch row errors with try … otherwise."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-2-2-notes.docx",
+       "name": "2.2 Conditional logic - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-2-2-practice.xlsx",
+       "name": "2.2 Conditional logic - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-2-2-solution.xlsx",
+       "name": "2.2 Conditional logic - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The Conditional Column box"
+      ],
+      [
+       0,
+       1,
+       "What it writes"
+      ],
+      [
+       1,
+       0,
+       "null in conditions"
+      ],
+      [
+       1,
+       1,
+       "?? for a default"
+      ],
+      [
+       1,
+       2,
+       "try … otherwise"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-2-3",
+     "num": "2.3",
+     "title": "Dates and times",
+     "summary": "Add Column › Date pulls the parts out of a date: year, month name, start of month, quarter, day name. Subtracting dates gives a duration, and a custom column turns dates into the Indian financial year.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Add date parts with Add Column › Date: month name, start of month, quarter, day name.",
+      "Work out the days between two dates with Duration.Days.",
+      "Label the Indian financial year (April to March) with a custom column.",
+      "Format dates as text with Date.ToText."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-2-3-notes.docx",
+       "name": "2.3 Dates and times - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-2-3-practice.xlsx",
+       "name": "2.3 Dates and times - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-2-3-solution.xlsx",
+       "name": "2.3 Dates and times - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Add Column › Date"
+      ],
+      [
+       0,
+       1,
+       "What they write"
+      ],
+      [
+       1,
+       0,
+       "Days between dates"
+      ],
+      [
+       1,
+       1,
+       "The Indian financial year"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-2-4",
+     "num": "2.4",
+     "title": "Text and number tools",
+     "summary": "Extract pulls part of a text, Merge Columns joins columns, Index Column numbers the rows, and rounding needs care: Power Query rounds half to even unless you ask for the rounding invoices use.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Extract text before a delimiter, first or last characters, or a range.",
+      "Merge columns with a separator.",
+      "Round with Number.Round, and choose RoundingMode.AwayFromZero to match invoices and Excel’s ROUND.",
+      "Add an index column."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-2-4-notes.docx",
+       "name": "2.4 Text and number tools - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-2-4-practice.xlsx",
+       "name": "2.4 Text and number tools - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-2-4-solution.xlsx",
+       "name": "2.4 Text and number tools - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Extract"
+      ],
+      [
+       0,
+       1,
+       "Merge Columns"
+      ],
+      [
+       1,
+       0,
+       "Half to even"
+      ],
+      [
+       1,
+       1,
+       "Index columns"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Reshaping data",
+   "summary": "Unpivoting wide tables, pivoting and grouping, messy headers and transposing, and splitting lists into rows.",
+   "free": false,
+   "testInfo": "Unpivot, group, pivot, transpose and split into rows",
+   "lessons": [
+    {
+     "id": "p5-3-1",
+     "num": "3.1",
+     "title": "Unpivoting wide tables",
+     "summary": "Reports put months across the top because that’s easy to read. Pivots, filters and charts want one row per branch, category and month instead. Unpivot turns the wide table into a long one, and keeps working when next month’s column arrives.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Tell a wide table from a long one, and know which one tools need.",
+      "Unpivot month columns with Unpivot Columns or Unpivot Other Columns.",
+      "Remove total columns before unpivoting, and know that blanks don’t become rows.",
+      "Rename Attribute and Value, and turn month text into dates."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-3-1-notes.docx",
+       "name": "3.1 Unpivoting wide tables - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-3-1-practice.xlsx",
+       "name": "3.1 Unpivoting wide tables - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-3-1-solution.xlsx",
+       "name": "3.1 Unpivoting wide tables - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Wide is for reading"
+      ],
+      [
+       0,
+       1,
+       "Unpivot Columns"
+      ],
+      [
+       0,
+       2,
+       "What it writes"
+      ],
+      [
+       1,
+       0,
+       "Three unpivot commands"
+      ],
+      [
+       1,
+       1,
+       "Totals and blanks"
+      ],
+      [
+       1,
+       2,
+       "Name it and type it"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-3-2",
+     "num": "3.2",
+     "title": "Pivoting and grouping",
+     "summary": "Group By adds up rows into one row per branch, with as many totals and counts as you need. Pivot Column does the opposite of unpivot: it turns the values of one column into column headings, for a cross-tab. Both are steps, so the summary refreshes with the data.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Make a reference query, so one cleaned query feeds several summaries.",
+      "Group By one or more columns, with sums and counts.",
+      "Pivot a column into headings with an aggregation, keeping only the columns the cross-tab needs.",
+      "Replace the nulls a pivot leaves, and know why Don’t Aggregate can fail."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-3-2-notes.docx",
+       "name": "3.2 Pivoting and grouping - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-3-2-practice.xlsx",
+       "name": "3.2 Pivoting and grouping - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-3-2-solution.xlsx",
+       "name": "3.2 Pivoting and grouping - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "One query, several summaries"
+      ],
+      [
+       0,
+       1,
+       "Group By"
+      ],
+      [
+       0,
+       2,
+       "What it writes"
+      ],
+      [
+       1,
+       0,
+       "Pivot: values become headings"
+      ],
+      [
+       1,
+       1,
+       "Keep only what the grid needs"
+      ],
+      [
+       1,
+       2,
+       "Nulls and Don’t Aggregate"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-3-3",
+     "num": "3.3",
+     "title": "Messy headers and transposing",
+     "summary": "Budget files often have two header rows: the month over each pair of columns, and Target and Actual under it. Transpose turns the headings into a column you can fill down and merge, then back again, so every column gets one clear name. From there, unpivot and pivot give a tidy table.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Transpose a table, and know that it loses the headings.",
+      "Fill a merged heading down after turning empty text into null.",
+      "Merge two heading rows into one name, then transpose back and promote it.",
+      "Split a combined heading at the right-most space, and pivot Target and Actual back into columns."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-3-3-notes.docx",
+       "name": "3.3 Messy headers and transposing - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-3-3-practice.xlsx",
+       "name": "3.3 Messy headers and transposing - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-3-3-solution.xlsx",
+       "name": "3.3 Messy headers and transposing - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The problem"
+      ],
+      [
+       0,
+       1,
+       "Transpose"
+      ],
+      [
+       0,
+       2,
+       "Fill down and merge"
+      ],
+      [
+       1,
+       0,
+       "Transpose back and promote"
+      ],
+      [
+       1,
+       1,
+       "Split at the right-most space"
+      ],
+      [
+       1,
+       2,
+       "Pivot the measure back"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-3-4",
+     "num": "3.4",
+     "title": "Splitting lists into rows",
+     "summary": "Order forms put several items in one cell: “FAN-CL-1200, LGT-BL-09”. Splitting into columns makes as many columns as the longest list, and breaks when a longer one arrives. Splitting into rows gives one row per item, however many there are, ready to count, merge and pivot.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Split a delimited cell into rows with Split Column by Delimiter’s advanced options.",
+      "Trim the spaces a split leaves, or split on comma-and-space.",
+      "Explain why split into columns breaks when lists get longer.",
+      "Count how often each item appears with a reference query and Group By."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-3-4-notes.docx",
+       "name": "3.4 Splitting lists into rows - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-3-4-practice.xlsx",
+       "name": "3.4 Splitting lists into rows - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-3-4-solution.xlsx",
+       "name": "3.4 Splitting lists into rows - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Lists in a cell"
+      ],
+      [
+       0,
+       1,
+       "Split into rows"
+      ],
+      [
+       0,
+       2,
+       "Spaces after commas"
+      ],
+      [
+       1,
+       0,
+       "Why not columns?"
+      ],
+      [
+       1,
+       1,
+       "Count by item"
+      ],
+      [
+       1,
+       2,
+       "Back to one cell"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Combining queries and files",
+   "summary": "Appending tables, merging with the right join kind, combining every file in a folder, and lookups to ranges.",
+   "free": false,
+   "testInfo": "Append, merge and join kinds, folders and range lookups",
+   "lessons": [
+    {
+     "id": "p5-4-1",
+     "num": "4.1",
+     "title": "Appending tables",
+     "summary": "Append stacks tables with the same columns, one under another: three branches’ sales become one table. Power Query matches columns by name, not position, so a column called Amt in one sheet and Amount in another ends up as two half-empty columns until you rename it.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Append two tables, or three or more, with Append Queries and Append Queries as New.",
+      "Explain that Append matches columns by name, and fix a mismatched name before appending.",
+      "Predict what happens to a column only one table has.",
+      "Keep the source queries as connections only and load just the combined one."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-4-1-notes.docx",
+       "name": "4.1 Appending tables - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-4-1-practice.xlsx",
+       "name": "4.1 Appending tables - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-4-1-solution.xlsx",
+       "name": "4.1 Appending tables - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Append stacks rows"
+      ],
+      [
+       0,
+       1,
+       "Append Queries as New"
+      ],
+      [
+       0,
+       2,
+       "What it writes"
+      ],
+      [
+       1,
+       0,
+       "Names, not positions"
+      ],
+      [
+       1,
+       1,
+       "A column only one table has"
+      ],
+      [
+       1,
+       2,
+       "Load just the result"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-4-2",
+     "num": "4.2",
+     "title": "Merging queries",
+     "summary": "Merge is Power Query’s lookup: for each order, find the matching row in the item list and bring back the columns you need. The join kind decides which rows you keep, and the keys must match exactly, capitals, spaces and all.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Merge two queries on a key column and expand only the columns you need.",
+      "Clean keys first: Trim and match capitals, because Merge matches exactly.",
+      "Choose a join kind: Left Outer, Inner, Left Anti and Full Outer.",
+      "Spot duplicate keys in the lookup table that multiply rows."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-4-2-notes.docx",
+       "name": "4.2 Merging queries - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-4-2-practice.xlsx",
+       "name": "4.2 Merging queries - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-4-2-solution.xlsx",
+       "name": "4.2 Merging queries - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Merge adds columns"
+      ],
+      [
+       0,
+       1,
+       "The Merge box"
+      ],
+      [
+       0,
+       2,
+       "Expand the column"
+      ],
+      [
+       1,
+       0,
+       "Keys must match exactly"
+      ],
+      [
+       1,
+       1,
+       "Join kinds"
+      ],
+      [
+       1,
+       2,
+       "Duplicate keys multiply rows"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-4-3",
+     "num": "4.3",
+     "title": "Combining files from a folder",
+     "summary": "Each branch sends a file every month. Get Data › From Folder › Combine reads every file in a folder with the same steps and stacks them, adding the file name as Source.Name. Drop next month’s files in and refresh: nothing else changes.",
+     "minutes": 45,
+     "free": false,
+     "objectives": [
+      "Combine every CSV file in a folder with From Folder › Combine & Transform Data.",
+      "Know the helper queries Combine makes, and fix a problem in every file through Transform Sample File.",
+      "Turn Source.Name into a Branch column.",
+      "Keep the folder clean, or filter the files, so stray files don’t break the combine."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-4-3-notes.docx",
+       "name": "4.3 Combining files from a folder - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-4-3-practice.xlsx",
+       "name": "4.3 Combining files from a folder - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-4-3-solution.xlsx",
+       "name": "4.3 Combining files from a folder - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p5-p5-4-3-real.xlsx",
+       "name": "4.3 real Excel task.xlsx"
+      },
+      {
+       "label": "ahmedabad-jul.csv",
+       "file": "s/p5-p5-4-3-ahmedabad-jul.csv",
+       "name": "ahmedabad-jul.csv"
+      },
+      {
+       "label": "rajkot-jul.csv",
+       "file": "s/p5-p5-4-3-rajkot-jul.csv",
+       "name": "rajkot-jul.csv"
+      },
+      {
+       "label": "surat-jul.csv",
+       "file": "s/p5-p5-4-3-surat-jul.csv",
+       "name": "surat-jul.csv"
+      },
+      {
+       "label": "vadodara-jul.csv",
+       "file": "s/p5-p5-4-3-vadodara-jul.csv",
+       "name": "vadodara-jul.csv"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "One file per branch"
+      ],
+      [
+       0,
+       1,
+       "Combine & Transform"
+      ],
+      [
+       0,
+       2,
+       "The helper queries"
+      ],
+      [
+       1,
+       0,
+       "What the main query does"
+      ],
+      [
+       1,
+       1,
+       "A Branch column from the file name"
+      ],
+      [
+       1,
+       2,
+       "Keep the folder clean"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    },
+    {
+     "id": "p5-4-4",
+     "num": "4.4",
+     "title": "Lookups to ranges",
+     "summary": "A discount that depends on the order size is a range lookup: 0% below ₹10,000, 2% from ₹10,000, and so on. Merge only finds exact matches, so a custom column looks the rate up in the slab table instead, and keeps working when the slabs change.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain why Merge can’t do a range lookup.",
+      "Write a custom column that picks the last slab at or below the value, from another query.",
+      "Keep the outer row’s value in a variable, because a nested each sees the inner row.",
+      "Keep the slab table sorted, and buffer it when the lookup table is large."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-4-4-notes.docx",
+       "name": "4.4 Lookups to ranges - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-4-4-practice.xlsx",
+       "name": "4.4 Lookups to ranges - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-4-4-solution.xlsx",
+       "name": "4.4 Lookups to ranges - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "A slab table"
+      ],
+      [
+       0,
+       1,
+       "Merge can’t do it"
+      ],
+      [
+       0,
+       2,
+       "The custom column"
+      ],
+      [
+       1,
+       0,
+       "The inner each trap"
+      ],
+      [
+       1,
+       1,
+       "Sorted slabs, or List.Max"
+      ],
+      [
+       1,
+       2,
+       "Speed with Table.Buffer"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "M and robust queries",
+   "summary": "Reading M in the Advanced Editor, parameters, custom functions, and errors and refreshes that don’t break.",
+   "free": false,
+   "testInfo": "Editing M, parameters, custom functions and robust queries",
+   "lessons": [
+    {
+     "id": "p5-5-1",
+     "num": "5.1",
+     "title": "Reading M in the Advanced Editor",
+     "summary": "Every click in Power Query writes a line of M. The Advanced Editor shows the whole query: a let with one named step per line, each using the step before, and an in that says which step is the result. Reading it lets you change a value, rename a step, add one by hand and fix a query someone broke.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Read a query’s let … in, step names and the step each one builds on.",
+      "Change a value in a step from the formula bar or the Advanced Editor.",
+      "Rename a step, and add a step by hand, updating in.",
+      "Fix “The name … wasn’t recognized” after a step goes missing."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-5-1-notes.docx",
+       "name": "5.1 Reading M in the Advanced Editor - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-5-1-practice.xlsx",
+       "name": "5.1 Reading M in the Advanced Editor - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-5-1-solution.xlsx",
+       "name": "5.1 Reading M in the Advanced Editor - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "let … in"
+      ],
+      [
+       0,
+       1,
+       "Each step uses the one before"
+      ],
+      [
+       0,
+       2,
+       "Edit a value"
+      ],
+      [
+       1,
+       0,
+       "Rename a step"
+      ],
+      [
+       1,
+       1,
+       "Add a step in the Advanced Editor"
+      ],
+      [
+       1,
+       2,
+       "“The name … wasn’t recognized”"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-5-2",
+     "num": "5.2",
+     "title": "Parameters",
+     "summary": "A parameter is a named value that steps use instead of a value typed into them: a branch, a folder path, a minimum amount. Change the parameter, or the cell it reads, and Refresh: every query that uses it follows, and nobody edits a step.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Create a parameter with Manage Parameters and read what it writes.",
+      "Use a parameter in a filter step instead of a typed value.",
+      "Change a parameter and refresh.",
+      "Read a value from a worksheet cell into a query, so users change it on the sheet."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-5-2-notes.docx",
+       "name": "5.2 Parameters - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-5-2-practice.xlsx",
+       "name": "5.2 Parameters - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-5-2-solution.xlsx",
+       "name": "5.2 Parameters - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why parameters"
+      ],
+      [
+       0,
+       1,
+       "Manage Parameters › New"
+      ],
+      [
+       0,
+       2,
+       "What it writes"
+      ],
+      [
+       1,
+       0,
+       "Change and refresh"
+      ],
+      [
+       1,
+       1,
+       "A value from a cell"
+      ],
+      [
+       1,
+       2,
+       "Use it in a step"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-5-3",
+     "num": "5.3",
+     "title": "Custom functions",
+     "summary": "A custom function is a query that takes inputs and gives a result: a financial-year label from a date, a cleaned item code from messy text. Write it once, then use it in any query, for every row, with Invoke Custom Function or by name in a step.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write a function query with typed parameters: (d as date) as text => ….",
+      "Test a function from its Enter Parameter pane.",
+      "Add a column with Invoke Custom Function.",
+      "Pass a function to a step, such as Table.TransformColumns, by name."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-5-3-notes.docx",
+       "name": "5.3 Custom functions - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-5-3-practice.xlsx",
+       "name": "5.3 Custom functions - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-5-3-solution.xlsx",
+       "name": "5.3 Custom functions - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Same logic, many places"
+      ],
+      [
+       0,
+       1,
+       "Writing one"
+      ],
+      [
+       0,
+       2,
+       "Test it first"
+      ],
+      [
+       1,
+       0,
+       "Invoke Custom Function"
+      ],
+      [
+       1,
+       1,
+       "Functions as values"
+      ],
+      [
+       1,
+       2,
+       "each is a function"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-5-4",
+     "num": "5.4",
+     "title": "Errors and refreshes that don’t break",
+     "summary": "Two kinds of error stop a report. A step error stops the whole query, usually because a column it names is gone. A cell error leaves one cell showing Error, usually a value that won’t convert. Write steps that don’t depend on what might change, and catch bad values with try … otherwise.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Tell a step error from a cell error, and find where each starts.",
+      "Make a query survive a renamed or missing column by choosing the columns it needs first.",
+      "Catch a bad value in a formula with try … otherwise.",
+      "Keep the rows with errors in a separate query to check them, instead of removing them blindly."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-5-4-notes.docx",
+       "name": "5.4 Errors and refreshes that don’t break - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-5-4-practice.xlsx",
+       "name": "5.4 Errors and refreshes that don’t break - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-5-4-solution.xlsx",
+       "name": "5.4 Errors and refreshes that don’t break - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Step errors"
+      ],
+      [
+       0,
+       1,
+       "Cell errors"
+      ],
+      [
+       0,
+       2,
+       "Choose columns first"
+      ],
+      [
+       1,
+       0,
+       "try … otherwise"
+      ],
+      [
+       1,
+       1,
+       "Look at the errors"
+      ],
+      [
+       1,
+       2,
+       "Refresh-proof habits"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "The Data Model",
+   "summary": "Why a Data Model, relationships and star schemas, date tables, and PivotTables from several tables.",
+   "free": false,
+   "testInfo": "Loading to the model, relationships, date tables and model PivotTables",
+   "lessons": [
+    {
+     "id": "p5-6-1",
+     "num": "6.1",
+     "title": "Why a Data Model",
+     "summary": "A Data Model holds several tables inside the workbook, linked by relationships, so one PivotTable can use them all: no VLOOKUP columns, no giant copied table, and far more rows than a sheet allows. Power Query loads tables into it with one tick.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Explain what the Data Model is and what it replaces: lookup columns and one huge flat table.",
+      "Load queries into the Data Model as connections only.",
+      "Find the model in Excel: Power Pivot › Manage, and Data › Relationships.",
+      "Know the limits: the model is in the workbook, compressed, and read through PivotTables and formulas."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-6-1-notes.docx",
+       "name": "6.1 Why a Data Model - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-6-1-practice.xlsx",
+       "name": "6.1 Why a Data Model - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-6-1-solution.xlsx",
+       "name": "6.1 Why a Data Model - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "The flat-table habit"
+      ],
+      [
+       0,
+       1,
+       "Fact and lookup tables"
+      ],
+      [
+       0,
+       2,
+       "Getting tables in"
+      ],
+      [
+       1,
+       0,
+       "Seeing the model"
+      ],
+      [
+       1,
+       1,
+       "What changes for you"
+      ],
+      [
+       1,
+       2,
+       "Good to know"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-6-2",
+     "num": "6.2",
+     "title": "Relationships and star schemas",
+     "summary": "A relationship links a code in the fact table to the same code in a lookup table: many sales to one item. Drag one column onto the other in Diagram View, or use Create Relationship. Then a PivotTable can group Sales by Category or Region, and filters flow from the lookup table to the facts.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Create a one-to-many relationship in Diagram View or with Create Relationship.",
+      "Tell the one side (unique keys) from the many side, and read the error when neither is unique.",
+      "Recognise a star schema: one fact table, lookup tables around it.",
+      "Spot unmatched codes, which show as (blank) in a PivotTable."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-6-2-notes.docx",
+       "name": "6.2 Relationships and star schemas - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-6-2-practice.xlsx",
+       "name": "6.2 Relationships and star schemas - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-6-2-solution.xlsx",
+       "name": "6.2 Relationships and star schemas - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "One to many"
+      ],
+      [
+       0,
+       1,
+       "Drag, or Create Relationship"
+      ],
+      [
+       0,
+       2,
+       "When it won’t link"
+      ],
+      [
+       1,
+       0,
+       "A star schema"
+      ],
+      [
+       1,
+       1,
+       "Filters flow one way"
+      ],
+      [
+       1,
+       2,
+       "(blank) means no match"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-6-3",
+     "num": "6.3",
+     "title": "Date tables",
+     "summary": "A date table has one row for every day, with columns to group by: month, financial-year month, quarter. Relate the sales date to it, mark it as the date table, and sort month names by the financial-year month, so April comes first and DAX’s time functions work in Module 8.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain why the model needs its own date table with every day.",
+      "Build a calendar in Power Query with List.Dates, or use Power Pivot’s Date Table › New.",
+      "Relate the facts’ date to the calendar and mark it as the date table.",
+      "Sort month names by a month-number column with Sort by Column."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-6-3-notes.docx",
+       "name": "6.3 Date tables - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-6-3-practice.xlsx",
+       "name": "6.3 Date tables - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-6-3-solution.xlsx",
+       "name": "6.3 Date tables - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Why a date table"
+      ],
+      [
+       0,
+       1,
+       "Build it in Power Query"
+      ],
+      [
+       0,
+       2,
+       "Relate and mark"
+      ],
+      [
+       1,
+       0,
+       "Alphabetical months"
+      ],
+      [
+       1,
+       1,
+       "Sort by Column"
+      ],
+      [
+       1,
+       2,
+       "The model so far"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-6-4",
+     "num": "6.4",
+     "title": "PivotTables from several tables",
+     "summary": "Insert › PivotTable › From Data Model gives a field list with every table in the model. Rows from Items, columns from Branches, values from Sales: the relationships do the joining. A second fact table, such as branch targets, sits beside Sales when both relate to the same lookup table.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Build a PivotTable from the Data Model with fields from several tables.",
+      "Change a value field’s calculation, such as Distinct Count of customers.",
+      "Read “Relationships between tables may be needed” and fix it.",
+      "Compare two fact tables, sales and targets, through a shared lookup table."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-6-4-notes.docx",
+       "name": "6.4 PivotTables from several tables - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-6-4-practice.xlsx",
+       "name": "6.4 PivotTables from several tables - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-6-4-solution.xlsx",
+       "name": "6.4 PivotTables from several tables - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p5-p5-6-4-real.xlsx",
+       "name": "6.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "From Data Model"
+      ],
+      [
+       0,
+       1,
+       "Rows and columns from different tables"
+      ],
+      [
+       0,
+       2,
+       "Distinct Count"
+      ],
+      [
+       1,
+       0,
+       "“Relationships between tables may be needed”"
+      ],
+      [
+       1,
+       1,
+       "Two facts, one lookup"
+      ],
+      [
+       1,
+       2,
+       "Good habits"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "DAX measures",
+   "summary": "Measures and calculated columns, CALCULATE and filter context, iterators and RELATED, and percent of total and ranking.",
+   "free": false,
+   "testInfo": "Measures, CALCULATE, iterators and RELATED, shares and ranks",
+   "lessons": [
+    {
+     "id": "p5-7-1",
+     "num": "7.1",
+     "title": "Measures and calculated columns",
+     "summary": "DAX is the formula language of the Data Model. A measure is a named calculation that a PivotTable works out for every cell, in that cell’s filters. A calculated column is worked out once for every row and stored. Most numbers in a report should be measures.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Create a measure with New Measure, and use it in a PivotTable.",
+      "Tell an implicit measure (Sum of Amount) from an explicit one you name and reuse.",
+      "Add a calculated column, and know when a column is right and when a measure is.",
+      "Read “A single value for column … cannot be determined” and fix it with an aggregation."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-7-1-notes.docx",
+       "name": "7.1 Measures and calculated columns - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-7-1-practice.xlsx",
+       "name": "7.1 Measures and calculated columns - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-7-1-solution.xlsx",
+       "name": "7.1 Measures and calculated columns - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Implicit and explicit measures"
+      ],
+      [
+       0,
+       1,
+       "The Measure box"
+      ],
+      [
+       0,
+       2,
+       "A measure in every cell"
+      ],
+      [
+       1,
+       0,
+       "A value for every row"
+      ],
+      [
+       1,
+       1,
+       "Column or measure?"
+      ],
+      [
+       1,
+       2,
+       "“A single value … cannot be determined”"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-7-2",
+     "num": "7.2",
+     "title": "CALCULATE and filter context",
+     "summary": "CALCULATE works out an expression with the filters changed: Fans only, every item, Central branches. It’s the most important function in DAX, because it’s how a measure compares a cell with something else, such as its share of the total.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Describe a cell’s filter context: its row, column and report filters.",
+      "Add or replace a filter with CALCULATE([Total Sales], Items[Category] = \"Fans\").",
+      "Remove filters with ALL to get a total for the share.",
+      "Divide safely with DIVIDE."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-7-2-notes.docx",
+       "name": "7.2 CALCULATE and filter context - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-7-2-practice.xlsx",
+       "name": "7.2 CALCULATE and filter context - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-7-2-solution.xlsx",
+       "name": "7.2 CALCULATE and filter context - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Filter context"
+      ],
+      [
+       0,
+       1,
+       "CALCULATE"
+      ],
+      [
+       0,
+       2,
+       "Replace, don’t add"
+      ],
+      [
+       1,
+       0,
+       "ALL removes filters"
+      ],
+      [
+       1,
+       1,
+       "DIVIDE"
+      ],
+      [
+       1,
+       2,
+       "Measures on measures"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-7-3",
+     "num": "7.3",
+     "title": "Iterators and RELATED",
+     "summary": "SUM adds a column. SUMX works out an expression for every row of a table, then adds the results: quantity × list rate, row by row. Inside it, RELATED fetches a value from the lookup table through the relationship. Together they compare what was charged with the list price.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Use RELATED in a calculated column to fetch a lookup table’s value for each row.",
+      "Write an X function, SUMX, that works out an expression row by row inside a measure.",
+      "Combine measures: Discount = List Sales − Total Sales, and Discount %.",
+      "Count rows with COUNTROWS, and know AVERAGEX, MINX and MAXX."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-7-3-notes.docx",
+       "name": "7.3 Iterators and RELATED - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-7-3-practice.xlsx",
+       "name": "7.3 Iterators and RELATED - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-7-3-solution.xlsx",
+       "name": "7.3 Iterators and RELATED - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Fetching from a lookup table"
+      ],
+      [
+       0,
+       1,
+       "List Value, row by row"
+      ],
+      [
+       0,
+       2,
+       "When RELATED fails"
+      ],
+      [
+       1,
+       0,
+       "SUMX"
+      ],
+      [
+       1,
+       1,
+       "Discount and Discount %"
+      ],
+      [
+       1,
+       2,
+       "Other iterators"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-7-4",
+     "num": "7.4",
+     "title": "Percent of total and ranking",
+     "summary": "Two questions every report asks: what share of the total is this, and where does it rank? ALL gives the share of the whole company; ALLSELECTED gives the share of what the report is showing. RANKX ranks each branch by any measure, and keeps working when filters change.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Write a share of the grand total with ALL, and of the visible total with ALLSELECTED.",
+      "Tell the two apart with a report filter.",
+      "Rank items with RANKX(ALL(Branches[Branch]), [Total Sales]).",
+      "Know how RANKX handles ties and blanks."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-7-4-notes.docx",
+       "name": "7.4 Percent of total and ranking - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-7-4-practice.xlsx",
+       "name": "7.4 Percent of total and ranking - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-7-4-solution.xlsx",
+       "name": "7.4 Percent of total and ranking - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Share of the whole company"
+      ],
+      [
+       0,
+       1,
+       "ALLSELECTED"
+      ],
+      [
+       0,
+       2,
+       "Which denominator?"
+      ],
+      [
+       1,
+       0,
+       "RANKX"
+      ],
+      [
+       1,
+       1,
+       "Ties and blanks"
+      ],
+      [
+       1,
+       2,
+       "Top N with a rank"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Time intelligence and reporting",
+   "summary": "Year to date and last year; months, quarters and running totals; KPIs against targets; and reports and handover.",
+   "free": false,
+   "testInfo": "Time intelligence, KPIs, CUBE formulas and handover",
+   "lessons": [
+    {
+     "id": "p5-8-1",
+     "num": "8.1",
+     "title": "Year to date and last year",
+     "summary": "Time intelligence functions move the dates in a cell’s filter context: to the start of the financial year for a year-to-date total, or back a year for last year’s figure. They need a marked date table with whole years, and for an April–March year, a year-end date of 31 March.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Explain why time intelligence needs a marked date table with every date of each year.",
+      "Write a year-to-date measure for an April–March year with TOTALYTD and \"3/31\".",
+      "Get last year’s figure with CALCULATE and SAMEPERIODLASTYEAR.",
+      "Work out growth on last year with DIVIDE, and explain the blanks in the first year."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-8-1-notes.docx",
+       "name": "8.1 Year to date and last year - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-8-1-practice.xlsx",
+       "name": "8.1 Year to date and last year - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-8-1-solution.xlsx",
+       "name": "8.1 Year to date and last year - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Moving the dates"
+      ],
+      [
+       0,
+       1,
+       "TOTALYTD and the year end"
+      ],
+      [
+       0,
+       2,
+       "Year to date in a PivotTable"
+      ],
+      [
+       1,
+       0,
+       "SAMEPERIODLASTYEAR"
+      ],
+      [
+       1,
+       1,
+       "Growth on last year"
+      ],
+      [
+       1,
+       2,
+       "Years side by side"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-8-2",
+     "num": "8.2",
+     "title": "Months, quarters and running totals",
+     "summary": "The same idea at other scales: last month with DATEADD, quarter to date with TOTALQTD, a rolling three months with DATESINPERIOD, and a running total with FILTER over every date. Each one is CALCULATE with a new set of dates.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Compare each month with the one before it, with DATEADD(Calendar[Date], -1, MONTH).",
+      "Work out quarter to date with TOTALQTD.",
+      "Add up a rolling three months with DATESINPERIOD and MAX(Calendar[Date]).",
+      "Write a running total with FILTER(ALL(Calendar[Date]), …), and know how it differs from year to date."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-8-2-notes.docx",
+       "name": "8.2 Months, quarters and running totals - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-8-2-practice.xlsx",
+       "name": "8.2 Months, quarters and running totals - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-8-2-solution.xlsx",
+       "name": "8.2 Months, quarters and running totals - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "DATEADD"
+      ],
+      [
+       0,
+       1,
+       "Month on month"
+      ],
+      [
+       0,
+       2,
+       "Quarter to date"
+      ],
+      [
+       1,
+       0,
+       "A running total"
+      ],
+      [
+       1,
+       1,
+       "A rolling three months"
+      ],
+      [
+       1,
+       2,
+       "Which one?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-8-3",
+     "num": "8.3",
+     "title": "KPIs against targets",
+     "summary": "A KPI (key performance indicator) compares a measure with a target and shows a status: red, yellow or green. In Power Pivot it’s built on a measure, with a target measure or a fixed value, and two thresholds. In a PivotTable it shows the value, the goal and an icon.",
+     "minutes": 40,
+     "free": false,
+     "objectives": [
+      "Add a target measure from a second fact table, and an achievement percentage.",
+      "Create a KPI with a base measure, a target measure and status thresholds.",
+      "Show a KPI’s Value, Goal and Status in a PivotTable.",
+      "Write a status as a text measure with SWITCH(TRUE(), …) where a KPI won’t do."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-8-3-notes.docx",
+       "name": "8.3 KPIs against targets - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-8-3-practice.xlsx",
+       "name": "8.3 KPIs against targets - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-8-3-solution.xlsx",
+       "name": "8.3 KPIs against targets - solution.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Targets in the model"
+      ],
+      [
+       0,
+       1,
+       "Achievement"
+      ],
+      [
+       0,
+       2,
+       "A status in words"
+      ],
+      [
+       1,
+       0,
+       "New KPI"
+      ],
+      [
+       1,
+       1,
+       "A KPI in a PivotTable"
+      ],
+      [
+       1,
+       2,
+       "KPI or status measure?"
+      ]
+     ],
+     "tasks": [],
+     "real": false
+    },
+    {
+     "id": "p5-8-4",
+     "num": "8.4",
+     "title": "Reports and handover",
+     "summary": "The model is built; now it has to serve a report and outlive its builder. CUBE formulas put model numbers anywhere on a sheet. Refresh All brings in new data. Hiding keys and helper columns, naming measures well and writing down how it works make a model someone else can run.",
+     "minutes": 35,
+     "free": false,
+     "objectives": [
+      "Turn a PivotTable into CUBEMEMBER and CUBEVALUE formulas, and read one.",
+      "Refresh queries, the model and reports in one step.",
+      "Hide keys and helper columns from client tools.",
+      "Hand over a model with a short checklist."
+     ],
+     "downloads": [
+      {
+       "label": "Lesson notes (Word)",
+       "file": "s/p5-p5-8-4-notes.docx",
+       "name": "8.4 Reports and handover - notes.docx"
+      },
+      {
+       "label": "Practice workbook",
+       "file": "s/p5-p5-8-4-practice.xlsx",
+       "name": "8.4 Reports and handover - practice.xlsx"
+      },
+      {
+       "label": "Solution workbook",
+       "file": "s/p5-p5-8-4-solution.xlsx",
+       "name": "8.4 Reports and handover - solution.xlsx"
+      },
+      {
+       "label": "Real Excel task workbook",
+       "file": "s/p5-p5-8-4-real.xlsx",
+       "name": "8.4 real Excel task.xlsx"
+      }
+     ],
+     "topics": [
+      [
+       0,
+       0,
+       "Convert to Formulas"
+      ],
+      [
+       0,
+       1,
+       "Reading CUBEVALUE"
+      ],
+      [
+       0,
+       2,
+       "PivotTable or formulas?"
+      ],
+      [
+       1,
+       0,
+       "Refresh All"
+      ],
+      [
+       1,
+       1,
+       "Hide what people don’t need"
+      ],
+      [
+       1,
+       2,
+       "A model someone else can run"
+      ]
+     ],
+     "tasks": [],
+     "real": true
+    }
+   ]
+  }
+ ],
+ "upcoming": [],
+ "project": {
+  "title": "A refreshable sales report for Dhanush Electricals",
+  "brief": "A folder of branch files, a product list and targets: build the queries that combine and clean them, a Data Model with measures, and a report that refreshes when next month’s files arrive.",
+  "coming": false
+ },
+ "exam": {
+  "questions": 40,
+  "tasks": 6,
+  "minutes": 90,
+  "pass": 75,
+  "attempts": 3,
+  "gapHours": 48,
+  "coming": false
+ },
+ "downloads": [
+  {
+   "label": "Course handbook",
+   "file": "a/p5-handbook.docx",
+   "name": "Sheetah P5 handbook.docx"
+  },
+  {
+   "label": "Cheat sheet",
+   "file": "a/p5-cheatsheet.docx",
+   "name": "Sheetah P5 cheat sheet.docx"
+  }
+ ]
+}

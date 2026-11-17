@@ -5,8 +5,17 @@ import { store, today } from '../store.js';
 import { session, lesson as loadLesson, lessonMeta, assetURL } from '../content.js';
 import { esc, md, $, $$, mascot, line, toast, confetti, modal, bar, shuffle, download, crumbs, qhelp } from '../ui.js';
 import { Grid } from '../grid.js';
+import { PQLab } from '../pqlab.js';
+import { ModelLab } from '../modellab.js';
+import { modelApply } from '../modelcheck.js';
+import { VbaLab, hlLine } from '../vbalab.js';
+import { OsLab, osHL } from '../oslab.js';
+import { osApply, OS_KINDS } from '../oscheck.js';
+import { vbaApply, VBA_KINDS, splitProcs } from '../vbacheck.js';
 import { Workbook } from '../engine.js';
 import { checkTask, applySolution, describeCheck } from '../checker.js';
+import { BUILDER_DEFAULTS } from '../charts.js';
+import { builderHTML, wireBuilder } from '../chartbuilder.js';
 import { readXlsx, grade } from '../xlsxcheck.js';
 import { dayNum } from '../srs.js';
 import { lessonList, PARTS, PART_NAMES, partMinutes, moduleInfo, lessonLabel, lessonNo, fmtMin, canOpenLesson } from '../access.js';
@@ -27,6 +36,8 @@ export async function visual(v) {
   if (v.type === 'formula') return `<div class="formula-anat"><div class="ftext">${v.parts.map((p, i) => `<span class="fp c${i % 6}">${esc(p[0])}</span>`).join('')}</div><ul>${v.parts.filter(p => p[1]).map(p => `<li><span class="fp c${v.parts.indexOf(p) % 6}">${esc(p[0])}</span> ${md(p[1])}</li>`).join('')}</ul></div>`;
   if (v.type === 'keys') return `<table class="keys vkeys"><tbody>${v.items.map(([k, w]) => `<tr><td>${md('[[' + k + ']]')}</td><td>${md(w)}</td></tr>`).join('')}</tbody></table>`;
   if (v.type === 'table') return `<table class="tbl"><thead><tr>${v.head.map(h => `<th>${md(h)}</th>`).join('')}</tr></thead><tbody>${v.rows.map(r => `<tr>${r.map(c => `<td>${md(String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  if (v.type === 'code') { const notes = new Map((v.notes || []).map(([l, t]) => [l, t])); const hl = new Set(v.hl || []); let k = 0; const nums = new Map([...notes.keys()].map(l => [l, ++k]));
+    return `<figure class="codeviz">${v.title ? `<figcaption class="cz-t">${esc(v.title)}</figcaption>` : ''}<pre class="cz">${v.text.split('\n').map((l, i) => `<div class="czl${hl.has(i + 1) ? ' hl' : ''}${notes.has(i + 1) ? ' nt' : ''}"><span class="czn">${notes.has(i + 1) ? `<b>${nums.get(i + 1)}</b>` : i + 1}</span><span class="czc">${v.lang === 'ts' ? osHL(l) : hlLine(l)}</span></div>`).join('')}</pre>${notes.size ? `<ol class="cz-notes">${[...notes].map(([l, t]) => `<li><b>${nums.get(l)}</b><span>${md(t)}</span></li>`).join('')}</ol>` : ''}${v.caption ? `<p class="cap">${md(v.caption)}</p>` : ''}</figure>`; }
   if (v.type === 'tip') return `<div class="tip"><span class="tip-i" aria-hidden="true">💡</span><p>${md(v.text)}</p></div>`;
   if (v.type === 'compare') return `<div class="compare"><div class="bad"><b>✗ ${md(v.bad.title)}</b><p>${md(v.bad.text)}</p></div><div class="good"><b>✓ ${md(v.good.title)}</b><p>${md(v.good.text)}</p></div></div>`;
   if (v.type === 'steps') return `<ol class="steps vsteps">${v.items.map((s, i) => `<li><span class="stepn">${i + 1}</span><div>${md(s)}</div></li>`).join('')}</ol>`;
@@ -139,7 +150,7 @@ register('lesson', async (main, courseId, id, partName, pos) => {
   }
   // a visual-first slide: the idea in one line, the diagram, two or three short points, a real-life example, words to know
   async function slideHTML(sl) {
-    const vis = await visual(sl.visual); const wide = sl.visual && (sl.visual.wide || ['flow', 'beforeafter', 'icons', 'bignum', 'shot', 'table', 'compare', 'layers', 'analogy', 'anatomy'].includes(sl.visual.type));
+    const vis = await visual(sl.visual); const wide = sl.visual && (sl.visual.wide || ['flow', 'beforeafter', 'chartpair', 'icons', 'bignum', 'shot', 'table', 'compare', 'layers', 'analogy', 'anatomy'].includes(sl.visual.type));
     if (!sl.say && !(sl.points || []).length) return `<div class="vslide legacy"><h2 class="vs-h">${md(sl.h)}</h2><div class="vs-legacy slide-body">${(sl.p || []).map(p => `<p>${md(p)}</p>`).join('')}</div>${vis ? `<div class="vs-vis">${vis}</div>` : ''}</div>`;
     const pts = (sl.points || []).length ? `<ul class="vs-points">${sl.points.map(p => `<li>${md(p)}</li>`).join('')}</ul>` : '';
     const terms = (sl.terms || []).length ? `<div class="vs-terms"><span class="vs-tag">📖 Words to know</span>${sl.terms.map(([t, d]) => `<div class="vs-term"><b>${md(t)}</b><span>${md(d)}</span></div>`).join('')}</div>` : '';
@@ -188,11 +199,12 @@ register('lesson', async (main, courseId, id, partName, pos) => {
       else if (s.do === 'style') await g.demoStyle(s.at, s.style);
       else if (s.do === 'formulas') { g.showFormulas = !g.showFormulas; g.render(); await wait(900); }
       else if (s.do === 'explain') { g.select(s.at); await wait(500); g.explain(); await wait(1800); }
+      else if (s.do === 'trace') { g.select(s.at); await wait(400); g.trace = s.on !== false; g.render(); await wait(2200); }
       else if (s.do === 'sort') { g.select(s.at); await wait(400); g.wb.sortRegion(0, g.wb.currentRegion(0, g.sel.ar, g.sel.ac), [{ col: g.sel.ac, desc: !!s.desc }], true); g.render(); await wait(700); }
       else if (s.do === 'width') { g.sheet.widths[s.col.charCodeAt(0) - 65] = s.px; g.render(); await wait(700); }
       else if (s.do === 'insertRow') { g.wb.insertRows(0, s.row - 1, 1); g.render(); await wait(700); }
       else if (s.do === 'deleteRow') { g.wb.deleteRows(0, s.row - 1, 1); g.render(); await wait(700); }
-      else if (s.do === 'name') { g.wb.defineName(s.name, s.ref); g.select(s.ref.replace(/^.*!/, '').replace(/\$/g, '')); await wait(800); }
+      else if (s.do === 'name') { g.wb.defineName(s.name, s.ref); if (s.ref[0] === '=') { if (s.at) g.select(s.at); g.render(); } else g.select(s.ref.replace(/^.*!/, '').replace(/\$/g, '')); await wait(800); }
       else if (s.do === 'sheet') { g.setSheet(s.index); await wait(800); }
       else if (s.do === 'paste') { g.select(s.from); await wait(400); g.copy(); await wait(700); g.select(s.to); await wait(400); g.paste(s.mode || 'all'); await wait(800); }
       else if (s.do === 'clear') { g.select(s.at); await wait(400); g.clearSelection(); await wait(600); }
@@ -205,49 +217,60 @@ register('lesson', async (main, courseId, id, partName, pos) => {
     $('#step').onclick = async () => { if (busy) return; if (i === 0) { g.wb.load(D.sheet); g.setSel(0, 0); } busy = true; await runStep(D.steps[i]); busy = false; if (!$('#step')) return; i = (i + 1) % D.steps.length; $('#step').textContent = i ? `Next step (${i + 1}/${D.steps.length})` : 'Step by step'; if (!i) seen(); };
     $('#n').onclick = () => advance();
   }
+  // what the learner wrote, for the mistakes log: the macro the task is about, or the whole module
+  function vbaYours(vl, t) { const name = t.macro || t.fn; for (const m of vl.st.modules) { const p = splitProcs(m.code).procs.find(x => x.name.toLowerCase() === String(name || '').toLowerCase()); if (p) return p.lines.join('\n').slice(0, 800); } const m = vl.st.modules.find(x => x.code.trim()); return m ? m.code.slice(0, 800) : '(no code yet)'; }
   // ---------- 3. lab ----------
   async function lab(body) {
     const B = L.lab; st.tasks = st.tasks || {};
-    const gridTasks = B.tasks.filter(t => !['mc', 'hotspot', 'order'].includes(t.kind));
+    const isPQ = !!B.pq, isModel = !!B.model, isVBA = !!B.vba, isOS = !!B.os; const gridTasks = isPQ || isModel || isVBA || isOS ? [] : B.tasks.filter(t => !['mc', 'hotspot', 'order'].includes(t.kind));
     body.innerHTML = `<div class="lab"><div class="card lab-intro"><p class="eyebrow">Lab · ${B.tasks.length} tasks · about ${partMinutes(meta, 2)} min</p><p>${md(B.intro)}</p>${idx === 0 ? '<p class="small okbox note-line">No Excel on this laptop? That’s fine: every lab runs here and needs nothing installed. For the Real Excel tasks later, the free Excel for the web works too. <a href="#/help/noexcel">How to get it</a></p>' : ''}${gridTasks.length ? `<p class="muted small">Work in the highlighted cells. Click a cell and type; press Enter to finish. Right-click for more options. Nothing you do here can break anything: <button class="linkbtn" id="resetLab" type="button">reset the sheet</button>.${B.inputs ? ' ' + qhelp('inputs') : ''}</p>` : ''}</div>
-     <div class="lab-cols ${gridTasks.length ? '' : 'nogrid'}"><ol class="tasks">${B.tasks.map((t, i) => taskCard(t, i)).join('')}</ol>${gridTasks.length ? '<div class="lab-grid"><div id="lg"></div></div>' : ''}</div>
+     ${isModel ? '<p class="muted small">This is the workbook’s Data Model, as Power Pivot shows it: Diagram View for relationships, Data View for the tables, and a PivotTable built from the model. <button class="linkbtn" id="resetLab" type="button">Reset the lab</button></p>' : ''}${isOS ? '<p class="muted small">This is Excel for the web with the Automate tab and the Code Editor. Scripts run here, in Sheetah, on this sheet: nothing reaches your Microsoft account. <button class="linkbtn" id="resetLab" type="button">Reset the lab</button></p>' : ''}${isVBA ? '<p class="muted small">This is Excel with the Developer tab, and the Visual Basic Editor behind it (<kbd>Alt</kbd>+<kbd>F11</kbd> switches). Code runs here, in Sheetah: nothing reaches your computer. <button class="linkbtn" id="resetLab" type="button">Reset the lab</button></p>' : ''}${isPQ ? '<p class="muted small">The Power Query Editor here works like Excel’s: click a column header to select it, use the ribbon or right-click, and watch Applied Steps grow. The source data never changes. <button class="linkbtn" id="resetLab" type="button">Reset the lab</button></p>' : ''}<div class="lab-cols ${gridTasks.length || isPQ || isModel || isVBA ? '' : 'nogrid'}${isPQ || isModel || isVBA ? ' pq' : ''}${B.tasks.some(t => t.kind === 'chart') ? ' charts' : ''}"><ol class="tasks">${B.tasks.map((t, i) => taskCard(t, i)).join('')}</ol>${isPQ ? '<div class="lab-pq"><div id="lpq"></div></div>' : ''}${isModel ? '<div class="lab-pq"><div id="lml"></div></div>' : ''}${isVBA || isOS ? '<div class="lab-pq"><div id="lvba"></div></div>' : ''}${gridTasks.length ? `<div class="lab-grid">${B.formControls ? formControlsHTML(B.formControls) : ''}<div id="lg"></div></div>` : ''}</div>
      ${B.real ? realCard(B.real) : ''}
      <div class="row between"><span class="muted" id="labStat"></span><button class="btn" id="n" type="button">On to the quiz · ${upNext(2)} →</button></div></div>`;
-    let g = null; const keyLog = []; let usedMouse = false;
+    let g = null; const keyLog = []; let usedMouse = false; let pql = null; let ml = null; let vl = null;
+    if (isVBA) { vl = new VbaLab($('#lvba'), B, st.vbaState, x => { st.vbaState = x; store.save(); }); $('#resetLab').onclick = () => { delete st.vbaState; store.save(); lab(body); }; }
+    let ol = null; if (isOS) { ol = new OsLab($('#lvba'), B, st.osState, x => { st.osState = x; store.save(); }); $('#resetLab').onclick = () => { delete st.osState; store.save(); lab(body); }; }
+    if (isModel) { ml = new ModelLab($('#lml'), B, st.modelState, x => { st.modelState = x; store.save(); }); $('#resetLab').onclick = () => { delete st.modelState; store.save(); lab(body); }; }
+    if (isPQ) { pql = new PQLab($('#lpq'), B, st.pqState, x => { st.pqState = x; store.save(); }); $('#resetLab').onclick = () => { delete st.pqState; store.save(); lab(body); }; }
     if (gridTasks.length) {
       const savedSheet = st.labSheet; const wb = new Workbook(savedSheet || B.sheet);
-      g = new Grid($('#lg'), wb, { height: B.height || 380, editable: B.editable, highlight: B.highlight || B.editable, allowSort: B.allowSort, allowStructure: B.allowStructure, styleAnywhere: B.styleAnywhere, noAddSheet: !B.allowAddSheet, onChange: () => { st.labSheet = wb.toSpec(); store.save(); }, onKey: k => keyLog.push(k) }); grids.push(g);
+      g = new Grid($('#lg'), wb, { height: B.height || 380, select: B.select, editable: B.editable, highlight: B.highlight || B.editable, allowSort: B.allowSort, allowStructure: B.allowStructure, styleAnywhere: B.styleAnywhere, noAddSheet: !B.allowAddSheet, onChange: () => { st.labSheet = wb.toSpec(); store.save(); redrawCharts(); }, onKey: k => keyLog.push(k) }); grids.push(g);
+      if (B.formControls) wireFormControls($('.fctl', body), B.formControls, wb, () => { st.labSheet = wb.toSpec(); store.save(); redrawCharts(); });
       $('#lg').addEventListener('mousedown', () => { usedMouse = true; }, true);
       $('#resetLab').onclick = () => { delete st.labSheet; store.save(); lab(body); };
       setTimeout(() => tip('grid', $('#lg')), 2500);
     }
-    const answers = {};
+    const answers = {}; const chartTasks = [];
+    const redrawCharts = () => chartTasks.forEach(f => f());
     const refresh = () => { const done = B.tasks.filter(t => st.tasks[t.id] && st.tasks[t.id].done).length; $('#labStat').textContent = `${done} of ${B.tasks.length} tasks done`; $('#n').disabled = done < B.tasks.length; $('#n').title = done < B.tasks.length ? 'Finish every task to continue' : ''; };
     B.tasks.forEach((t, i) => {
       const card = $(`#task-${i}`); const ts = () => st.tasks[t.id] || (st.tasks[t.id] = { hints: 0, attempts: 0 });
       if (t.kind === 'mc') $$('.opt', card).forEach(b => b.onclick = () => { $$('.opt', card).forEach(x => x.classList.remove('sel')); b.classList.add('sel'); answers[t.id] = +b.dataset.i; });
       if (t.kind === 'hotspot') { const img = $('img', card); img.onclick = e => { const r = img.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100; const z = t.zones.find(z => x >= z.x && x <= z.x + z.w && y >= z.y && y <= z.y + z.h); answers[t.id] = z ? z.label : 'empty space'; const m = $('.hotmark', card); m.style.left = x + '%'; m.style.top = y + '%'; m.hidden = false; }; }
+      if (t.kind === 'chart') { const box = $('.cb', card); const cfg = answers[t.id] = Object.assign({}, BUILDER_DEFAULTS, t.start || {}, (st.tasks[t.id] || {}).cfg || {});
+        chartTasks.push(wireBuilder(box, t, cfg, () => g && g.wb, () => g && g.selection().range, c => { ts().cfg = { ...c }; store.save(); })); }
       if (t.kind === 'order') { const ul = $('.order', card); let drag = null; const sync = () => { answers[t.id] = $$('li', ul).map(li => li.dataset.v); }; sync(); $$('li', ul).forEach(li => { li.draggable = true; li.ondragstart = () => { drag = li; li.classList.add('drag'); }; li.ondragend = () => { li.classList.remove('drag'); sync(); }; li.ondragover = e => { e.preventDefault(); if (drag && drag !== li) { const r = li.getBoundingClientRect(); ul.insertBefore(drag, e.clientY < r.top + r.height / 2 ? li : li.nextSibling); } }; $$('button', li).forEach(b => b.onclick = () => { const sib = b.dataset.d === 'up' ? li.previousElementSibling : li.nextElementSibling; if (sib) { b.dataset.d === 'up' ? ul.insertBefore(li, sib) : ul.insertBefore(sib, li); sync(); } }); }); }
       const showHints = s => { $('.hints', card).innerHTML = t.hints.slice(0, s.hints).map((h, k) => `<li><b>Hint ${k + 1}.</b> ${md(h)}</li>`).join(''); $('.hint', card).textContent = s.hints < t.hints.length ? `${tr('Hint')} ${s.hints + 1} of ${t.hints.length}` : 'No more hints'; if (s.hints >= t.hints.length) $('.sol', card).hidden = false; };
       $('.check', card).onclick = () => {
-        const s = ts(); s.attempts++; const res = checkTask(t, { wb: g && g.wb, grid: g, inputs: B.inputs, answer: answers[t.id], keyLog, usedMouse });
+        const s = ts(); s.attempts++; const res = checkTask(t, { wb: pql ? pql.wb : vl ? vl.wb : ol ? ol.wb : g && g.wb, grid: g || (vl && vl.grid), pq: pql && pql.pqState(), model: ml && ml.ctxModel(), vba: vl && vl.ctx(), os: ol && ol.ctx(), inputs: B.inputs, answer: answers[t.id], keyLog, usedMouse });
         const fb = $('.tfb', card); const what = describeCheck(t, B.inputs); const whatHTML = what.length ? `<details class="what"><summary>What Sheetah checked</summary><ul>${what.map(w => `<li>${esc(w)}</li>`).join('')}</ul></details>` : '';
         if (res.ok) { s.done = true; if (s.first === undefined) s.first = s.hints === 0 && s.attempts === 1; if (s.sawSolution) { s.help = true; if (!s.logged) { s.logged = true; store.logError({ course: c.id, lesson: id, lessonNum: L.num, task: t.id, kind: 'lab', prompt: t.prompt, yours: '(done with the solution)', right: t.solution || '', why: t.explain || 'Done with help: try it again from memory in your review.' }); } }
           fb.innerHTML = `<p class="ok">✓ ${s.help ? 'Done with help. It comes back in your daily review. ' : ''}${md(res.msg)}</p>${whatHTML}`; card.classList.add('done'); store.act('tasks'); if (s.first) bumpSkill(id); }
         else { fb.innerHTML = `<p class="no">${mascot('oops', 'xs')} ${md(res.msg)}</p>${whatHTML}${s.attempts >= 3 ? `<p class="small">Still stuck? <button class="linkbtn" type="button" data-ask="1" data-where="${esc(lessonLabel(meta) + ', lab task ' + (i + 1))}" data-what="${esc('I’m stuck on this task: ' + String(t.prompt).replace(/\*\*/g, '') + ' Sheetah says: ' + res.msg)}">Ask your teacher</button></p>` : ''}`; card.classList.add('shake'); setTimeout(() => card.classList.remove('shake'), 400);
-          if (!s.logged) { s.logged = true; const cell = t.cell || (t.range ? t.range.split(':')[0] : null); store.logError({ course: c.id, lesson: id, lessonNum: L.num, task: t.id, kind: 'lab', prompt: t.prompt, yours: cell && g ? (g.wb.input(0, ...rc(cell)) || '(blank)') : String(answers[t.id] ?? '(no answer)'), right: t.solution || (t.kind === 'mc' ? t.options[t.answer] : t.kind === 'hotspot' ? t.answer : t.kind === 'order' ? t.items.join(' → ') : ''), why: res.msg }); }
+          if (!s.logged) { s.logged = true; const cell = t.cell || (t.range ? t.range.split(':')[0] : null); store.logError({ course: c.id, lesson: id, lessonNum: L.num, task: t.id, kind: 'lab', prompt: t.prompt, yours: ol ? String((ol.st.scripts.find(x => x.name.toLowerCase() === String(t.script || '').toLowerCase()) || {}).code || '').slice(0, 800) : vl ? vbaYours(vl, t) : pql && t.query ? String((pql.state.queries[t.query] || '(no query yet)')).slice(0, 600) : cell && g ? (g.wb.input(0, ...rc(cell)) || '(blank)') : String(answers[t.id] ?? '(no answer)'), right: t.solution || (t.kind === 'mc' ? t.options[t.answer] : t.kind === 'hotspot' ? t.answer : t.kind === 'order' ? t.items.join(' → ') : ''), why: res.msg }); }
           if (store.d.settings.autoHint && s.hints < t.hints.length) { s.hints++; showHints(s); }
           if (s.attempts >= 3) $('.sol', card).hidden = false; }
         store.save(); refresh();
       };
       $('.hint', card).onclick = () => { const s = ts(); if (s.hints < t.hints.length) s.hints++; showHints(s); store.save(); };
-      $('.sol', card).onclick = () => { const s = ts(); s.sawSolution = true; store.save(); const m = modal(`<h2>Worked solution</h2>${t.solution ? `<p><code class="big">${esc(t.solution)}</code></p>` : ''}<p>${md(t.explain || '')}</p><p class="muted small">This task will count as “done with help” and come back in your daily review.</p>${g && !['mc', 'hotspot', 'order'].includes(t.kind) ? '<div class="row end"><button class="btn ghost" id="put" type="button">Put it in the sheet for me</button><button class="btn" id="ok" type="button">I’ll do it myself</button></div>' : '<div class="row end"><button class="btn" id="ok" type="button">Got it</button></div>'}`); const p = $('#put', m.el); if (p) p.onclick = () => { applySolution(t, { wb: g.wb, grid: g }); st.labSheet = g.wb.toSpec(); store.save(); m.close(); }; $('#ok', m.el).onclick = m.close; };
+      $('.sol', card).onclick = () => { const s = ts(); s.sawSolution = true; store.save(); const m = modal(`<h2>Worked solution</h2>${t.msol && (t.msol.modules || t.msol.scripts) ? (t.msol.modules || t.msol.scripts).map(x => `<p class="muted small">${esc(x.name)}</p><pre class="vsol">${esc(x.code.trim())}</pre>`).join('') : t.solution ? `<p><code class="big">${esc(t.solution)}</code></p>` : ''}<p>${md(t.explain || '')}</p><p class="muted small">This task will count as “done with help” and come back in your daily review.</p>${(g || pql || ml || vl || ol) && !['mc', 'hotspot', 'order'].includes(t.kind) ? `<div class="row end"><button class="btn ghost" id="put" type="button">${ml ? 'Put it in the model for me' : pql || vl || ol ? 'Put it in the editor for me' : 'Put it in the sheet for me'}</button><button class="btn" id="ok" type="button">I’ll do it myself</button></div>` : '<div class="row end"><button class="btn" id="ok" type="button">Got it</button></div>'}`); const p = $('#put', m.el); if (p) p.onclick = () => { if (ol) { if (OS_KINDS.includes(t.kind)) osApply(t, ol.st); ol.save(); ol.render(); m.close(); return; } if (vl) { if (VBA_KINDS.includes(t.kind)) vbaApply(t, vl.st, vl.wb, vl.lab); else applySolution(t, { wb: vl.wb, grid: vl.grid }); vl.prog = null; vl.save(); vl.render(); m.close(); return; } if (ml) { modelApply(t, ml.st); ml.save(); ml.render(); m.close(); return; } if (pql) { if (t.kind === 'pqload') { pql.state.loads[t.query] = { ...(pql.state.loads[t.query] || {}), to: t.to || 'table', model: !!t.model }; pql.loadAll(); pql.save(); pql.render(); } else { pql.addHelpers(t.refQueries); pql.setQuery(t.query, t.solution || t.ref); } m.close(); return; } applySolution(t, { wb: g.wb, grid: g }); st.labSheet = g.wb.toSpec(); if (t.kind === 'chart') { const box = $('.cb', card); if (box && box._apply) box._apply(t.solutionChart); } store.save(); redrawCharts(); m.close(); }; $('#ok', m.el).onclick = m.close; };
       const sv = $('.save-task', card); if (sv) sv.onclick = () => { toggleSaved({ type: 'task', key: `task:${id}:${t.id}`, course: c.id, lesson: id, title: String(t.prompt).replace(/\*\*|`/g, '').slice(0, 120) }); sv.textContent = isSaved(`task:${id}:${t.id}`) ? '★' : '☆'; };
       const s0 = st.tasks[t.id]; if (s0 && s0.hints) showHints(s0);
       if (s0 && (s0.attempts >= 3 || s0.hints >= t.hints.length)) $('.sol', card).hidden = false;
       card.addEventListener('focusin', () => { if (g && t.focus) g.select(t.focus); });
       $('.goto', card) && ($('.goto', card).onclick = () => { if (g && t.focus) { g.select(t.focus); g.focus(); } });
     });
+    redrawCharts();
     if (B.real) wireReal(body, B.real);
     await hydrate(body, c.id); refresh(); glossify($('.lab-intro', body), 3);
     $('#n').onclick = () => advance();
@@ -260,15 +283,49 @@ register('lesson', async (main, courseId, id, partName, pos) => {
     let extra = '';
     if (t.kind === 'mc') extra = `<div class="opts">${t.options.map((o, k) => `<button class="opt" data-i="${k}" type="button">${md(o)}</button>`).join('')}</div>`;
     if (t.kind === 'hotspot') extra = `<div class="hotspot"><img data-asset="${t.img}" alt="${esc(t.alt || 'Excel window screenshot')}"><span class="hotmark" hidden></span></div>`;
+    if (t.kind === 'chart') extra = builderHTML(t);
     if (t.kind === 'order') extra = `<ul class="order">${shuffle(t.items).map(v => `<li data-v="${esc(v)}"><span>⋮⋮</span> ${md(v)} <button class="mini" data-d="up" aria-label="Move up" type="button">↑</button><button class="mini" data-d="down" aria-label="Move down" type="button">↓</button></li>`).join('')}</ul>`;
     return `<li class="card task ${s.done ? 'done' : ''}" id="task-${i}" tabindex="-1"><div class="tnum">${i + 1}</div><div class="tbody"><div class="row between"><p>${md(t.prompt)}</p><button class="mini save-task" type="button" title="Save this task">${isSaved(`task:${id}:${t.id}`) ? '★' : '☆'}</button></div>${extra}
       <div class="row"><button class="btn sm check" type="button">${tr('Check')}</button><button class="btn ghost sm hint" type="button">${s.hints ? (s.hints < t.hints.length ? `${tr('Hint')} ${s.hints + 1} of ${t.hints.length}` : 'No more hints') : `${tr('Hint')} 1 of ${t.hints.length}`}</button>${t.focus ? '<button class="btn ghost sm goto" type="button">Go to cell</button>' : ''}<button class="btn ghost sm sol" type="button" hidden>${tr('Show solution')}</button></div>
       <ul class="hints"></ul><div class="tfb" role="status">${s.done ? `<p class="ok">✓ ${s.help ? 'Done with help' : 'Done'}</p>` : ''}</div></div></li>`;
   }
-  function realCard(R) {
+  // Form controls that sit on the lab sheet, like Excel's Developer › Insert controls: each writes its "cell link".
+// scroll and spin write a number; options and combo write the 1-based position of the pick; check writes TRUE/FALSE.
+function formControlsHTML(list) {
+  const one = (f, k) => { const link = `<span class="fc-link" title="The cell this control writes to">→ ${esc(f.cell)}</span>`;
+    if (f.kind === 'scroll') return `<label class="fct fc-scroll"><span class="fc-name">${esc(f.label)}</span><input type="range" data-fc="${k}" min="${f.min ?? 1}" max="${f.max ?? 10}" step="${f.step ?? 1}" aria-label="${esc(f.label)}"><output class="fc-out"></output>${link}</label>`;
+    if (f.kind === 'spin') return `<span class="fct fc-spin"><span class="fc-name">${esc(f.label)}</span><button type="button" class="fc-sb" data-fc="${k}" data-d="-1" aria-label="${esc(f.label)}: down">▼</button><output class="fc-out"></output><button type="button" class="fc-sb" data-fc="${k}" data-d="1" aria-label="${esc(f.label)}: up">▲</button>${link}</span>`;
+    if (f.kind === 'options') return `<fieldset class="fct fc-opts"><legend>${esc(f.label)}</legend>${f.items.map((it, j) => `<label><input type="radio" name="fc${k}" data-fc="${k}" value="${j + 1}"> ${esc(it)}</label>`).join('')}${link}</fieldset>`;
+    if (f.kind === 'slicer') return `<fieldset class="fct fc-slicer"><legend>${esc(f.label)} <button type="button" class="fc-clear" data-fc="${k}" data-v="*" title="Clear Filter" aria-label="${esc(f.label)}: clear filter">⊘</button></legend>${f.items.map(it => `<button type="button" class="fc-sl" data-fc="${k}" data-v="${esc(it)}">${esc(it)}</button>`).join('')}${link}</fieldset>`;
+    if (f.kind === 'check') return `<label class="fct fc-check"><input type="checkbox" data-fc="${k}"> ${esc(f.label)}${link}</label>`;
+    return `<label class="fct fc-combo"><span class="fc-name">${esc(f.label)}</span><select data-fc="${k}">${f.items.map((it, j) => `<option value="${j + 1}">${esc(it)}</option>`).join('')}</select>${link}</label>`; };
+  return `<div class="fctl" role="group" aria-label="Form controls on this sheet"><span class="fc-tag">${list.every(f => f.kind === 'slicer') ? 'Slicers' : 'Form controls'}</span>${list.map(one).join('')}</div>`;
+}
+function wireFormControls(box, list, wb, onChange) {
+  const si = f => (f.sheet ? Math.max(0, wb.sheetIndexByName(f.sheet)) : 0);
+  const at = f => { const m = /^([A-Z]+)(\d+)$/.exec(f.cell); let c = 0; for (const ch of m[1]) c = c * 26 + ch.charCodeAt(0) - 64; return [+m[2] - 1, c - 1]; };
+  const read = f => wb.value(si(f), ...at(f));
+  const write = (f, v) => { wb.setInput(si(f), ...at(f), String(v)); onChange(); sync(); };
+  const sync = () => list.forEach((f, k) => { const v = read(f); const els = $$(`[data-fc="${k}"]`, box);
+    if (f.kind === 'scroll') { els[0].value = typeof v === 'number' ? v : (f.min ?? 1); $('.fc-out', els[0].parentNode).textContent = v ?? ''; }
+    else if (f.kind === 'spin') $('.fc-out', els[0].parentNode).textContent = v ?? '';
+    else if (f.kind === 'options') els.forEach(el => { el.checked = +el.value === v; });
+    else if (f.kind === 'slicer') els.forEach(el => { if (el.classList.contains('fc-sl')) el.classList.toggle('on', v === '*' || v === null || String(v) === el.dataset.v); else el.disabled = v === '*' || v === null; });
+    else if (f.kind === 'check') els[0].checked = v === true;
+    else els[0].value = typeof v === 'number' ? String(v) : ''; });
+  list.forEach((f, k) => { const els = $$(`[data-fc="${k}"]`, box);
+    if (f.kind === 'scroll') els[0].addEventListener('input', () => write(f, +els[0].value));
+    else if (f.kind === 'spin') els.forEach(b => b.onclick = () => { const v = typeof read(f) === 'number' ? read(f) : (f.min ?? 0); write(f, Math.max(f.min ?? -Infinity, Math.min(f.max ?? Infinity, v + (+b.dataset.d) * (f.step ?? 1)))); });
+    else if (f.kind === 'options') els.forEach(el => el.onchange = () => write(f, +el.value));
+    else if (f.kind === 'slicer') els.forEach(el => el.onclick = () => write(f, el.dataset.v === '*' ? "'*" : el.dataset.v));
+    else if (f.kind === 'check') els[0].onchange = () => write(f, els[0].checked ? 'TRUE' : 'FALSE');
+    else els[0].onchange = () => write(f, +els[0].value); });
+  wb.onChange(() => sync()); sync();
+}
+function realCard(R) {
     const r = (st.real || {}); return `<section class="card real"><div class="row between"><div><p class="eyebrow">Real Excel task${R.optional !== false ? ' · optional but recommended' : ''} ${qhelp('real')}</p><h2>${md(R.title)}</h2></div>${mascot('focus', 'sm')}</div>
      <ol class="steps"><li>Download the practice workbook and open it in Excel (desktop, or the free Excel for the web: <a href="#/help/noexcel">no Excel?</a>).</li>${R.steps.map(s => `<li>${md(s)}</li>`).join('')}<li>Save it as an Excel Workbook (.xlsx) and upload it here. Sheetah checks it at once.</li></ol>
-     <div class="row"><button class="btn ghost" data-file="${R.file}" data-name="${esc(R.fileName || 'practice.xlsx')}" type="button">⬇ Practice workbook</button><label class="btn">⬆ Upload my file<input type="file" accept=".xlsx,.xlsm,.xls,.csv,.ods,.numbers" hidden class="up"></label>${R.solution ? `<button class="btn ghost solbtn" data-file="${R.solution}" data-name="${esc((R.fileName || 'practice.xlsx').replace('.xlsx', ' - solution.xlsx'))}" type="button" ${r.done || (r.tries || 0) >= 2 ? '' : 'hidden'}>⬇ Model answer</button>` : ''}<a class="small" href="#/help/upload">Problems uploading?</a></div>
+     <div class="row"><button class="btn ghost" data-file="${R.file}" data-name="${esc(R.fileName || 'practice.xlsx')}" type="button">⬇ Practice workbook</button>${(R.extra || []).map(x => `<button class="btn ghost" data-file="${x.file}" data-name="${esc(x.name)}" type="button">⬇ ${esc(x.label)}</button>`).join('')}<label class="btn">⬆ Upload my file<input type="file" accept=".xlsx,.xlsm,.xls,.csv,.ods,.numbers" hidden class="up"></label>${R.solution ? `<button class="btn ghost solbtn" data-file="${R.solution}" data-name="${esc((R.fileName || 'practice.xlsx').replace('.xlsx', ' - solution.xlsx'))}" type="button" ${r.done || (r.tries || 0) >= 2 ? '' : 'hidden'}>⬇ Model answer</button>` : ''}<a class="small" href="#/help/upload">Problems uploading?</a></div>
      <div class="results">${r.last ? resultsHTML(r.last) : ''}</div></section>`;
   }
   function wireReal(body, R) {
